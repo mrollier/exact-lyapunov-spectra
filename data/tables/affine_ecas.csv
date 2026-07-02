@@ -1,0 +1,9 @@
+rule,complement,gradient_a_minus,gradient_a_centre,gradient_a_plus,gradient_weight
+0,255,0,0,0,0
+15,240,1,0,0,1
+51,204,0,1,0,1
+85,170,0,0,1,1
+60,195,1,1,0,2
+90,165,1,0,1,2
+102,153,0,1,1,2
+105,150,1,1,1,3

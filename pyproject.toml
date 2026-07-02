@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lyapunov"
+version = "1.0.0"
+description = "Exact Lyapunov spectra of affine cellular automata and the parity rule on networks"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Michiel Rollier", email = "michiel.rollier@ugent.be" },
+    { name = "Jan M. Baetens" },
+]
+keywords = [
+    "cellular automata",
+    "Lyapunov spectrum",
+    "affine rules",
+    "Boolean Jacobian",
+    "network automata",
+    "eigenvector centrality",
+]
+dependencies = [
+    "numpy==1.26.4",
+    "scipy==1.13.1",
+    "networkx==3.3",
+    "matplotlib==3.9.2",
+]
+
+[project.optional-dependencies]
+test = ["pytest==8.3.3"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["verification"]
+addopts = "-q"

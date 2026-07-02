@@ -1,0 +1,13 @@
+# Exact, OS-neutral pinned dependencies for the exact-lyapunov-spectra repository.
+# Tested on CPython 3.11. Install with:  pip install -r requirements.txt
+#
+# The core (src/lyapunov) needs only numpy + scipy. networkx is used for the
+# graph topologies (Watts-Strogatz, Barabasi-Albert) in the parity-on-networks
+# figure and checks; matplotlib for the figures; pytest for the verification
+# suite. No torch / cellpylib / igraph are required (those belonged to the
+# separate network-automata-robustness project).
+numpy==1.26.4
+scipy==1.13.1
+networkx==3.3
+matplotlib==3.9.2
+pytest==8.3.3

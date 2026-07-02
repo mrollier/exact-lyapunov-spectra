@@ -1,0 +1,89 @@
+rule,phi_dnf,grad_left_dnf,grad_centre_dnf,grad_right_dnf,affine,dnf_consistent
+0,0,0,0,0,True,True
+1,!s_{i-1}!s_i!s_{i+1},!s_i!s_{i+1},!s_{i-1}!s_{i+1},!s_{i-1}!s_i,False,True
+2,!s_{i-1}!s_is_{i+1},!s_is_{i+1},!s_{i-1}s_{i+1},!s_{i-1}!s_i,False,True
+3,!s_{i-1}!s_i,!s_i,!s_{i-1},0,False,True
+4,!s_{i-1}s_i!s_{i+1},s_i!s_{i+1},!s_{i-1}!s_{i+1},!s_{i-1}s_i,False,True
+5,!s_{i-1}!s_{i+1},!s_{i+1},0,!s_{i-1},False,True
+6,!s_{i-1}!s_is_{i+1} + !s_{i-1}s_i!s_{i+1},!s_is_{i+1} + s_i!s_{i+1},!s_{i-1},!s_{i-1},False,True
+7,!s_{i-1}!s_i + !s_{i-1}!s_{i+1},!s_i + !s_{i+1},!s_{i-1}s_{i+1},!s_{i-1}s_i,False,True
+8,!s_{i-1}s_is_{i+1},s_is_{i+1},!s_{i-1}s_{i+1},!s_{i-1}s_i,False,True
+9,!s_{i-1}!s_i!s_{i+1} + !s_{i-1}s_is_{i+1},!s_i!s_{i+1} + s_is_{i+1},!s_{i-1},!s_{i-1},False,True
+10,!s_{i-1}s_{i+1},s_{i+1},0,!s_{i-1},False,True
+11,!s_{i-1}!s_i + !s_{i-1}s_{i+1},!s_i + s_{i+1},!s_{i-1}!s_{i+1},!s_{i-1}s_i,False,True
+12,!s_{i-1}s_i,s_i,!s_{i-1},0,False,True
+13,!s_{i-1}!s_{i+1} + !s_{i-1}s_i,!s_{i+1} + s_i,!s_{i-1}s_{i+1},!s_{i-1}!s_i,False,True
+14,!s_{i-1}s_{i+1} + !s_{i-1}s_i,s_{i+1} + s_i,!s_{i-1}!s_{i+1},!s_{i-1}!s_i,False,True
+15,!s_{i-1},1,0,0,True,True
+18,!s_{i-1}!s_is_{i+1} + s_{i-1}!s_i!s_{i+1},!s_i,!s_{i-1}s_{i+1} + s_{i-1}!s_{i+1},!s_i,False,True
+19,!s_{i-1}!s_i + !s_i!s_{i+1},!s_is_{i+1},!s_{i-1} + !s_{i+1},s_{i-1}!s_i,False,True
+22,!s_{i-1}!s_is_{i+1} + !s_{i-1}s_i!s_{i+1} + s_{i-1}!s_i!s_{i+1},!s_i + !s_{i+1},!s_{i-1} + !s_{i+1},!s_{i-1} + !s_i,False,True
+23,!s_{i-1}!s_i + !s_{i-1}!s_{i+1} + !s_i!s_{i+1},!s_is_{i+1} + s_i!s_{i+1},!s_{i-1}s_{i+1} + s_{i-1}!s_{i+1},!s_{i-1}s_i + s_{i-1}!s_i,False,True
+24,!s_{i-1}s_is_{i+1} + s_{i-1}!s_i!s_{i+1},!s_i!s_{i+1} + s_is_{i+1},!s_{i-1}s_{i+1} + s_{i-1}!s_{i+1},!s_{i-1}s_i + s_{i-1}!s_i,False,True
+25,!s_i!s_{i+1} + !s_{i-1}s_is_{i+1},s_is_{i+1},!s_{i-1} + !s_{i+1},!s_{i-1} + !s_i,False,True
+26,!s_{i-1}s_{i+1} + s_{i-1}!s_i!s_{i+1},!s_i + s_{i+1},s_{i-1}!s_{i+1},!s_{i-1} + !s_i,False,True
+27,!s_{i-1}s_{i+1} + !s_i!s_{i+1},s_{i+1},!s_{i+1},!s_{i-1}s_i + s_{i-1}!s_i,False,True
+28,!s_{i-1}s_i + s_{i-1}!s_i!s_{i+1},!s_{i+1} + s_i,!s_{i-1} + !s_{i+1},s_{i-1}!s_i,False,True
+29,!s_{i-1}s_i + !s_i!s_{i+1},s_i,!s_{i-1}s_{i+1} + s_{i-1}!s_{i+1},!s_i,False,True
+30,!s_{i-1}s_{i+1} + !s_{i-1}s_i + s_{i-1}!s_i!s_{i+1},1,!s_{i+1},!s_i,False,True
+32,s_{i-1}!s_is_{i+1},!s_is_{i+1},s_{i-1}s_{i+1},s_{i-1}!s_i,False,True
+33,!s_{i-1}!s_i!s_{i+1} + s_{i-1}!s_is_{i+1},!s_i,!s_{i-1}!s_{i+1} + s_{i-1}s_{i+1},!s_i,False,True
+34,!s_is_{i+1},0,s_{i+1},!s_i,False,True
+35,!s_{i-1}!s_i + !s_is_{i+1},!s_i!s_{i+1},!s_{i-1} + s_{i+1},s_{i-1}!s_i,False,True
+36,!s_{i-1}s_i!s_{i+1} + s_{i-1}!s_is_{i+1},!s_is_{i+1} + s_i!s_{i+1},!s_{i-1}!s_{i+1} + s_{i-1}s_{i+1},!s_{i-1}s_i + s_{i-1}!s_i,False,True
+37,!s_{i-1}!s_{i+1} + s_{i-1}!s_is_{i+1},!s_i + !s_{i+1},s_{i-1}s_{i+1},!s_{i-1} + !s_i,False,True
+38,!s_is_{i+1} + !s_{i-1}s_i!s_{i+1},s_i!s_{i+1},!s_{i-1} + s_{i+1},!s_{i-1} + !s_i,False,True
+40,!s_{i-1}s_is_{i+1} + s_{i-1}!s_is_{i+1},s_{i+1},s_{i+1},!s_{i-1}s_i + s_{i-1}!s_i,False,True
+41,!s_{i-1}!s_i!s_{i+1} + !s_{i-1}s_is_{i+1} + s_{i-1}!s_is_{i+1},!s_i + s_{i+1},!s_{i-1} + s_{i+1},!s_{i-1} + !s_i,False,True
+42,!s_{i-1}s_{i+1} + !s_is_{i+1},s_is_{i+1},s_{i-1}s_{i+1},!s_{i-1} + !s_i,False,True
+43,!s_{i-1}!s_i + !s_{i-1}s_{i+1} + !s_is_{i+1},!s_i!s_{i+1} + s_is_{i+1},!s_{i-1}!s_{i+1} + s_{i-1}s_{i+1},!s_{i-1}s_i + s_{i-1}!s_i,False,True
+44,!s_{i-1}s_i + s_{i-1}!s_is_{i+1},s_{i+1} + s_i,!s_{i-1} + s_{i+1},s_{i-1}!s_i,False,True
+45,!s_{i-1}!s_{i+1} + !s_{i-1}s_i + s_{i-1}!s_is_{i+1},1,s_{i+1},!s_i,False,True
+46,!s_{i-1}s_i + !s_is_{i+1},s_i,!s_{i-1}!s_{i+1} + s_{i-1}s_{i+1},!s_i,False,True
+50,!s_is_{i+1} + s_{i-1}!s_i,!s_i!s_{i+1},s_{i+1} + s_{i-1},!s_{i-1}!s_i,False,True
+51,!s_i,0,1,0,True,True
+54,!s_is_{i+1} + !s_{i-1}s_i!s_{i+1} + s_{i-1}!s_i,!s_{i+1},1,!s_{i-1},False,True
+56,!s_{i-1}s_is_{i+1} + s_{i-1}!s_i,!s_i + s_{i+1},s_{i+1} + s_{i-1},!s_{i-1}s_i,False,True
+57,!s_i!s_{i+1} + !s_{i-1}s_is_{i+1} + s_{i-1}!s_i,s_{i+1},1,!s_{i-1},False,True
+58,!s_{i-1}s_{i+1} + s_{i-1}!s_i,!s_i!s_{i+1} + s_is_{i+1},s_{i-1},!s_{i-1},False,True
+60,!s_{i-1}s_i + s_{i-1}!s_i,1,1,0,True,True
+62,!s_{i-1}s_i + s_{i-1}!s_i + !s_is_{i+1},!s_{i+1} + s_i,!s_{i+1} + s_{i-1},!s_{i-1}!s_i,False,True
+72,!s_{i-1}s_is_{i+1} + s_{i-1}s_i!s_{i+1},s_i,!s_{i-1}s_{i+1} + s_{i-1}!s_{i+1},s_i,False,True
+73,!s_{i-1}!s_i!s_{i+1} + !s_{i-1}s_is_{i+1} + s_{i-1}s_i!s_{i+1},!s_{i+1} + s_i,!s_{i-1} + !s_{i+1},!s_{i-1} + s_i,False,True
+74,!s_{i-1}s_{i+1} + s_{i-1}s_i!s_{i+1},s_{i+1} + s_i,s_{i-1}!s_{i+1},!s_{i-1} + s_i,False,True
+76,!s_{i-1}s_i + s_i!s_{i+1},s_is_{i+1},!s_{i-1} + !s_{i+1},s_{i-1}s_i,False,True
+77,!s_{i-1}!s_{i+1} + !s_{i-1}s_i + s_i!s_{i+1},!s_i!s_{i+1} + s_is_{i+1},!s_{i-1}s_{i+1} + s_{i-1}!s_{i+1},!s_{i-1}!s_i + s_{i-1}s_i,False,True
+78,!s_{i-1}s_{i+1} + s_i!s_{i+1},s_{i+1},!s_{i+1},!s_{i-1}!s_i + s_{i-1}s_i,False,True
+90,!s_{i-1}s_{i+1} + s_{i-1}!s_{i+1},1,0,1,True,True
+94,!s_{i-1}s_{i+1} + s_{i-1}!s_{i+1} + s_i!s_{i+1},!s_i + s_{i+1},!s_{i-1}!s_{i+1},!s_i + s_{i-1},False,True
+104,!s_{i-1}s_is_{i+1} + s_{i-1}!s_is_{i+1} + s_{i-1}s_i!s_{i+1},s_{i+1} + s_i,s_{i+1} + s_{i-1},s_i + s_{i-1},False,True
+105,!s_{i-1}!s_i!s_{i+1} + !s_{i-1}s_is_{i+1} + s_{i-1}!s_is_{i+1} + s_{i-1}s_i!s_{i+1},1,1,1,True,True
+106,!s_{i-1}s_{i+1} + !s_is_{i+1} + s_{i-1}s_i!s_{i+1},s_i,s_{i-1},1,False,True
+108,!s_{i-1}s_i + s_{i-1}!s_is_{i+1} + s_i!s_{i+1},s_{i+1},1,s_{i-1},False,True
+110,!s_is_{i+1} + s_i!s_{i+1} + !s_{i-1}s_{i+1},s_is_{i+1},!s_{i+1} + s_{i-1},!s_i + s_{i-1},False,True
+122,!s_{i-1}s_{i+1} + s_{i-1}!s_{i+1} + !s_is_{i+1},!s_{i+1} + s_i,s_{i-1}s_{i+1},!s_{i-1} + s_i,False,True
+126,!s_is_{i+1} + s_i!s_{i+1} + !s_{i-1}s_{i+1} + s_{i-1}!s_{i+1},!s_i!s_{i+1} + s_is_{i+1},!s_{i-1}!s_{i+1} + s_{i-1}s_{i+1},!s_{i-1}!s_i + s_{i-1}s_i,False,True
+128,s_{i-1}s_is_{i+1},s_is_{i+1},s_{i-1}s_{i+1},s_{i-1}s_i,False,True
+130,!s_{i-1}!s_is_{i+1} + s_{i-1}s_is_{i+1},s_{i+1},s_{i+1},!s_{i-1}!s_i + s_{i-1}s_i,False,True
+132,!s_{i-1}s_i!s_{i+1} + s_{i-1}s_is_{i+1},s_i,!s_{i-1}!s_{i+1} + s_{i-1}s_{i+1},s_i,False,True
+134,!s_{i-1}!s_is_{i+1} + !s_{i-1}s_i!s_{i+1} + s_{i-1}s_is_{i+1},s_{i+1} + s_i,!s_{i-1} + s_{i+1},!s_{i-1} + s_i,False,True
+136,s_is_{i+1},0,s_{i+1},s_i,False,True
+138,!s_{i-1}s_{i+1} + s_is_{i+1},!s_is_{i+1},s_{i-1}s_{i+1},!s_{i-1} + s_i,False,True
+140,!s_{i-1}s_i + s_is_{i+1},s_i!s_{i+1},!s_{i-1} + s_{i+1},s_{i-1}s_i,False,True
+142,!s_{i-1}s_{i+1} + !s_{i-1}s_i + s_is_{i+1},!s_is_{i+1} + s_i!s_{i+1},!s_{i-1}!s_{i+1} + s_{i-1}s_{i+1},!s_{i-1}!s_i + s_{i-1}s_i,False,True
+146,!s_{i-1}!s_is_{i+1} + s_{i-1}!s_i!s_{i+1} + s_{i-1}s_is_{i+1},!s_i + s_{i+1},s_{i+1} + s_{i-1},!s_i + s_{i-1},False,True
+150,!s_{i-1}!s_is_{i+1} + !s_{i-1}s_i!s_{i+1} + s_{i-1}!s_i!s_{i+1} + s_{i-1}s_is_{i+1},1,1,1,True,True
+152,s_is_{i+1} + s_{i-1}!s_i!s_{i+1},!s_i!s_{i+1},s_{i+1} + s_{i-1},s_i + s_{i-1},False,True
+154,!s_{i-1}s_{i+1} + s_{i-1}!s_i!s_{i+1} + s_is_{i+1},!s_i,s_{i-1},1,False,True
+156,!s_{i-1}s_i + s_{i-1}!s_i!s_{i+1} + s_is_{i+1},!s_{i+1},1,s_{i-1},False,True
+160,s_{i-1}s_{i+1},s_{i+1},0,s_{i-1},False,True
+162,!s_is_{i+1} + s_{i-1}s_{i+1},s_is_{i+1},!s_{i-1}s_{i+1},!s_i + s_{i-1},False,True
+164,!s_{i-1}s_i!s_{i+1} + s_{i-1}s_{i+1},s_{i+1} + s_i,!s_{i-1}!s_{i+1},s_i + s_{i-1},False,True
+168,s_is_{i+1} + s_{i-1}s_{i+1},!s_is_{i+1},!s_{i-1}s_{i+1},s_i + s_{i-1},False,True
+170,s_{i+1},0,0,1,True,True
+172,!s_{i-1}s_i + s_{i-1}s_{i+1},!s_is_{i+1} + s_i!s_{i+1},!s_{i-1},s_{i-1},False,True
+178,!s_is_{i+1} + s_{i-1}!s_i + s_{i-1}s_{i+1},!s_i!s_{i+1} + s_is_{i+1},!s_{i-1}s_{i+1} + s_{i-1}!s_{i+1},!s_{i-1}!s_i + s_{i-1}s_i,False,True
+184,s_is_{i+1} + s_{i-1}!s_i,!s_i,!s_{i-1}s_{i+1} + s_{i-1}!s_{i+1},s_i,False,True
+200,s_is_{i+1} + s_{i-1}s_i,s_i!s_{i+1},s_{i+1} + s_{i-1},!s_{i-1}s_i,False,True
+204,s_i,0,1,0,True,True
+232,s_is_{i+1} + s_{i-1}s_{i+1} + s_{i-1}s_i,!s_is_{i+1} + s_i!s_{i+1},!s_{i-1}s_{i+1} + s_{i-1}!s_{i+1},!s_{i-1}s_i + s_{i-1}!s_i,False,True

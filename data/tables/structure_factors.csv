@@ -1,0 +1,4 @@
+neighbourhood,n_neighbours,structure_factor_K,parity_mle
+von Neumann,5,2 cos(a) + 2 cos(b),ln(5) = 1.609438
+Moore,9,2 cos(a) + 2 cos(b) + 4 cos(a) cos(b),ln(9) = 2.197225
+radius-2 von Neumann,13,2 cos(a) + 2 cos(b) + 4 cos(a) cos(b) + 2 cos(2a) + 2 cos(2b),ln(13) = 2.564949

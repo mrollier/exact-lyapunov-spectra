@@ -1,0 +1,16 @@
+# Generated figures and data caches (regenerable via reproduce.py)
+output/*
+!output/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+build/
+dist/
+.venv/
+venv/
+
+# OS
+.DS_Store

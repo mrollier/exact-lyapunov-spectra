@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite both the article and the software."
+title: "exact-lyapunov-spectra: exact Lyapunov spectra of affine cellular automata and the parity rule on networks"
+authors:
+  - family-names: Rollier
+    given-names: Michiel
+    orcid: "https://orcid.org/0000-0001-8467-734X"
+    affiliation: "BionamiX, Ghent University"
+  - family-names: Baetens
+    given-names: Jan M.
+    orcid: "https://orcid.org/0000-0003-4084-9992"
+    affiliation: "BionamiX, Ghent University"
+license: MIT
+version: "1.0.0"
+repository-code: "https://github.com/mrollier/exact-lyapunov-spectra"
+preferred-citation:
+  type: article
+  title: "Exact Lyapunov spectra of affine cellular automata and the parity rule on networks"
+  authors:
+    - family-names: Rollier
+      given-names: Michiel
+      orcid: "https://orcid.org/0000-0001-8467-734X"
+    - family-names: Baetens
+      given-names: Jan M.
+      orcid: "https://orcid.org/0000-0003-4084-9992"
+  journal: "Chaos, Solitons & Fractals"
+  year: 2025
