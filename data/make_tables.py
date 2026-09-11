@@ -5,8 +5,9 @@
 * Table 2 (T2): the structure factor K(k, l) and self-inclusive parity MLE for
   the three 2-D neighbourhoods.
 
-(The corrected 88-rule gradient table -- Table 3 in the manuscript numbering used
-by the brief -- is produced separately by ``verify_vichniac.py``.)
+(The 88-rule gradient table, its comparison with Vichniac (1990) and the
+manuscript's corrected-entries table are produced separately by
+``verify_vichniac.py``.)
 
 All values are computed from the verified core, not transcribed.
 """

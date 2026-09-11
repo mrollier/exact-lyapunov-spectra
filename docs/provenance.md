@@ -31,7 +31,7 @@ Figures are written to `output/`; tables to `data/tables/`; graphs to
 |-----|---------|--------|--------|--------|
 | T1 | 16 affine ECAs: gradients & weights | `data/make_tables.py` | `data/tables/affine_ecas.csv` | ✅ computed from core |
 | T2 | Structure factor K(k,l) + parity MLE (3 neighbourhoods) | `data/make_tables.py` | `data/tables/structure_factors.csv` | ✅ computed from core |
-| T3 | Gradient DNF for all 88 non-equivalent ECAs; 4 corrections | `verify_vichniac.py` | `data/tables/eca_gradient_table.csv` | ✅ 88 rows; corrections confirmed |
+| T3 | Gradient DNF for all 88 non-equivalent ECAs; comparison with Vichniac (1990) Table 1; corrected-entries table (5 ECAs, 7 entries) | `verify_vichniac.py` | `data/tables/eca_gradient_table.csv`, `vichniac_table1_computed.csv`, `vichniac_table1_diff.md`, `gradient_corrections_table.tex` | ✅ 88 rows; 7 mismatching entries in 5 rules: 62, 110, 130, 146, 172 |
 
 ## Claims (verification suite)
 
@@ -43,7 +43,7 @@ Each claim has a dedicated pytest file (plus lower-level unit tests). Run
 | C1 | 16 affine ECAs = exactly the constant-Jacobian rules, with the tabulated gradients (recomputed from first principles) | `verification/test_c1_affine_constant_jacobian.py` | ✅ pass |
 | C2 | Closed form matches a stable numerical routine across N, T (direct-mult float64 exact at the top; Benettin converges) | `verification/test_c2_benchmark.py`, `test_benettin.py` | ✅ pass |
 | C3 | MLEs: rules 150/105 → ln3, rule 90 → ln2; 2-D parity ln5/ln9/ln13; Moore = 2 ln3 | `verification/test_c3_mle_values.py` | ✅ pass |
-| C4 | Recompute all 88 gradients; confirm the four Vichniac corrections (62,110,130,146) | `verification/test_c4_vichniac_gradients.py` | ✅ pass (see note) |
+| C4 | Recompute all 88 gradients from definition (5); compare by truth table with Vichniac's Table 1; exactly 7 misprinted entries in 5 rows (62, 110, 130, 146, 172), cross-checked by additivity and symmetry from the paper's own rows | `verification/test_c4_vichniac_gradients.py` | ✅ pass (see note) |
 | C5 | Parity MLE = ln ρ(A); single-site amplitude ∝ eigenvector centrality (WS, BA) | `verification/test_c5_parity_centrality.py` | ✅ pass |
 | C6 | Benettin sanity: Σ exponents = ln|det J| at every T | `verification/test_c6_benettin_det_sum.py` | ✅ pass |
 | C7 | Numerical artefacts reproduced beside the correct result (overflow; float16 plateau) | `verification/test_c7_numerical_artefact.py` | ✅ pass (see note) |
@@ -51,13 +51,20 @@ Each claim has a dedicated pytest file (plus lower-level unit tests). Run
 
 ### Notes / honest caveats
 
-- **C4 scope.** The four corrections are verified against the manuscript's
-  Table 1 by first principles (truth-table equality). A full row-by-row check
-  against Vichniac's *original* 1990 table would require digitising that table (a
-  data-entry task, not derivable from code). What is machine-verified: (a) the
-  four corrected entries reproduce the true Boolean derivative, and (b) the whole
+- **C4 scope.** Vichniac's original Table 1 is transcribed in
+  `src/lyapunov/vichniac_table1.py` (verified against the Physica D scan on
+  12 September 2026; misprints deliberately kept). All 3 x 88 entries are
+  compared by truth table with the derivative computed from definition (5);
+  seven entries in five rows differ. The corrections are cross-checked using
+  only correctly printed rows of the same table (additivity, Method 4) and
+  their probable origin is reproduced (symmetry, Method 3, with the variable
+  complementation omitted; rule 130 is a subscript typo violating property
+  (v)). The manuscript's corrected-entries table is generated from the
+  computation and checked by truth table against the submitted values. The
   88-row recomputed table is internally exact (every minimised DNF matches its
-  truth table).
+  truth table). Two equally minimal covers exist for phi of rule 62; the
+  generator prints `s[i+1]~s[i]` where the manuscript prints `s[i+1]~s[i-1]`
+  as the third product. Both are correct and the gradient is unaffected.
 - **C7 int64 subtlety.** The paper flags int64 `matrix_power` as a hazard for
   `A^t (mod 2)`. Precisely: a *pure int64* power wraps modulo 2^64 and 2 | 2^64,
   so `matrix_power(int64) % 2` accidentally keeps the correct parity; only the

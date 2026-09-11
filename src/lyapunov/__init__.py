@@ -30,6 +30,13 @@ parity
 quine_mccluskey
     A small Quine-McCluskey Boolean minimiser used to print gradient entries in
     disjunctive normal form.
+vichniac_table1
+    Table 1 of Vichniac (1990) exactly as printed, misprints included: the
+    single source of truth for the published values.
+vichniac
+    Recompute all 88 gradients from the definition, compare them by truth table
+    with the published table (seven misprinted entries in five rows), and
+    generate the manuscript's corrected-entries table.
 """
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"

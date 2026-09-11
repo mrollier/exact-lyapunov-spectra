@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parent
 # Each step: (label, argv). Run with the current interpreter from ROOT.
 TABLES_AND_CHECKS = [
     ("tables (T1, T2)", [sys.executable, "data/make_tables.py"]),
-    ("gradient table + corrections (C4/T3)", [sys.executable, "verify_vichniac.py"]),
+    ("gradient table + Vichniac comparison (C4/T3)", [sys.executable, "verify_vichniac.py"]),
     ("verification suite (pytest, C1-C7)", [sys.executable, "-m", "pytest", "-q"]),
 ]
 
