@@ -32,6 +32,16 @@ nonaffine
     The other 240 rules: the Boolean Jacobian at a given configuration, the
     banded tangent propagation, Benettin along a trajectory, and the exact rank
     of the tangent map (the number of exponents that are -inf).
+outer_totalistic
+    The outer-totalistic rules on the 2-D von Neumann neighbourhood (1024
+    rules, 528 classes up to conjugation) and on the Moore neighbourhood
+    (2**18 rules, 131 328 classes): B/S notation, the torus step, and the
+    banded configuration-dependent Boolean Jacobian (five or nine bands).
+damage
+    Boolean damage from one flipped cell (Hamming distance, damage radius, the
+    three light-cone normalisations, diamond or square cone) and the
+    single-vector estimate of the maximal Lyapunov exponent, on the same
+    trajectory, in one or two dimensions.
 parity
     The parity rule on an arbitrary graph: Lyapunov spectrum from the adjacency
     spectrum, defect patterns A^t e_j (mod 2), and eigenvector centrality.
@@ -47,4 +57,4 @@ vichniac
     generate the manuscript's corrected-entries table.
 """
 
-__version__ = "1.3.0"
+__version__ = "1.5.0"

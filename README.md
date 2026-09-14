@@ -59,6 +59,10 @@ python figures/fig_nonaffine_spectra.py              # Fig. 6, from the committe
 python data/make_nonaffine_spectra.py --recompute    # regenerate that cache (9.2 core-hours)
 python data/bench_workers.py                         # how many workers this machine can feed
 python data/make_nonaffine_spectra.py --all-88 --recompute --workers 32
+python figures/fig_damage_vs_mle.py                  # Fig. 7, from the committed caches
+python data/make_damage_mle.py --dim 1 --recompute   # 88 ECAs (~1 min)
+python data/make_damage_mle.py --dim 2 --recompute   # 528 outer-totalistic vN rules (~10 min on 10 cores)
+python data/make_damage_mle.py --dim 2 --neighbourhood moore --recompute   # 2000 sampled Moore classes (~40 min on 10 cores)
 ```
 
 ## Repository layout
@@ -77,7 +81,7 @@ src/lyapunov/        verified maths core (imported by figures and tests)
 figures/             one standalone script per manuscript figure -> output/
 notebooks/           03_benettin_convergence.ipynb: the Fig. 3 convergence study
                      (+ an independent reference implementation it asserts against)
-verification/        one pytest check per claim (C1–C7, C9, C10) + core unit tests
+verification/        one pytest check per claim (C1–C7, C9, C10, C11, C12) + core unit tests
 data/                make_graphs.py, make_tables.py, generated tables/graphs
 verify_vichniac.py   CLI: gradient table, Vichniac comparison, diff report, LaTeX table
 reproduce.py         single entry point (all | quick)
@@ -96,10 +100,13 @@ docs/provenance.md   figure/claim -> script -> command -> expected -> status
 | Fig 4 2-D parity (`..._2d_parity`) | `figures/fig_2d_parity.py` |
 | Fig 5 defect topologies (`defect_propagation_networks_parity`) | `figures/fig_defect_topologies.py` |
 | Fig 6 non-affine ECA spectra (`lyapunov_spectra_nonaffine_ecas`) | `figures/fig_nonaffine_spectra.py`, computed by `data/make_nonaffine_spectra.py` |
+| Fig 7 damage vs maximal exponent, 88 ECAs, 528 outer-totalistic vN rules, 2000 sampled Moore rules (`damage_vs_mle`) | `figures/fig_damage_vs_mle.py`, computed by `data/make_damage_mle.py` |
 | Table 1 (affine ECAs) / Table 2 (structure factors) | `data/make_tables.py` |
 | Corrected-entries table (`tab:gradient-table`, 5 ECAs) + 88-rule gradient table | `verify_vichniac.py` |
 | Claims C1–C7 | `verification/test_c1..c7_*.py` |
 | Claim C10 (non-affine spectra) | `verification/test_c10_nonaffine_spectra.py`, `verification/test_nonaffine.py` |
+| Claim C11 (damage vs maximal exponent) | `verification/test_c11_damage_vs_mle.py`, `verification/test_damage.py`, `verification/test_outer_totalistic.py` |
+| Claim C12 (the sampled Moore family) | `verification/test_c12_damage_vs_mle_moore.py` |
 
 See [docs/provenance.md](docs/provenance.md) for exact commands, expected
 results, observed status and honest caveats.
@@ -184,6 +191,42 @@ exponents reach, and returns another 442 to 469 of the 1000 as `nan`. Plotted,
 that is a spike just below the maximal exponent: the signature of the floor, not
 a property of the rule. `data/tables/nonaffine_direct_multiplication.csv` has the
 numbers per rule.
+
+## Damage against the maximal exponent, every rule (Fig. 7)
+
+Fig. 7 asks how the tangent-space exponent relates to what a single flipped
+cell actually does in configuration space, for all 88 ECAs up to reflection and
+conjugation (ring N = 607, T = 300, 24 random initial configurations), all
+528 outer-totalistic von Neumann rules up to conjugation (torus L = 149, T = 70,
+16 configurations), and 2000 of the 131 328 outer-totalistic Moore rules up to
+conjugation, drawn uniformly from the classes with a fixed seed (same torus and
+horizon, 10 configurations; the full family would cost ~580 CPU-hours). The
+sides are primes not smaller than 2T + 3, so the damage never wraps. The figure plots the normalised damage `D_norm` (damaged cells over
+the maximal light cone, 2t + 1 on the ring, 2t² + 2t + 1 on the von Neumann
+torus and (2t + 1)² on the Moore torus,
+averaged over the final steps); the tables also record how far the damage
+reaches (`v_front`, radius per step) and how dense it is (`fill`, damaged cells
+over the cone actually reached). The exponent is the growth rate of a single renormalised
+tangent vector under the configuration-dependent Boolean Jacobian
+(`src/lyapunov/damage.py`, `src/lyapunov/outer_totalistic.py`), the top exponent
+and nothing else, which is what makes the 2-D catalogue with 22 201 tangent
+dimensions affordable; on the affine rules it reproduces the closed form to
+rounding, and its 1/T transient is bounded by the tests (0.0015 in 1-D, 0.012 in
+2-D). Rules whose Jacobian annihilates the vector exactly have exponent -inf:
+on the ring exactly rules 0, 8, 32, 40, 128, 136, 160 and 168.
+
+The exponent orders the total damage only loosely on the ring and the von
+Neumann torus (Spearman 0.61 and 0.52) but much more tightly on the Moore torus
+(0.82, bootstrap 95 % interval [0.80, 0.84] over the sampled rules), and the front speed hardly at all in 1-D (0.14): at ln 2 exactly, the
+front speed runs from 0 (rule 232) to 1 (rule 90). The 2-D parity rules have the
+largest exponents and next to no damage, their defect pattern being
+Sierpinski-like, while Life's B3/S23 on the von Neumann neighbourhood has
+exponent 1.10 and a front that barely moves. On the Moore torus 8 sampled rules
+are mixtures: the configuration usually dies to a fixed point with a zero
+Jacobian, but some initial configurations leave a small surviving pattern with a
+finite exponent; their plotted exponent is the mean over the finite samples.
+Per-rule numbers are in `data/tables/damage_vs_mle_1d.csv`, `damage_vs_mle_2d.csv`
+and `damage_vs_mle_2d_moore.csv`.
 
 ## Corrections to Vichniac (1990), Table 1
 

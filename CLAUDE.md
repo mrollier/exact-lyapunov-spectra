@@ -39,6 +39,9 @@ Never reintroduce `np.linalg.matrix_power` on a matrix whose true power you need
   (e.g. MLE of rule 150 is exactly ln 3), written before the implementation.
 
 ## Scope note
-This package covers the submitted CSF paper only (5 figures, 3 tables, claims
-C1–C7). The separate network-automata-robustness project (LLNA training, FSSP,
+This package covers the submitted CSF paper (5 figures, 3 tables, claims
+C1–C7) plus the post-submission additions Fig. 6 (non-affine spectra, C10) and
+Fig. 7 (Boolean damage against the maximal exponent for all 88 ECAs, all 528
+outer-totalistic von Neumann rules and 2000 sampled outer-totalistic Moore
+rules, C11–C12). The separate network-automata-robustness project (LLNA training, FSSP,
 impact analysis) is deliberately not included.

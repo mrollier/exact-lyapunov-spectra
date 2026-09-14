@@ -29,7 +29,7 @@ ROOT = Path(__file__).resolve().parent
 TABLES_AND_CHECKS = [
     ("tables (T1, T2)", [sys.executable, "data/make_tables.py"]),
     ("gradient table + Vichniac comparison (C4/T3)", [sys.executable, "verify_vichniac.py"]),
-    ("verification suite (pytest, C1-C10)", [sys.executable, "-m", "pytest", "-q"]),
+    ("verification suite (pytest, C1-C12)", [sys.executable, "-m", "pytest", "-q"]),
 ]
 
 FIGURES = [
@@ -44,6 +44,13 @@ FIGURES = [
     # takes hours (see that script) and is deliberately not part of `all`:
     #     python data/make_nonaffine_spectra.py --recompute
     ("Fig 6 non-affine ECA spectra", [sys.executable, "figures/fig_nonaffine_spectra.py"]),
+    # Draws from data/damage/damage_mle_{1d,2d,2d_moore}.npz, all committed.
+    # Regenerating them takes ~1 min (1-D), ~10 min (vN) and ~40 min (2000
+    # sampled Moore classes) on 10 cores:
+    #     python data/make_damage_mle.py --dim 1 --recompute
+    #     python data/make_damage_mle.py --dim 2 --recompute
+    #     python data/make_damage_mle.py --dim 2 --neighbourhood moore --recompute
+    ("Fig 7 damage vs MLE", [sys.executable, "figures/fig_damage_vs_mle.py"]),
     # Fig 3 replacement: the convergence study and the figure notebook. Executes
     # both in place and asserts their numbers; skipped (exit 0) if the notebook
     # extra is not installed.
