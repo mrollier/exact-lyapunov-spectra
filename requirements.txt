@@ -5,7 +5,9 @@
 # graph topologies (Watts-Strogatz, Barabasi-Albert) in the parity-on-networks
 # figure and checks; matplotlib for the figures; pytest for the verification
 # suite. No torch / cellpylib / igraph are required (those belonged to the
-# separate network-automata-robustness project).
+# separate network-automata-robustness project). Executing the convergence
+# notebook additionally needs nbformat, nbclient and ipykernel:
+#   pip install -e .[notebook]
 numpy==1.26.4
 scipy==1.13.1
 networkx==3.3

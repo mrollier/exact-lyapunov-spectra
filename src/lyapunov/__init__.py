@@ -23,7 +23,15 @@ spectra
     structure factor.
 benettin
     Reference numerical Lyapunov routines: Benettin's QR algorithm and direct
-    multiplication at several floating-point precisions (for the benchmark).
+    multiplication at several floating-point precisions (for the benchmark),
+    plus the burn-in / starting-frame / checkpoint variant, the unscaled
+    direct method of Vispoel et al. (2024) and its float64 precision floor
+    (for the convergence notebook), and the stored per-step log stretches
+    with their windowed / cumulative estimators (for the windowed figure).
+nonaffine
+    The other 240 rules: the Boolean Jacobian at a given configuration, the
+    banded tangent propagation, Benettin along a trajectory, and the exact rank
+    of the tangent map (the number of exponents that are -inf).
 parity
     The parity rule on an arbitrary graph: Lyapunov spectrum from the adjacency
     spectrum, defect patterns A^t e_j (mod 2), and eigenvector centrality.
@@ -39,4 +47,4 @@ vichniac
     generate the manuscript's corrected-entries table.
 """
 
-__version__ = "1.1.0"
+__version__ = "1.3.0"

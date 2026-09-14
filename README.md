@@ -50,8 +50,15 @@ Individual pieces:
 
 ```bash
 python figures/make_benchmark_figure.py --rule 150 --N 101 --T 200 --zoom-k 35
+python figures/make_convergence_figure.py --rule 150 --N 101 --T 200 --burn 100 --zoom-k 35
 python verify_vichniac.py --output data/tables/eca_gradient_table.csv
 python -m pytest -q
+python notebooks/execute.py        # both Fig. 3 notebooks (needs .[notebook])
+python notebooks/execute.py 04_convergence_figure    # just the figure notebook
+python figures/fig_nonaffine_spectra.py              # Fig. 6, from the committed cache
+python data/make_nonaffine_spectra.py --recompute    # regenerate that cache (9.2 core-hours)
+python data/bench_workers.py                         # how many workers this machine can feed
+python data/make_nonaffine_spectra.py --all-88 --recompute --workers 32
 ```
 
 ## Repository layout
@@ -68,7 +75,9 @@ src/lyapunov/        verified maths core (imported by figures and tests)
   vichniac.py        recompute the 88-rule gradient table; compare with Vichniac
   vichniac_table1.py Vichniac (1990) Table 1 exactly as printed (misprints kept)
 figures/             one standalone script per manuscript figure -> output/
-verification/        one pytest check per claim (C1–C7) + core unit tests
+notebooks/           03_benettin_convergence.ipynb: the Fig. 3 convergence study
+                     (+ an independent reference implementation it asserts against)
+verification/        one pytest check per claim (C1–C7, C9, C10) + core unit tests
 data/                make_graphs.py, make_tables.py, generated tables/graphs
 verify_vichniac.py   CLI: gradient table, Vichniac comparison, diff report, LaTeX table
 reproduce.py         single entry point (all | quick)
@@ -82,14 +91,99 @@ docs/provenance.md   figure/claim -> script -> command -> expected -> status
 | Fig 1 defect cones (`persistent_defect_eca_diff`) | `figures/fig_defect_cones.py` |
 | Fig 2 affine ECA spectra (`..._NO_CLASSES`) | `figures/fig_eca_spectra.py` |
 | Fig 3 benchmark (`benchmark_rule150`) | `figures/make_benchmark_figure.py` |
+| Fig 3 (revised) benchmark + Benettin error per k (`convergence_rule150`) | `figures/make_convergence_figure.py`, or `notebooks/04_convergence_figure.ipynb` to retune it |
+| Fig 3 supporting convergence study (`convergence_*`, 3 figures) | `notebooks/03_benettin_convergence.ipynb` |
 | Fig 4 2-D parity (`..._2d_parity`) | `figures/fig_2d_parity.py` |
 | Fig 5 defect topologies (`defect_propagation_networks_parity`) | `figures/fig_defect_topologies.py` |
+| Fig 6 non-affine ECA spectra (`lyapunov_spectra_nonaffine_ecas`) | `figures/fig_nonaffine_spectra.py`, computed by `data/make_nonaffine_spectra.py` |
 | Table 1 (affine ECAs) / Table 2 (structure factors) | `data/make_tables.py` |
 | Corrected-entries table (`tab:gradient-table`, 5 ECAs) + 88-rule gradient table | `verify_vichniac.py` |
 | Claims C1–C7 | `verification/test_c1..c7_*.py` |
+| Claim C10 (non-affine spectra) | `verification/test_c10_nonaffine_spectra.py`, `verification/test_nonaffine.py` |
 
 See [docs/provenance.md](docs/provenance.md) for exact commands, expected
 results, observed status and honest caveats.
+
+## The convergence notebook (replacement for Fig. 3)
+
+`notebooks/03_benettin_convergence.ipynb` uses the exact affine spectrum of rule
+150 (N = 101) to calibrate the two numerical routes to a Lyapunov spectrum, in
+answer to referee 2, paragraph 3. Benettin's algorithm from the identity has a
+1/T frame-alignment transient that a burn-in removes at the ends of the
+spectrum, and an N-dependent horizon in the interior (the fraction of the
+spectrum recovered to 1e-2 at T = 200 falls from 1.00 at N = 31 to 0.81 at
+N = 201). Direct multiplication as stated by Vispoel et al. (2024), unscaled in
+float64, resolves exponents only above a floor ln 3 + ln(eps)/(2T) that rises
+with T (31, 21, 15, 11 exponents at T = 50, 100, 200, 300) and overflows beyond
+T = 323. Starting Benettin in the eigenbasis of the (normal) Jacobian makes
+every QR step a no-op; for a constant non-normal Jacobian the Schur basis plays
+that role and ln(sigma_k) is not the spectrum (the manuscript's Eq. 7).
+
+Every number in the notebook's text is printed by the cell beneath it, and the
+final cell asserts 65 of them against `notebooks/fig3_convergence_study.py`, an
+independent reimplementation that shares no code with `src/lyapunov`. Runtime is
+about half a minute with the BLAS thread count pinned to one (the first cell
+does this; multithreaded QR on 100 x 100 matrices is several times slower and
+changes the rounding pathway of the slowest-converging exponents). Execute it
+with `python notebooks/execute.py` after `pip install -e .[notebook]`, or open
+it in Jupyter. Figures go to `output/convergence_*.pdf`.
+
+## The nine non-affine rules (Fig. 6)
+
+Vispoel et al. (2024), Section 6, report spectra for rules 6, 26, 73, 154, 41,
+122, 126, 54 and 110 at N = 1000, T = 500 with 40 random initial configurations.
+None of the nine is affine, so the Boolean Jacobian changes at every step and the
+closed form does not apply; `src/lyapunov/nonaffine.py` supplies the
+configuration-dependent Jacobian, a banded propagation that makes N = 1000
+affordable, and Benettin along the trajectory. The spectra below use the same
+budget, split as a burn-in of 200 and a window of 300. The spread is the 16th
+and 84th percentile of the 40 sample maxima, as offsets from their mean; it is
+what Figure 6 annotates, and it is asymmetric because a configuration that keeps
+more of the tangent space alive also stretches faster.
+
+| rule | maximal exponent | spread over 40 samples | share of the spectrum at -infinity |
+|---|---|---|---|
+| 6 | 0.5440 | +0.019 / -0.019 | 23.3 % |
+| 26 | 0.4131 | +0.008 / -0.008 | 16.3 % |
+| 73 | 0.9154 | +0.047 / -0.010 | 41.9 % |
+| 154 | 0.4796 | +0.017 / -0.012 | 0.0 % |
+| 41 | 0.8624 | +0.001 / -0.001 | 16.6 % |
+| 122 | 0.6497 | +0.008 / -0.012 | 16.4 % |
+| 126 | 0.7109 | +0.018 / -0.016 | 22.8 % |
+| 54 | 0.7407 | +0.002 / -0.002 | 18.1 % |
+| 110 | 0.6545 | +0.003 / -0.004 | 15.6 % |
+
+and the three affine rules drawn beside them, from the closed form rather than a
+trajectory:
+
+| rule | maximal exponent | spread | share of the spectrum at -infinity |
+|---|---|---|---|
+| 60 | 0.6931, exactly ln 2 | none, exact | 0.1 %: one exponent, at k = N/2 |
+| 90 | 0.6931, exactly ln 2 | none, exact | 0.2 %: two, at k = N/4 and 3N/4 |
+| 150 | 1.0986, exactly ln 3 | none, exact | 0.0 %: 3 does not divide 1000 |
+
+Two things are worth stating plainly.
+
+**The -infinite exponents are counted exactly, not thresholded.** Eight of the
+nine rules have a singular Jacobian at almost every step, so part of the tangent
+space is annihilated. The number of directions this happens to is a rank, and it
+is computed over a finite field (`tangent_rank`), because an unpivoted QR is not
+rank-revealing: for rules 122, 126, 54 and 110 the near-zero pivots run
+continuously from 1e-6 to 1e-18 with no gap at which to cut, and for rules 26 and
+122 the floating-point iteration reports a large finite exponent for directions
+that are in fact annihilated. Rule 154 is the exception with no annihilated
+directions at all, because its derivative with respect to the right neighbour is
+the constant 1, so no row of its Jacobian can vanish.
+
+**The unscaled direct method cannot produce these spectra at these settings.**
+Its precision floor lies `|ln(eps)| / (2T) = 0.036` below the maximal exponent,
+and that width does not depend on the rule. Rules 73, 41, 126 and 54 overflow
+float64 before the horizon is reached, on all 40 samples. For the other five the
+method places 276 to 364 exponents above a floor that only 10 to 25 of the true
+exponents reach, and returns another 442 to 469 of the 1000 as `nan`. Plotted,
+that is a spike just below the maximal exponent: the signature of the floor, not
+a property of the rule. `data/tables/nonaffine_direct_multiplication.csv` has the
+numbers per rule.
 
 ## Corrections to Vichniac (1990), Table 1
 
