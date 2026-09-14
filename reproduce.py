@@ -7,8 +7,9 @@ Usage
     python reproduce.py quick    # fast, deterministic subset (used by CI)
 
 ``all`` regenerates the seeded graphs and CSV tables, exports the 88-rule
-gradient table, builds the five manuscript figures into ``output/``, and runs the
-full verification suite. ``quick`` runs the verification suite and the (fast)
+gradient table, builds the six manuscript figures into ``output/``, executes
+the Fig. 3 convergence notebook (three more figures, plus its own checks), and
+runs the full verification suite. ``quick`` runs the verification suite and the (fast)
 table/gradient exports but skips figure rendering.
 
 Every step is run as a subprocess so a failure in one is reported without
@@ -28,7 +29,7 @@ ROOT = Path(__file__).resolve().parent
 TABLES_AND_CHECKS = [
     ("tables (T1, T2)", [sys.executable, "data/make_tables.py"]),
     ("gradient table + Vichniac comparison (C4/T3)", [sys.executable, "verify_vichniac.py"]),
-    ("verification suite (pytest, C1-C7)", [sys.executable, "-m", "pytest", "-q"]),
+    ("verification suite (pytest, C1-C10)", [sys.executable, "-m", "pytest", "-q"]),
 ]
 
 FIGURES = [
@@ -36,8 +37,17 @@ FIGURES = [
     ("Fig 1 defect cones", [sys.executable, "figures/fig_defect_cones.py"]),
     ("Fig 2 affine ECA spectra", [sys.executable, "figures/fig_eca_spectra.py"]),
     ("Fig 3 benchmark", [sys.executable, "figures/make_benchmark_figure.py"]),
+    ("Fig 3 revised: benchmark + Benettin error per k", [sys.executable, "figures/make_convergence_figure.py"]),
     ("Fig 4 2-D parity", [sys.executable, "figures/fig_2d_parity.py"]),
     ("Fig 5 defect topologies", [sys.executable, "figures/fig_defect_topologies.py"]),
+    # Draws from data/nonaffine/spectra.npz, which is committed. Regenerating it
+    # takes hours (see that script) and is deliberately not part of `all`:
+    #     python data/make_nonaffine_spectra.py --recompute
+    ("Fig 6 non-affine ECA spectra", [sys.executable, "figures/fig_nonaffine_spectra.py"]),
+    # Fig 3 replacement: the convergence study and the figure notebook. Executes
+    # both in place and asserts their numbers; skipped (exit 0) if the notebook
+    # extra is not installed.
+    ("Fig 3 notebooks (study + figure)", [sys.executable, "notebooks/execute.py"]),
 ]
 
 

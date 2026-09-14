@@ -2,6 +2,11 @@
 output/*
 !output/.gitkeep
 
+# The 88-rule catalogue: too large for git, and its checkpoint is rewritten
+# every few minutes during the run (see WORKSTATION_RUN.md).
+data/nonaffine/spectra_all88*.npz
+data/nonaffine/*.partial.npz
+
 # Python
 __pycache__/
 *.py[cod]
@@ -9,6 +14,7 @@ __pycache__/
 .pytest_cache/
 build/
 dist/
+input/
 .venv/
 venv/
 

@@ -1,0 +1,10 @@
+rule,mle,sigma_max,precision_floor,resolvable_band_width,log10_largest_eigenvalue,samples,samples_overflowed,true_exponents_above_floor_mean,reported_min,reported_max,exponents_above_floor_mean,exponents_inside_the_band_mean,exponents_returned_as_nan_mean,outcome
+6,0.543986,1.722861,0.507943,0.036044,236.3,40,0,25.0,0.412977,0.567829,363.6,317.4,448.0,364 exponents reported above a floor only 25 of them reach
+26,0.413080,1.511466,0.377036,0.036044,179.4,40,0,20.2,0.364741,0.427822,318.6,287.2,451.8,319 exponents reported above a floor only 20 of them reach
+73,0.915411,2.497802,0.879368,0.036044,397.6,40,40,7.2,,,0,0,1000,overflows float64
+154,0.479556,1.615357,0.443512,0.036044,208.3,40,0,21.4,0.423554,0.500768,336.4,301.2,444.6,336 exponents reported above a floor only 21 of them reach
+41,0.862367,2.368760,0.826323,0.036044,374.5,40,40,24.4,,,0,0,1000,overflows float64
+122,0.649664,1.914897,0.613620,0.036044,282.1,40,0,10.3,0.590751,0.660749,275.9,262.3,469.4,276 exponents reported above a floor only 10 of them reach
+126,0.710861,2.035743,0.674817,0.036044,308.7,40,40,3.5,,,0,0,1000,overflows float64
+54,0.740724,2.097453,0.704680,0.036044,321.7,40,40,21.6,,,0,0,1000,overflows float64
+110,0.654456,1.924095,0.618412,0.036044,284.2,40,0,22.3,0.607653,0.661039,292.7,275.1,441.8,293 exponents reported above a floor only 22 of them reach
