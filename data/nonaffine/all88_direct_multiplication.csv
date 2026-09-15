@@ -1,0 +1,80 @@
+rule,mle,sigma_max,precision_floor,resolvable_band_width,log10_largest_eigenvalue,samples,samples_overflowed,true_exponents_above_floor_mean,reported_min,reported_max,exponents_above_floor_mean,exponents_inside_the_band_mean,exponents_returned_as_nan_mean,outcome
+1,0.549306,1.732051,0.513262,0.036044,238.6,40,0,39.9,-0.000000,0.549306,39.9,0.0,759.7,40 exponents reported above a floor only 40 of them reach
+2,0.017707,1.017865,-0.018336,0.036044,7.7,40,0,605.0,-0.013122,0.013122,403.9,403.9,596.1,404 exponents reported above a floor only 605 of them reach
+3,0.346574,1.414214,0.310530,0.036044,150.5,40,0,75.8,0.000000,0.346574,93.3,0.0,595.0,93 exponents reported above a floor only 76 of them reach
+4,0.000000,1.000000,-0.036044,0.036044,0.0,40,0,781.9,0.000000,0.001533,464.5,307.2,535.5,465 exponents reported above a floor only 782 of them reach
+5,0.346574,1.414214,0.310530,0.036044,150.5,40,0,92.1,0.000000,0.346574,92.1,0.0,619.3,92 exponents reported above a floor only 92 of them reach
+6,0.543882,1.722682,0.507839,0.036044,236.2,40,0,24.8,0.411972,0.567829,365.6,319.1,447.9,366 exponents reported above a floor only 25 of them reach
+7,0.346574,1.414214,0.310530,0.036044,150.5,40,0,15.2,-0.000391,0.347385,17.9,0.0,765.1,18 exponents reported above a floor only 15 of them reach
+8,-inf,0.000000,-inf,nan,-inf,40,0,0.0,,,0.0,0.0,1000.0,0 exponents reported above a floor only 0 of them reach
+9,0.096568,1.101385,0.060524,0.036044,41.9,40,0,9.4,-0.040222,0.201824,295.9,139.0,454.2,296 exponents reported above a floor only 9 of them reach
+10,0.017365,1.017517,-0.018679,0.036044,7.5,40,0,601.7,-0.012429,0.012429,626.5,626.5,373.5,626 exponents reported above a floor only 602 of them reach
+11,0.071888,1.074535,0.035845,0.036044,31.2,40,0,17.3,-0.051086,0.155795,172.8,123.0,383.5,173 exponents reported above a floor only 17 of them reach
+12,0.003054,1.003059,-0.032989,0.036044,1.3,40,0,752.1,-0.012429,0.012429,628.0,503.6,372.0,628 exponents reported above a floor only 752 of them reach
+13,0.481212,1.618034,0.445168,0.036044,209.0,40,0,125.5,0.436317,0.481682,130.8,112.1,826.8,131 exponents reported above a floor only 126 of them reach
+14,0.286822,1.332187,0.250778,0.036044,124.6,40,0,18.4,0.073655,0.463586,351.9,45.9,493.9,352 exponents reported above a floor only 18 of them reach
+18,0.692366,1.998439,0.656323,0.036044,300.7,40,0,23.6,0.472974,0.693296,123.0,110.0,457.2,123 exponents reported above a floor only 24 of them reach
+19,0.346574,1.414214,0.310530,0.036044,150.5,40,0,51.5,0.000000,0.346574,51.5,0.0,674.6,51 exponents reported above a floor only 51 of them reach
+22,0.865315,2.375755,0.829272,0.036044,375.8,40,40,11.3,,,0,0,1000,overflows float64
+23,0.693147,2.000000,0.657104,0.036044,301.0,40,0,30.4,-0.000086,0.693147,30.4,0.0,698.7,30 exponents reported above a floor only 30 of them reach
+24,0.010797,1.010856,-0.025246,0.036044,4.7,40,0,511.5,-0.043537,0.015125,734.6,562.6,190.3,735 exponents reported above a floor only 512 of them reach
+25,0.514566,1.672912,0.478522,0.036044,223.5,40,0,22.1,0.461294,0.545332,417.0,353.6,446.9,417 exponents reported above a floor only 22 of them reach
+26,0.413100,1.511496,0.377056,0.036044,179.4,40,0,20.0,0.364866,0.427822,322.2,290.9,451.6,322 exponents reported above a floor only 20 of them reach
+27,0.028080,1.028478,-0.007964,0.036044,12.2,40,0,730.7,-0.032378,0.058187,618.9,576.6,204.3,619 exponents reported above a floor only 731 of them reach
+28,0.481212,1.618034,0.445168,0.036044,209.0,40,0,311.9,0.423041,0.485887,503.9,327.7,332.6,504 exponents reported above a floor only 312 of them reach
+29,0.346574,1.414214,0.310530,0.036044,150.5,40,0,64.5,-0.033887,0.348026,115.5,51.0,349.7,116 exponents reported above a floor only 64 of them reach
+30,0.658479,1.931852,0.622435,0.036044,286.0,40,0,21.1,0.612923,0.664362,242.2,228.0,448.2,242 exponents reported above a floor only 21 of them reach
+32,-inf,0.000000,-inf,nan,-inf,40,0,0.0,,,0.0,0.0,1000.0,0 exponents reported above a floor only 0 of them reach
+33,0.673872,1.961818,0.637828,0.036044,292.7,40,0,6.8,0.280980,0.673471,15.7,14.9,480.0,16 exponents reported above a floor only 7 of them reach
+34,0.018737,1.018913,-0.017307,0.036044,8.1,40,0,606.4,-0.012429,0.012429,625.4,625.4,374.6,625 exponents reported above a floor only 606 of them reach
+35,0.078565,1.081733,0.042521,0.036044,34.1,40,0,15.6,-0.022768,0.189327,234.0,141.7,383.8,234 exponents reported above a floor only 16 of them reach
+36,0.003074,1.003079,-0.032969,0.036044,1.3,40,0,886.9,-0.061769,0.013530,661.0,596.2,277.8,661 exponents reported above a floor only 887 of them reach
+37,0.379121,1.461000,0.343078,0.036044,164.7,40,0,285.4,0.302098,0.407605,259.7,242.0,355.4,260 exponents reported above a floor only 285 of them reach
+38,0.540146,1.716257,0.504102,0.036044,234.6,40,0,23.9,0.485410,0.557226,353.3,318.7,435.8,353 exponents reported above a floor only 24 of them reach
+40,-inf,0.000000,-inf,nan,-inf,40,0,0.0,,,0.0,0.0,1000.0,0 exponents reported above a floor only 0 of them reach
+41,0.862367,2.368760,0.826323,0.036044,374.5,40,40,24.3,,,0,0,1000,overflows float64
+42,0.005541,1.005556,-0.030503,0.036044,2.4,40,0,875.0,-0.020370,0.013122,818.0,693.0,180.8,818 exponents reported above a floor only 875 of them reach
+43,0.483992,1.622539,0.447948,0.036044,210.2,40,0,26.1,0.154449,0.670798,293.6,37.9,492.9,294 exponents reported above a floor only 26 of them reach
+44,0.481212,1.618034,0.445168,0.036044,209.0,40,0,30.2,-0.059521,0.482844,50.2,20.1,345.0,50 exponents reported above a floor only 30 of them reach
+45,0.717674,2.049660,0.681630,0.036044,311.7,40,40,23.1,,,0,0,1000,overflows float64
+46,0.035109,1.035733,-0.000934,0.036044,15.2,40,0,215.1,-0.045783,0.099292,451.9,375.7,376.9,452 exponents reported above a floor only 215 of them reach
+50,0.481212,1.618034,0.445168,0.036044,209.0,40,0,31.8,-0.000836,0.481212,31.8,31.8,678.4,32 exponents reported above a floor only 32 of them reach
+54,0.740724,2.097453,0.704680,0.036044,321.7,40,40,21.6,,,0,0,1000,overflows float64
+56,0.020273,1.020479,-0.015771,0.036044,8.8,40,0,504.2,-0.035183,0.076442,676.6,598.6,285.4,677 exponents reported above a floor only 504 of them reach
+57,0.696471,2.006658,0.660427,0.036044,302.5,40,0,23.4,0.651707,0.703118,333.9,312.0,456.4,334 exponents reported above a floor only 23 of them reach
+58,0.095331,1.100023,0.059287,0.036044,41.4,40,0,6.9,-0.040165,0.204713,147.1,72.5,429.4,147 exponents reported above a floor only 7 of them reach
+62,0.421305,1.523949,0.385262,0.036044,183.0,40,0,9.5,0.342280,0.468344,348.2,257.4,453.8,348 exponents reported above a floor only 9 of them reach
+72,0.693147,2.000000,0.657104,0.036044,301.0,40,0,63.4,-0.002003,0.693840,66.3,2.9,843.5,66 exponents reported above a floor only 63 of them reach
+73,0.915411,2.497802,0.879368,0.036044,397.6,40,40,7.2,,,0,0,1000,overflows float64
+74,0.024319,1.024617,-0.011725,0.036044,10.6,40,0,349.4,-0.034619,0.099573,609.5,455.9,361.4,610 exponents reported above a floor only 349 of them reach
+76,0.003054,1.003059,-0.032989,0.036044,1.3,40,0,842.9,-0.033389,0.012429,841.8,779.7,155.3,842 exponents reported above a floor only 843 of them reach
+77,0.693147,2.000000,0.657104,0.036044,301.0,40,0,32.2,-0.000086,0.693147,32.2,0.0,695.5,32 exponents reported above a floor only 32 of them reach
+78,0.481212,1.618034,0.445168,0.036044,209.0,40,0,123.5,-0.044942,0.482536,131.5,114.2,392.6,132 exponents reported above a floor only 123 of them reach
+94,0.606149,1.833357,0.570105,0.036044,263.2,40,0,11.6,0.041636,0.608625,24.6,18.8,478.8,25 exponents reported above a floor only 12 of them reach
+104,0.695064,2.003838,0.659021,0.036044,301.9,40,0,34.3,0.007026,0.700837,38.5,28.1,875.2,38 exponents reported above a floor only 34 of them reach
+106,0.710413,2.034832,0.674369,0.036044,308.5,40,40,5.2,,,0,0,1000,overflows float64
+108,0.812433,2.253383,0.776389,0.036044,352.8,40,37,2.7,-0.072987,0.701230,0.0,0.0,342.0,overflows on some samples
+110,0.654456,1.924095,0.618412,0.036044,284.2,40,0,22.2,0.607446,0.661039,298.4,280.8,442.4,298 exponents reported above a floor only 22 of them reach
+122,0.649664,1.914897,0.613620,0.036044,282.1,40,0,10.2,0.591137,0.660749,278.4,264.8,469.9,278 exponents reported above a floor only 10 of them reach
+126,0.710902,2.035826,0.674858,0.036044,308.7,40,40,3.5,,,0,0,1000,overflows float64
+128,-inf,0.000000,-inf,nan,-inf,40,0,0.0,,,0.0,0.0,1000.0,0 exponents reported above a floor only 0 of them reach
+130,0.016407,1.016543,-0.019636,0.036044,7.1,40,0,395.9,-0.043510,0.017600,480.6,479.9,485.4,481 exponents reported above a floor only 396 of them reach
+132,0.003054,1.003059,-0.032989,0.036044,1.3,40,0,729.0,-0.056650,0.013634,545.3,498.0,422.0,545 exponents reported above a floor only 729 of them reach
+134,0.508267,1.662408,0.472223,0.036044,220.7,40,0,22.9,0.363077,0.525824,297.6,268.9,452.8,298 exponents reported above a floor only 23 of them reach
+136,-inf,0.000000,-inf,nan,-inf,40,0,0.0,,,0.0,0.0,1000.0,0 exponents reported above a floor only 0 of them reach
+138,0.031177,1.031668,-0.004867,0.036044,13.5,40,0,705.3,-0.027385,0.069297,570.8,555.5,219.8,571 exponents reported above a floor only 705 of them reach
+140,0.003137,1.003142,-0.032907,0.036044,1.4,40,0,813.2,-0.013444,0.012429,625.2,375.2,374.8,625 exponents reported above a floor only 813 of them reach
+142,0.504340,1.655893,0.468297,0.036044,219.0,40,0,23.1,0.157276,0.673880,266.5,39.3,494.0,267 exponents reported above a floor only 23 of them reach
+146,0.692381,1.998468,0.656337,0.036044,300.7,40,0,23.6,0.470878,0.694487,223.1,204.1,457.6,223 exponents reported above a floor only 24 of them reach
+152,0.012051,1.012124,-0.023992,0.036044,5.2,40,0,518.3,-0.037299,0.022395,733.1,563.0,198.9,733 exponents reported above a floor only 518 of them reach
+154,0.479598,1.615425,0.443554,0.036044,208.3,40,0,21.3,0.423276,0.500768,336.8,301.7,444.9,337 exponents reported above a floor only 21 of them reach
+156,0.693147,2.000000,0.657104,0.036044,301.0,40,0,224.1,0.504108,0.694516,287.1,189.9,386.0,287 exponents reported above a floor only 224 of them reach
+160,-inf,0.000000,-inf,nan,-inf,40,0,0.0,,,0.0,0.0,1000.0,0 exponents reported above a floor only 0 of them reach
+162,0.017317,1.017468,-0.018726,0.036044,7.5,40,0,403.3,-0.036147,0.012429,667.2,667.2,317.5,667 exponents reported above a floor only 403 of them reach
+164,0.003138,1.003142,-0.032906,0.036044,1.4,40,0,841.0,-0.055664,0.020051,719.8,584.5,239.3,720 exponents reported above a floor only 841 of them reach
+168,-inf,0.000000,-inf,nan,-inf,40,0,0.0,,,0.0,0.0,1000.0,0 exponents reported above a floor only 0 of them reach
+172,0.481212,1.618034,0.445168,0.036044,209.0,40,0,15.6,-0.063766,0.482275,19.8,4.2,398.4,20 exponents reported above a floor only 16 of them reach
+178,0.693147,2.000000,0.657104,0.036044,301.0,40,0,32.5,-0.000086,0.693147,32.5,0.0,694.7,33 exponents reported above a floor only 33 of them reach
+184,0.030786,1.031265,-0.005257,0.036044,13.4,40,0,257.8,-0.039254,0.076274,274.6,221.6,464.7,275 exponents reported above a floor only 258 of them reach
+200,0.693147,2.000000,0.657104,0.036044,301.0,40,0,62.1,-0.014106,0.693147,62.1,0.0,472.6,62 exponents reported above a floor only 62 of them reach
+232,0.693147,2.000000,0.657104,0.036044,301.0,40,0,30.8,-0.000086,0.693147,30.8,0.0,701.5,31 exponents reported above a floor only 31 of them reach

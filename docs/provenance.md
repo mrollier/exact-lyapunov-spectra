@@ -42,6 +42,18 @@ Figures are written to `output/`; tables to `data/tables/`; graphs to
 | T8 | 2000 sampled outer-totalistic Moore rules (of 131 328 classes): the same columns, B/S notation with counts 0–8 | `data/make_damage_mle.py --dim 2 --neighbourhood moore` | `data/tables/damage_vs_mle_2d_moore.csv`, `data/damage/damage_mle_2d_moore.npz` | ✅ 10 samples per rule; 15 rules at −∞ and 8 partly annihilated; Λ_max up to 2.147 (B0246/S0135); the most damage 0.498 (B246/S01246) |
 | T3 | Gradient DNF for all 88 non-equivalent ECAs; comparison with Vichniac (1990) Table 1; corrected-entries table (5 ECAs, 7 entries) | `verify_vichniac.py` | `data/tables/eca_gradient_table.csv`, `vichniac_table1_computed.csv`, `vichniac_table1_diff.md`, `gradient_corrections_table.tex` | ✅ 88 rows; 7 mismatching entries in 5 rules: 62, 110, 130, 146, 172 |
 
+## The 88-rule catalogue (not in the submitted manuscript)
+
+The same machinery over every ECA up to reflection and conjugation, at the
+same settings as Fig. 6 / T4 (N = 1000, T = 500, burn-in 200, window 300, 40
+samples per rule). Nine of the 88 are affine and come from the closed form; the
+other 79 are sampled. Produced once, on the workstation, and not regenerated
+by `reproduce.py`.
+
+| What | Script | Command | Output | Status |
+|------|--------|---------|--------|--------|
+| Spectra, exact ranks and the direct-method comparison for all 88 rules | `data/make_nonaffine_spectra.py` | `python data/make_nonaffine_spectra.py --all-88 --recompute --workers 8` | `data/nonaffine/spectra_all88.npz` (14.5 MB, git-ignored), `data/nonaffine/all88_spectra.csv` (88 rows), `data/nonaffine/all88_direct_multiplication.csv` (79 rows) | ✅ 3160/3160 samples, 696.6 min wall clock (11 h 37 min) on 2026-09-14/15; seven non-affine rules (8, 32, 40, 128, 136, 160, 168) plus affine rule 0 annihilate the tangent space, every exponent -inf; finite MLEs run from 0 (rules 4, 15, 51, 170, 204) to ln 3 (105, 150); the share of the spectrum at -inf reaches 90.1 % (rule 104); the direct method overflows float64 on all 40 samples for 22, 41, 45, 54, 73, 106, 126 and on some for 108 |
+
 ## Claims (verification suite)
 
 Each claim has a dedicated pytest file (plus lower-level unit tests). Run
@@ -160,6 +172,31 @@ Each claim has a dedicated pytest file (plus lower-level unit tests). Run
   single-threaded BLAS, so the result does not depend on the worker count. The
   cache is committed; `reproduce.py all` only redraws from it, in about three
   seconds, and never triggers the computation.
+- **88-rule catalogue: machine, cost and cross-machine agreement.** Run on
+  2026-09-14 16:55 to 2026-09-15 04:33 on a Xeon W-2295 (18 cores / 36
+  threads, 32 GB, two of four DDR4 channels populated), CPython 3.12.3 with the
+  pinned numpy 1.26.4 / scipy 1.13.1 (OpenBLAS 0.3.27), eight single-threaded
+  workers: 3160 samples in 696.6 min, 13.2 s per sample effective. The worker
+  count was measured with `data/bench_workers.py` (1 worker 13.0 QR steps/s,
+  4: 42.6, 6: 49.8, 8: 49.4, 12: 44.9, 18: 38.7, 36: 33.6), an effective
+  speed-up of 3.8 rather than 18: the memory bandwidth, not the cores, is the
+  limit, as on the laptop. The nine Fig. 6 rules are part of the catalogue
+  with the same seeds, so the two runs can be compared across LAPACK builds.
+  The exact ranks agree bitwise for every sample (integer arithmetic), and the
+  mean maximal exponents agree to 1e-4 or better (rule 6: 0.543882 vs 0.543986;
+  rule 154: 0.479598 vs 0.479556; the other seven to six decimals). Individual
+  finite-time exponents do not: the Boolean trajectory is identical but the
+  frame's rounding path is not, and after 500 steps single exponents of single
+  samples differ by up to 0.18 above -2 and by orders of magnitude in the
+  collapsed tail. The number of exact zeros on the QR diagonal differs too
+  (rule 73: 2.8 % of the pivots on this build against 9.85 % on the laptop's)
+  while the exact rank, and hence the count of -inf exponents, is the same,
+  which is the reason the count is not read off the diagonal. On this build
+  three tests that assumed bitwise agreement with the laptop needed a
+  tolerance: the affine closed form against the cache (libm's complex
+  exponential differs by 1e-14), and the pivot-continuum check for rules 54
+  and 110 (a pivot at 1e-31 where the laptop's LAPACK returned exactly 0, and
+  one N = 80 trajectory with a 2.6-decade gap; the test now pools three).
 - **Determinism.** Graphs, tables and figure numerics are byte-identical across
   runs (no unse­eded randomness in the core).
 - **Convergence notebook: BLAS threads and quoted digits.** The notebook and

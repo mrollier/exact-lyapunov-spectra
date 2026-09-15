@@ -1,5 +1,37 @@
 # Changelog
 
+## Unreleased (2026-09-15)
+
+### The 88-rule catalogue, run
+
+- `data/make_nonaffine_spectra.py --all-88 --recompute --workers 8` on a Xeon
+  W-2295 workstation: 79 sampled rules x 40 samples plus the 9 affine rules
+  from the closed form, 3160 samples in 11 h 37 min, eight single-threaded
+  workers (measured optimum; the effective speed-up over one core is 3.8 on
+  18 cores, the memory bandwidth being the limit). Outputs
+  `data/nonaffine/all88_spectra.csv` and
+  `data/nonaffine/all88_direct_multiplication.csv`, now committed; the 14.5 MB
+  `spectra_all88.npz` stays git-ignored. Machine, timings and the cross-build
+  comparison are in `docs/provenance.md`.
+- Seven non-affine rules (8, 32, 40, 128, 136, 160, 168) annihilate the tangent
+  space at every configuration reached, as rule 0 does: every exponent is
+  -inf, the rank is zero and the MLE is -inf. Five rules have an MLE of
+  exactly 0 (4 and the affine 15, 51, 170, 204). The finite MLEs run up to
+  ln 3 (105, 150); the share of the spectrum at -inf reaches 90.1 % (rule
+  104). The direct method overflows float64 on every sample for rules 22, 41,
+  45, 54, 73, 106 and 126 and on some for 108.
+- The nine Fig. 6 rules recomputed on a different LAPACK build (OpenBLAS
+  0.3.27) agree with the committed cache in every exact rank and in the mean
+  MLE to 1e-4; single finite-time exponents of single samples do not, by up
+  to 0.18. The count of exact zeros on the QR diagonal differs between builds
+  while the exact rank does not.
+- Three tests assumed bitwise agreement with the development laptop and now
+  carry a tolerance: `test_the_affine_rules_are_the_exact_closed_form`
+  (`allclose` at 1e-12, -inf positions still exact) and
+  `test_no_threshold_separates_the_collapsed_pivots` (pivots below 1e-25 are
+  hard zeros; the continuum is pooled over three initial configurations).
+- `WORKSTATION_RUN.md`, the working note for the run, is deleted now that the
+  run is done.
 ## 1.5.0 (2026-09-14)
 
 ### Fig. 7 gains the outer-totalistic Moore rules, sampled (claim C12)
