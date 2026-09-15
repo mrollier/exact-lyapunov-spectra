@@ -2,9 +2,8 @@
 output/*
 !output/.gitkeep
 
-# The 88-rule catalogue: too large for git, and its checkpoint is rewritten
-# every few minutes during the run (see WORKSTATION_RUN.md).
-data/nonaffine/spectra_all88*.npz
+# The 88-rule catalogue's checkpoint is rewritten every few minutes during a
+# run; the finished cache (spectra_all88.npz, 14.5 MB) is committed.
 data/nonaffine/*.partial.npz
 
 # Python

@@ -10,9 +10,10 @@
   workers (measured optimum; the effective speed-up over one core is 3.8 on
   18 cores, the memory bandwidth being the limit). Outputs
   `data/nonaffine/all88_spectra.csv` and
-  `data/nonaffine/all88_direct_multiplication.csv`, now committed; the 14.5 MB
-  `spectra_all88.npz` stays git-ignored. Machine, timings and the cross-build
-  comparison are in `docs/provenance.md`.
+  `data/nonaffine/all88_direct_multiplication.csv` and the 14.5 MB per-sample
+  cache `spectra_all88.npz`, all committed so that the repository is
+  self-contained. Machine, timings and the cross-build comparison are in
+  `docs/provenance.md`.
 - Seven non-affine rules (8, 32, 40, 128, 136, 160, 168) annihilate the tangent
   space at every configuration reached, as rule 0 does: every exponent is
   -inf, the rank is zero and the MLE is -inf. Five rules have an MLE of

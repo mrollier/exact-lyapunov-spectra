@@ -52,7 +52,7 @@ by `reproduce.py`.
 
 | What | Script | Command | Output | Status |
 |------|--------|---------|--------|--------|
-| Spectra, exact ranks and the direct-method comparison for all 88 rules | `data/make_nonaffine_spectra.py` | `python data/make_nonaffine_spectra.py --all-88 --recompute --workers 8` | `data/nonaffine/spectra_all88.npz` (14.5 MB, git-ignored), `data/nonaffine/all88_spectra.csv` (88 rows), `data/nonaffine/all88_direct_multiplication.csv` (79 rows) | ✅ 3160/3160 samples, 696.6 min wall clock (11 h 37 min) on 2026-09-14/15; seven non-affine rules (8, 32, 40, 128, 136, 160, 168) plus affine rule 0 annihilate the tangent space, every exponent -inf; finite MLEs run from 0 (rules 4, 15, 51, 170, 204) to ln 3 (105, 150); the share of the spectrum at -inf reaches 90.1 % (rule 104); the direct method overflows float64 on all 40 samples for 22, 41, 45, 54, 73, 106, 126 and on some for 108 |
+| Spectra, exact ranks and the direct-method comparison for all 88 rules | `data/make_nonaffine_spectra.py` | `python data/make_nonaffine_spectra.py --all-88 --recompute --workers 8` | `data/nonaffine/spectra_all88.npz` (14.5 MB, committed), `data/nonaffine/all88_spectra.csv` (88 rows), `data/nonaffine/all88_direct_multiplication.csv` (79 rows) | ✅ 3160/3160 samples, 696.6 min wall clock (11 h 37 min) on 2026-09-14/15; seven non-affine rules (8, 32, 40, 128, 136, 160, 168) plus affine rule 0 annihilate the tangent space, every exponent -inf; finite MLEs run from 0 (rules 4, 15, 51, 170, 204) to ln 3 (105, 150); the share of the spectrum at -inf reaches 90.1 % (rule 104); the direct method overflows float64 on all 40 samples for 22, 41, 45, 54, 73, 106, 126 and on some for 108 |
 
 ## Claims (verification suite)
 
