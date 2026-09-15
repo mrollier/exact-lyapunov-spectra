@@ -2,8 +2,9 @@
 
 Used to print the ECA Boolean gradients in disjunctive normal form (DNF) for the
 corrected Vichniac table. Given a truth table over ``n`` variables it returns a
-minimal sum-of-products cover; the only property we rely on for correctness is
-that the cover reproduces the truth table exactly.
+minimum sum-of-products cover (fewest products; exact for ``n <= 4``, greedy
+beyond); the only property we rely on for correctness is that the cover
+reproduces the truth table exactly.
 
 An *implicant* is represented as a tuple of length ``n`` with entries in
 ``{0, 1, DASH}``, where ``DASH`` marks an eliminated (don't-care) variable. The
@@ -17,6 +18,10 @@ from typing import List, Sequence, Tuple
 
 DASH = -1
 Implicant = Tuple[int, ...]
+# Up to this many variables the cover of the non-essential minterms is found by
+# exhaustive search over subsets of the prime implicants (at most 2**(2**n)
+# functions, a handful of primes each); beyond it a greedy cover is used.
+EXACT_COVER_MAX_VARS = 4
 
 
 def _minterm_bits(m: int, n: int) -> Implicant:
@@ -63,11 +68,14 @@ def prime_implicants(minterms: Sequence[int], n: int) -> List[Implicant]:
 
 
 def minimise_to_implicants(truth_table: Sequence[int], n: int) -> List[Implicant]:
-    """Return a minimal sum-of-products cover of ``truth_table``.
+    """Return a minimum sum-of-products cover of ``truth_table``.
 
-    Uses essential prime implicants first, then a greedy cover of any remaining
-    minterms. For the small (n <= 3) functions of the gradient table this yields
-    a genuinely minimal cover.
+    Essential prime implicants are taken first. The remaining minterms are then
+    covered by the smallest subset of the other primes, found exhaustively when
+    ``n <= EXACT_COVER_MAX_VARS`` (the gradient table has ``n = 3``, where a
+    greedy choice is one product too long for four of the 256 functions) and
+    greedily otherwise. Ties are broken by the sorted order of the primes, so the
+    output is deterministic.
     """
     if len(truth_table) != 2 ** n:
         raise ValueError(f"Truth table must have length {2 ** n}, got {len(truth_table)}.")
@@ -88,7 +96,19 @@ def minimise_to_implicants(truth_table: Sequence[int], n: int) -> List[Implicant
             chosen.append(ps[0])
     remaining -= {m for m in minterms if any(p in chosen for p in cover[m])}
 
-    # Greedy: repeatedly pick the prime covering the most remaining minterms.
+    if remaining and n <= EXACT_COVER_MAX_VARS:
+        # Exact: the smallest subset of the other primes that covers what is
+        # left, in sorted order so ties are deterministic.
+        others = [p for p in primes if p not in chosen]
+        for size in range(1, len(others) + 1):
+            found = next((sub for sub in combinations(others, size)
+                          if all(any(_covers(p, m, n) for p in sub) for m in remaining)),
+                         None)
+            if found is not None:
+                chosen.extend(found)
+                remaining = set()
+                break
+    # Greedy fallback: repeatedly pick the prime covering the most remaining minterms.
     while remaining:
         best = max(primes, key=lambda p: sum(1 for m in remaining if _covers(p, m, n)))
         chosen.append(best)

@@ -1,6 +1,7 @@
 """Claim C11: Boolean damage against the maximal Lyapunov exponent, for every
 ECA up to symmetry and every outer-totalistic von Neumann rule up to
-conjugation (Fig. 7, tables T6 and T7).
+conjugation (Fig. 5 of the manuscript; ``data/tables/damage_vs_mle_1d.csv``
+and ``damage_vs_mle_2d.csv``).
 
 * The maximal exponent is the growth rate of one renormalised tangent vector
   under the configuration-dependent Boolean Jacobian (Benettin with k = 1):
@@ -26,9 +27,6 @@ them. The determinism of the runner is checked by recomputing one sample per
 dimension and comparing bit for bit, and the qualitative claims are reproduced
 from scratch at a small size, so a stale cache cannot make this file pass.
 """
-import sys
-from pathlib import Path
-
 import numpy as np
 import pytest
 from scipy.stats import spearmanr
@@ -38,9 +36,7 @@ from lyapunov.outer_totalistic import (
 from lyapunov.rules import affine_ecas, nonequivalent_ecas
 from lyapunov.spectra import VON_NEUMANN_2D, eca_mle
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(REPO_ROOT / "data"))
-from make_damage_mle import (  # noqa: E402
+from make_damage_mle import (  # data/ is on sys.path via conftest.py
     CONE_GROWS, DEFAULTS, SEED, cache_path, compute, load, run_sample, summary_rows,
     tangent_rng)
 

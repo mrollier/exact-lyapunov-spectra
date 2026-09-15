@@ -10,6 +10,12 @@ import pytest
 from lyapunov.gf2 import int_matrix_power, gf2_matrix_power, gf2_matmul
 
 
+# ``numpy.linalg.matrix_power`` appears below on purpose, as in
+# test_c7_numerical_artefact.py: once as the reference where it cannot overflow,
+# once to demonstrate the overflow that lyapunov.gf2 exists to avoid. These are
+# the only two such uses outside that file.
+
+
 def test_int_power_matches_numpy_when_no_overflow():
     # Small exponent, values stay well within int64 -> must agree with numpy.
     A = np.array([[0, 1, 1], [1, 0, 1], [1, 1, 0]], dtype=object)

@@ -8,7 +8,8 @@ Lyapunov analysis reduces to the graph's eigen-structure:
 * Lyapunov spectrum  = ``ln|lambda_k(A) + a_o|``     (the absolute graph spectrum);
 * MLE                = ``ln(rho(A) + a_o)``          (log of the spectral radius);
 * long-time single-site amplitude  proportional to the seeded node's eigenvector
-  centrality (the principal eigenvector component);
+  centrality (the principal eigenvector component; supplementary material, not
+  a claim of the manuscript);
 * true defect pattern = ``A^t e_j (mod 2)``          (walk-counting modulo two).
 
 All matrix powers used for defect patterns go through :mod:`lyapunov.gf2` so the
@@ -66,7 +67,7 @@ def eigenvector_centrality(A: NDArray) -> NDArray[np.floating]:
     On an undirected connected graph this is the eigenvector centrality.
     """
     A = _check_adjacency(A).astype(float)
-    w, V = np.linalg.eigh(A)
+    _, V = np.linalg.eigh(A)
     x = V[:, -1]  # eigenvector of the largest eigenvalue
     if np.sum(x) < 0:
         x = -x
@@ -76,10 +77,11 @@ def eigenvector_centrality(A: NDArray) -> NDArray[np.floating]:
 def long_time_amplitude_ratio(
     A: NDArray, T: int, self_inclusive: bool = False
 ) -> NDArray[np.floating]:
-    """Per-node ``||J^T e_i|| / lambda_N^T`` -- the long-time perturbation amplitude.
+    """Per-node ``||J^t e_i|| / lambda_N^t`` at ``t = T``: the long-time amplitude.
 
     Computed from the eigendecomposition (so it never overflows), this converges
     as ``T -> infinity`` to the eigenvector centrality of node ``i``.
+    Supplementary material: the manuscript does not make this claim.
     """
     A = _check_adjacency(A).astype(float)
     a_o = 1.0 if self_inclusive else 0.0

@@ -5,9 +5,11 @@ Usage:
     python notebooks/execute.py                       # every notebook here, in order
     python notebooks/execute.py 04_convergence_figure # one of them, extension optional
 
-Requires the ``notebook`` extra (``pip install -e .[notebook]``: nbformat,
-nbclient, ipykernel). ``reproduce.py all`` calls this script; each notebook's
-final cell asserts its reported numbers (the convergence study against an
+Requires the ``notebook`` extra (``pip install -e '.[notebook]'``: nbformat,
+nbclient, ipykernel). ``reproduce.py all`` calls this script. The notebooks'
+outputs are rewritten in place, so running it changes the two tracked
+notebook files (that is how the committed outputs are kept current); each
+notebook's final cell asserts its reported numbers (the convergence study against an
 independent reimplementation, ``fig3_convergence_study.py``; the figure notebook
 against the reference table) and raises on the first discrepancy, so a non-zero
 exit here means a real mismatch, not a missing dependency (that case is reported
@@ -35,7 +37,7 @@ def main() -> int:
         from nbclient import NotebookClient
     except ImportError as exc:  # pragma: no cover - environment dependent
         print(f"[skip] notebook execution needs the 'notebook' extra ({exc}); "
-              "install with: pip install -e .[notebook]")
+              "install with: pip install -e '.[notebook]'")
         return 0
     wanted = [a if a.endswith(".ipynb") else a + ".ipynb" for a in sys.argv[1:]] or NOTEBOOKS
     for name in wanted:
@@ -50,6 +52,8 @@ def main() -> int:
         try:
             client.execute()
         finally:
+            for cell in nb.cells:      # drop the wall-clock execution timestamps
+                cell.get("metadata", {}).pop("execution", None)
             nbformat.write(nb, path)  # keep outputs even on failure, for inspection
         print(f"Executed {path.name} in {time.time() - t0:.0f} s")
     return 0

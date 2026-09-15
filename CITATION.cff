@@ -1,6 +1,8 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite both the article and the software."
+type: software
 title: "exact-lyapunov-spectra: exact Lyapunov spectra of affine cellular automata and the parity rule on networks"
+abstract: "Reproducibility package: the verified maths core, figure and table scripts, computed caches and verification suite behind the article. Affine Boolean rules have a configuration-independent Boolean Jacobian, so their Lyapunov spectrum is exact: the discrete Fourier transform of the gradient stencil on a periodic lattice, and the absolute graph spectrum for the parity rule on any graph."
 authors:
   - family-names: Rollier
     given-names: Michiel
@@ -11,8 +13,17 @@ authors:
     orcid: "https://orcid.org/0000-0003-4084-9992"
     affiliation: "BionamiX, Ghent University"
 license: MIT
-version: "1.2.0"
+version: "1.6.0"
+date-released: "2026-09-15"
 repository-code: "https://github.com/mrollier/exact-lyapunov-spectra"
+url: "https://github.com/mrollier/exact-lyapunov-spectra"
+keywords:
+  - cellular automata
+  - Lyapunov spectrum
+  - affine rules
+  - Boolean Jacobian
+  - network automata
+  - reproducibility
 preferred-citation:
   type: article
   title: "Exact Lyapunov spectra of affine cellular automata and the parity rule on networks"
@@ -24,4 +35,6 @@ preferred-citation:
       given-names: Jan M.
       orcid: "https://orcid.org/0000-0003-4084-9992"
   journal: "Chaos, Solitons & Fractals"
-  year: 2025
+  year: 2026
+  status: submitted
+  notes: "Revised version submitted 14 September 2026."

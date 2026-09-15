@@ -16,9 +16,10 @@ of :mod:`lyapunov.spectra`:
 For a constant (affine) Jacobian the product collapses to a matrix power, so both
 routines take the single constant matrix ``J`` and a horizon ``T``.
 
-Three further routines support the convergence study of
-``notebooks/03_benettin_convergence.ipynb``, which uses the exact affine
-spectrum to calibrate the two numerical routes:
+Five further routines support the convergence study of
+``notebooks/03_benettin_convergence.ipynb`` and the revised Figure 3 of
+``figures/make_convergence_figure.py``, which use the exact affine spectrum
+to calibrate the two numerical routes:
 
 * :func:`benettin_running_average` -- Benettin with an optional burn-in, an
   optional starting frame and running averages read off at several horizons in
@@ -30,6 +31,9 @@ spectrum to calibrate the two numerical routes:
   float64 once ``sigma_max^(2T)`` exceeds about ``1.8e308``.
 * :func:`precision_floor` -- the exponent below which the unscaled method can
   resolve nothing in double precision.
+* :func:`closed_form_spectrum` -- the exact affine spectrum ``ln(sigma_k)``,
+  sorted descending with ``-inf`` for the zero singular values: the reference
+  every estimator is compared against.
 * :func:`benettin_log_stretch` -- one QR run, storing the per-step log
   stretching factors so that every finite-time estimator (running average,
   burn-in plus window) is an offline slice: :func:`windowed_spectrum`,
@@ -196,9 +200,10 @@ def direct_multiplication_unscaled(J: NDArray, T: int) -> NDArray[np.floating]:
         for _ in range(T):
             Y = J @ Y
         G = Y @ Y.T
+    ev = np.full(N, np.nan)
     if np.all(np.isfinite(G)):
         ev = np.sort(np.linalg.eigvalsh(G))[::-1]
-    if not np.all(np.isfinite(G)) or not np.all(np.isfinite(ev)):
+    if not np.all(np.isfinite(ev)):
         # The largest eigenvalue of Y Y^T is sigma_max^(2T); it exceeds the
         # largest float64 one step before the entries of Y Y^T themselves do.
         raise OverflowError(

@@ -75,7 +75,6 @@ NEIGHBOURHOODS = {nb.name: nb for nb in (VON_NEUMANN, MOORE)}
 # The four orthogonal neighbours, in the order of Jacobian bands 1..4 (kept
 # for callers that predate the Moore family).
 NEIGHBOUR_OFFSETS: Tuple[Tuple[int, int], ...] = VON_NEUMANN.offsets
-N_RULES = VON_NEUMANN.n_rules
 
 
 def _parity_rule(nb: Neighbourhood, inclusive: bool) -> int:
@@ -129,11 +128,10 @@ def bs_notation(rule: int, neighbourhood: Neighbourhood = VON_NEUMANN) -> str:
 def ot_from_bs(label: str, neighbourhood: Neighbourhood = VON_NEUMANN) -> int:
     """Inverse of :func:`bs_notation` (``"B13/S024"`` -> the rule integer)."""
     nb = neighbourhood
-    try:
-        birth, survival = label.split("/")
-        assert birth.startswith("B") and survival.startswith("S")
-    except (ValueError, AssertionError):
-        raise ValueError(f"Expected a label of the form 'B../S..', got {label!r}.") from None
+    parts = label.split("/")
+    if len(parts) != 2 or not parts[0].startswith("B") or not parts[1].startswith("S"):
+        raise ValueError(f"Expected a label of the form 'B../S..', got {label!r}.")
+    birth, survival = parts
     rule = 0
     for c, digits in ((0, birth[1:]), (1, survival[1:])):
         for d in digits:

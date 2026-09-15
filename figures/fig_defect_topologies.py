@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Manuscript Figure 5 -- defect propagation across topologies.
+"""Supplementary figure S1 (not in the manuscript) -- defect propagation across topologies.
 
 Stem: defect_propagation_networks_parity
 
@@ -8,7 +8,11 @@ from a single defect, Delta s^t = A^t e_j (mod 2), on four topologies: a ring, a
 periodic 2-D lattice (Moore), a Watts-Strogatz small-world graph and a
 Barabasi-Albert scale-free graph. Time runs downward; a dark-red cell marks a
 node whose state differs between the two configurations. Nodes (columns) are
-ordered by eigenvector centrality, as in the manuscript.
+ordered by eigenvector centrality.
+
+This figure was part of the original submission and is not in the resubmitted
+manuscript, which makes no claim about eigenvector centrality; it is kept as
+supplementary material for the parity rule of Sec. 4.
 
 The ring gives the Sierpinski triangle (binomial coefficients modulo two); the
 grid a periodic wavefront; the small-world and scale-free graphs lose that
@@ -50,7 +54,7 @@ def build_figure(use_tex: bool = False):
     _style.setup_style(use_tex)
     cmap = _style.defect_cmap()
     fig, axes = plt.subplots(2, 2, figsize=(7.0, 5.6))
-    for ax, (name, label) in zip(axes.ravel(), PANELS):
+    for idx, (ax, (name, label)) in enumerate(zip(axes.ravel(), PANELS)):
         A = load_graph(name)
         N = A.shape[0]
         T = N // 2
@@ -62,7 +66,8 @@ def build_figure(use_tex: bool = False):
         ax.set_title(label)
         ax.set_xticks([])
         ax.set_yticks([])
-        ax.set_ylabel(r"Time $\rightarrow$")
+        if idx % 2 == 0:                     # left column only, as in Figure 1
+            ax.set_ylabel(r"Time $\rightarrow$")
     fig.tight_layout()
     return fig
 
@@ -70,9 +75,10 @@ def build_figure(use_tex: bool = False):
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--output", default=None)
-    p.add_argument("--no-tex", action="store_true")
+    p.add_argument("--tex", action="store_true",
+                   help="render text with LaTeX (needs a TeX installation; default: mathtext)")
     args = p.parse_args(argv)
-    fig = build_figure(use_tex=False)
+    fig = build_figure(use_tex=args.tex)
     path = _style.save(fig, "defect_propagation_networks_parity", args.output)
     print(f"Wrote {path}")
     return 0

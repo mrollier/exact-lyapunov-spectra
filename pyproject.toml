@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lyapunov"
-version = "1.5.0"
+version = "1.6.0"
 description = "Exact Lyapunov spectra of affine cellular automata and the parity rule on networks"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -19,7 +19,7 @@ keywords = [
     "affine rules",
     "Boolean Jacobian",
     "network automata",
-    "eigenvector centrality",
+    "reproducibility",
 ]
 dependencies = [
     "numpy==1.26.4",
@@ -28,9 +28,13 @@ dependencies = [
     "matplotlib==3.9.2",
 ]
 
+[project.urls]
+Repository = "https://github.com/mrollier/exact-lyapunov-spectra"
+Changelog = "https://github.com/mrollier/exact-lyapunov-spectra/blob/main/CHANGELOG.md"
+
 [project.optional-dependencies]
 test = ["pytest==8.3.3"]
-# Executing notebooks/03_benettin_convergence.ipynb (reproduce.py all)
+# Executing the two notebooks in notebooks/ (reproduce.py all): pip install -e '.[notebook]'
 notebook = ["nbformat>=5.10", "nbclient>=0.10", "ipykernel>=6.25"]
 
 [tool.setuptools.packages.find]

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Figure 7 -- Boolean damage against the maximal Lyapunov exponent, every rule.
+"""Manuscript Figure 5 -- Boolean damage against the maximal Lyapunov exponent, every rule.
 
 Stem: damage_vs_mle
 
@@ -16,7 +16,8 @@ annihilated exactly have exponent -inf and sit in a marked column at the left
 of the axis; they take no part in
 Spearman's rho. Dashed lines mark the exact exponents of the affine and
 parity rules (ln(2), ln(3); ln(4), ln(5); ln(8), ln(9)). For the sampled Moore
-family the script also prints a seeded bootstrap interval for rho.
+family the script also prints a percentile bootstrap interval for rho over the
+sampled rules (``BOOTSTRAP`` resamples, ``default_rng(BOOTSTRAP_SEED)``).
 
 The numbers come from the committed caches written by
 ``data/make_damage_mle.py`` (see its docstring for the parameters); the
@@ -52,6 +53,7 @@ TITLES = {"1d": "88 ECAs on a ring",
 # except where the top right is full of points.
 LABEL_HEIGHT = {"1d": 0.96, "2d": 0.96, "moore": 0.56}
 BOOTSTRAP = 2000                          # resamples of the rules for the Moore interval
+BOOTSTRAP_SEED = 0                        # the seed behind the quoted interval [0.80, 0.84]
 GREY = "#9a9a9a"
 # Serif text with Times-like maths, larger than the shared style, for a
 # narrow two-row figure that is read at column width. One size for every
@@ -85,7 +87,7 @@ def rho(x, y) -> float:
     return float(spearmanr(x[keep], y[keep]).statistic)
 
 
-def rho_interval(x, y, seed: int = 0, n: int = BOOTSTRAP) -> tuple:
+def rho_interval(x, y, seed: int = BOOTSTRAP_SEED, n: int = BOOTSTRAP) -> tuple:
     """Seeded percentile bootstrap (2.5 %, 97.5 %) of rho over the sampled rules."""
     keep = np.isfinite(x)
     x, y = x[keep], y[keep]
@@ -95,7 +97,7 @@ def rho_interval(x, y, seed: int = 0, n: int = BOOTSTRAP) -> tuple:
     return tuple(float(q) for q in np.percentile(draws, [2.5, 97.5]))
 
 
-def draw_panel(ax, summary, panel, x_max, x_inf):
+def draw_panel(ax, summary, panel, x_inf):
     x, y = summary["mle"], summary["D_norm"]
     finite = np.isfinite(x)
     xs = np.where(finite, x, x_inf)             # the -inf rules go in their own column
@@ -126,6 +128,9 @@ def draw_panel(ax, summary, panel, x_max, x_inf):
 
 def build_figure(caches: dict, use_tex: bool = False):
     _style.setup_style(use_tex)
+    # Set globally rather than in an rc_context: tick labels are created when
+    # the figure is drawn (at save time, after this function returns), so a
+    # context that has already exited would leave them in the default font.
     plt.rcParams.update(FONT)
     summaries = {panel: per_rule(caches[panel]) for panel in PANELS}
     # One x axis for all rows, so the -inf column and the limits are shared.
@@ -133,7 +138,7 @@ def build_figure(caches: dict, use_tex: bool = False):
     x_inf = -0.16 * x_max
     fig, axes = plt.subplots(len(PANELS), 1, figsize=(4.6, 6.6), sharex=True)
     for ax, panel in zip(axes, PANELS):
-        draw_panel(ax, summaries[panel], panel, x_max, x_inf)
+        draw_panel(ax, summaries[panel], panel, x_inf)
     ax = axes[-1]
     ticks = [0.0, 0.5, 1.0, 1.5, 2.0]
     ax.set_xticks([x_inf] + ticks)
@@ -159,7 +164,8 @@ def main(argv=None) -> int:
     p.add_argument("--cache-2d", default=str(cache_path(2)))
     p.add_argument("--cache-moore", default=str(cache_path(2, "moore")))
     p.add_argument("--output", default=None, help="Output path (default output/<stem>.pdf)")
-    p.add_argument("--no-tex", action="store_true", help="Use mathtext, not LaTeX (default).")
+    p.add_argument("--tex", action="store_true",
+                   help="render text with LaTeX (needs a TeX installation; default: mathtext)")
     args = p.parse_args(argv)
     caches = {}
     commands = {"1d": "--dim 1", "2d": "--dim 2", "moore": "--dim 2 --neighbourhood moore"}
@@ -169,7 +175,7 @@ def main(argv=None) -> int:
                   file=sys.stderr)
             return 1
         caches[panel] = load(Path(path))
-    fig = build_figure(caches, use_tex=False)
+    fig = build_figure(caches, use_tex=args.tex)
     path = _style.save(fig, "damage_vs_mle", args.output)
     print(f"Wrote {path}")
     for panel in PANELS:

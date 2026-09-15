@@ -2,8 +2,9 @@
 
 This package is the verified maths core behind the article *"Exact Lyapunov
 spectra of affine cellular automata and the parity rule on networks"* (Rollier &
-Baetens). The figure scripts and the verification suite both import from here, so
-the mathematics lives in exactly one place.
+Baetens). The figure scripts and the verification suite both import from the
+submodules listed below (the package itself re-exports nothing), so the
+mathematics lives in exactly one place.
 
 Modules
 -------
@@ -26,8 +27,9 @@ benettin
     multiplication at several floating-point precisions (for the benchmark),
     plus the burn-in / starting-frame / checkpoint variant, the unscaled
     direct method of Vispoel et al. (2024) and its float64 precision floor
-    (for the convergence notebook), and the stored per-step log stretches
-    with their windowed / cumulative estimators (for the windowed figure).
+    (for the convergence notebook), the exact closed-form spectrum they are
+    compared against, and the stored per-step log stretches with their
+    windowed / cumulative estimators (for the revised Figure 3).
 nonaffine
     The other 240 rules: the Boolean Jacobian at a given configuration, the
     banded tangent propagation, Benettin along a trajectory, and the exact rank
@@ -44,7 +46,8 @@ damage
     trajectory, in one or two dimensions.
 parity
     The parity rule on an arbitrary graph: Lyapunov spectrum from the adjacency
-    spectrum, defect patterns A^t e_j (mod 2), and eigenvector centrality.
+    spectrum, defect patterns A^t e_j (mod 2), and (as supplementary material,
+    not a claim of the manuscript) eigenvector centrality.
 quine_mccluskey
     A small Quine-McCluskey Boolean minimiser used to print gradient entries in
     disjunctive normal form.
@@ -57,4 +60,4 @@ vichniac
     generate the manuscript's corrected-entries table.
 """
 
-__version__ = "1.5.0"
+__version__ = "1.6.0"

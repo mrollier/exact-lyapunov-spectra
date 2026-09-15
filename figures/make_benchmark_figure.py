@@ -1,14 +1,19 @@
 #!/usr/bin/env python
-"""Manuscript Figure 3 -- the affine spectrum as a benchmark.
+"""Panel A of manuscript Figure 3 -- the affine spectrum as a benchmark.
 
 Stem: benchmark_rule150
+
+Superseded by ``make_convergence_figure.py``, which draws this panel above the
+per-exponent Benettin error (the figure in the resubmitted manuscript) and
+imports ``_spectra`` from here, so the two share one computation. Kept as the
+one-panel version of the original submission.
 
 The Lyapunov spectrum of an affine rule (default rule 150, N = 101), sorted
 descending, computed at a common horizon T = 200 by four methods:
   * the exact closed form (black line),
   * Benettin's QR algorithm (blue open circles),
   * direct multiplication in float16 (red triangles),
-  * direct multiplication in float64 (blue dots).
+  * direct multiplication in float64 (red crosses).
 An inset zooms into the leading exponents (k <= zoom-k), where the roles reverse:
 direct multiplication is exact there even at low precision, while Benettin has
 not yet converged.
@@ -50,7 +55,7 @@ def _plot(ax, spec, k, markers: bool):
             mew=0.8, label="Benettin")
     ax.plot(k, spec["f16"], "^", color=_style.ACCENT_RED, ms=ms - 1, lw=0,
             label="Direct mult. (float16)")
-    ax.plot(k, spec["f64"], ".", color=_style.LINE_BLUE, ms=ms, lw=0,
+    ax.plot(k, spec["f64"], "x", color=_style.ACCENT_RED, ms=ms - 1, mew=0.8, lw=0,
             label="Direct mult. (float64)")
 
 
@@ -85,9 +90,10 @@ def main(argv=None) -> int:
     p.add_argument("--T", type=int, default=200)
     p.add_argument("--zoom-k", type=int, default=35, dest="zoom_k")
     p.add_argument("--output", default=None)
-    p.add_argument("--no-tex", action="store_true")
+    p.add_argument("--tex", action="store_true",
+                   help="render text with LaTeX (needs a TeX installation; default: mathtext)")
     args = p.parse_args(argv)
-    fig = build_figure(args.rule, args.N, args.T, args.zoom_k, use_tex=False)
+    fig = build_figure(args.rule, args.N, args.T, args.zoom_k, use_tex=args.tex)
     stem = f"benchmark_rule{args.rule}"
     path = _style.save(fig, stem, args.output)
     print(f"Wrote {path}")

@@ -62,7 +62,7 @@ rule,phi_dnf,grad_left_dnf,grad_centre_dnf,grad_right_dnf,affine,dnf_consistent
 108,!s_{i-1}s_i + s_{i-1}!s_is_{i+1} + s_i!s_{i+1},s_{i+1},1,s_{i-1},False,True
 110,!s_is_{i+1} + s_i!s_{i+1} + !s_{i-1}s_{i+1},s_is_{i+1},!s_{i+1} + s_{i-1},!s_i + s_{i-1},False,True
 122,!s_{i-1}s_{i+1} + s_{i-1}!s_{i+1} + !s_is_{i+1},!s_{i+1} + s_i,s_{i-1}s_{i+1},!s_{i-1} + s_i,False,True
-126,!s_is_{i+1} + s_i!s_{i+1} + !s_{i-1}s_{i+1} + s_{i-1}!s_{i+1},!s_i!s_{i+1} + s_is_{i+1},!s_{i-1}!s_{i+1} + s_{i-1}s_{i+1},!s_{i-1}!s_i + s_{i-1}s_i,False,True
+126,!s_is_{i+1} + !s_{i-1}s_i + s_{i-1}!s_{i+1},!s_i!s_{i+1} + s_is_{i+1},!s_{i-1}!s_{i+1} + s_{i-1}s_{i+1},!s_{i-1}!s_i + s_{i-1}s_i,False,True
 128,s_{i-1}s_is_{i+1},s_is_{i+1},s_{i-1}s_{i+1},s_{i-1}s_i,False,True
 130,!s_{i-1}!s_is_{i+1} + s_{i-1}s_is_{i+1},s_{i+1},s_{i+1},!s_{i-1}!s_i + s_{i-1}s_i,False,True
 132,!s_{i-1}s_i!s_{i+1} + s_{i-1}s_is_{i+1},s_i,!s_{i-1}!s_{i+1} + s_{i-1}s_{i+1},s_i,False,True

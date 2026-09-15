@@ -1,6 +1,62 @@
 # Changelog
 
-## Unreleased (2026-09-15)
+## 1.6.0 (2026-09-15)
+
+### Alignment with the revised manuscript (resubmitted 14 September 2026)
+
+The repository was audited against the resubmitted manuscript (6 figures, 4
+tables, appendices A to C). Every number the manuscript quotes from the
+repository was re-checked and matches, with one exception on the manuscript
+side: Fig. 6 prints rule 110's MLE as 0.655 where the committed cache gives
+0.654456, drawn as 0.654 (noted in `docs/provenance.md`). The changes below
+are documentation, hygiene and a few behaviour-preserving code fixes.
+
+- Figure and table numbers now follow the revised manuscript everywhere: the
+  damage figure is Fig. 5 (was 7), the non-affine spectra stay Fig. 6, the
+  corrected Vichniac entries are Tab. 2, the affine ECAs Tab. 3 and the
+  structure factors Tab. 4. The defect-propagation-on-networks figure of the
+  original submission is no longer in the manuscript and is kept as
+  supplementary figure S1; the eigenvector-centrality material
+  (`lyapunov.parity`, `test_c5`) is labelled supplementary and the README no
+  longer presents it as a claim of the paper. The 88-rule catalogue, which
+  App. C now cites, is listed in the figure/claim map. (Entries below this
+  one keep the numbering of their time: "Fig. 7" there is today's Fig. 5
+  and "Fig. 5" the supplementary figure S1.)
+- `data/tables/affine_ecas.csv` follows the row order of Tab. 3 (0, 15, 85,
+  51, 60, 102, 90, 150, each with its complement).
+- Three statements of the manuscript that the suite did not cover are now
+  tested: the parity MLE is `ln rho(A + a_o I)` for the self-inclusive rule
+  too, the spectral radius of a connected graph is at least its mean degree
+  (Sec. 4.2), and rule 150 has a zero singular value iff 3 divides N, so
+  N = 3001 and N = 101 give finite spectra (Sec. 3.2).
+- `lyapunov.quine_mccluskey` finds a minimum cover exactly for up to four
+  variables (the greedy cover was one product too long for four of the 256
+  three-variable functions; in the gradient table only the `phi` of rule 126
+  changes, from four products to three; no gradient entry is affected). A
+  test checks minimality exhaustively against brute force.
+- Behaviour-preserving fixes in the core: `ot_from_bs` validates with a
+  `ValueError` instead of an `assert`; `direct_multiplication_unscaled` no
+  longer relies on short-circuit order to avoid an unbound variable; the dead
+  `spectra.parity_2d_lyapunov_spectrum` and `outer_totalistic.N_RULES` are
+  removed; docstrings corrected (`benettin` module index, the GF(p) bound in
+  `nonaffine`, the transcription limitation in `vichniac_table1`).
+- Figure scripts: the unused `--no-tex` flag becomes a working `--tex`;
+  `fig_damage_vs_mle.py` documents the bootstrap seed behind the quoted
+  interval; `make_benchmark_figure.py` draws float64 direct
+  multiplication as red crosses, as the manuscript does, and is marked
+  superseded; `make_graphs.load_graph` says so when it regenerates a cache.
+- Notebooks: the diagnostic cell of `04_convergence_figure.ipynb` no longer
+  prints the kernel's absolute path; the notebook saves its figure under its
+  own stem (`convergence_rule150_notebook`) instead of overwriting the
+  manuscript file; both notebooks re-executed. `execute.py` documents that it
+  rewrites the notebooks in place.
+- Tests: `verification/conftest.py` puts `data/` on the path once (no
+  `sys.path` edits in test modules); the unreachable skips in `test_c6` are
+  assertions; unused imports removed.
+- Metadata: version 1.6.0 in `pyproject.toml`, `CITATION.cff` (was 1.2.0)
+  and the package; `CITATION.cff` gains `type`, `date-released`, `url` and
+  the submission status; LICENSE years 2025-2026; CI runs on Python 3.10 to
+  3.12 and fails if `reproduce.py quick` changes a committed table.
 
 ### The 88-rule catalogue, run
 

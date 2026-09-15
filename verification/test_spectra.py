@@ -102,3 +102,15 @@ def test_eca_jacobian_is_circulant_with_gradient():
 def test_eca_jacobian_rejects_nonaffine():
     with pytest.raises(ValueError):
         eca_jacobian(30, 10)
+
+
+@pytest.mark.parametrize("N, zeros", [(3001, 0), (101, 0), (3000, 2), (102, 2)])
+def test_rule150_zero_singular_values_iff_three_divides_N(N, zeros):
+    # Sec. 3.2: sigma_k = |1 + 2 cos(2 pi k / N)| vanishes at k = N/3 and 2N/3,
+    # so the sizes the manuscript uses (N = 3001 for Fig. 2, N = 101 for Fig. 3)
+    # are chosen coprime to three and every plotted exponent is finite.
+    assert (N % 3 == 0) == (zeros > 0)
+    sv = eca_singular_values(150, N)
+    assert int(np.sum(sv < 1e-9)) == zeros
+    if zeros == 0:
+        assert np.all(np.isfinite(eca_lyapunov_spectrum(150, N, drop_zeros=False)))

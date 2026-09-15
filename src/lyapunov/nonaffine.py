@@ -45,6 +45,7 @@ from numpy.typing import NDArray
 from .jacobian import eca_step
 from .rules import gradient_truth_tables
 
+
 def _check_state(state: NDArray) -> NDArray[np.int_]:
     """Validate a ring configuration and return it as an integer array."""
     state = np.asarray(state, dtype=int)
@@ -236,15 +237,16 @@ def direct_multiplication_trajectory(rule: int, state0: NDArray, T: int) -> NDAr
     return out
 
 
-# Primes for the exact rank. The window product is accumulated with
-# float64 arithmetic and reduced after every step; each output entry is a sum of
-# three products of residues, so ``3 * p**2`` must stay below 2**53 for the
-# accumulation to be exact. Both primes satisfy that with room to spare.
+# Primes for the exact rank. The window product is accumulated with float64
+# arithmetic and reduced after every step; each output entry is a sum of three
+# products of a 0/1 band entry and a residue below ``p``, so it is at most
+# ``3 * p`` and the accumulation is exact (even the looser bound ``3 * p**2``
+# for a product of two residues stays below 2**53 for both primes).
 RANK_MODULUS = 46337
 RANK_MODULUS_ALT = 40009
 
 
-def integer_matrix_rank(A: NDArray, p: int = None) -> int:
+def integer_matrix_rank(A: NDArray, p: Optional[int] = None) -> int:
     """Exact rank of an integer matrix, by Gaussian elimination over GF(p).
 
     The rank over GF(p) can only fall short of the rank over the rationals, and

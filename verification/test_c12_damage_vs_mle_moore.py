@@ -1,5 +1,5 @@
 """Claim C12 -- Boolean damage against the maximal exponent for the sampled
-outer-totalistic Moore rules (bottom panel of Fig. 7).
+outer-totalistic Moore rules (bottom panel of Fig. 5 of the manuscript).
 
 The Moore family ("Life-like" rules) has 2**18 = 262 144 rules in 131 328
 classes under conjugation, too many to enumerate at the parameters of the
@@ -15,9 +15,6 @@ exponent, both computed on the fly because the sample is purely random; and
 they recompute one cached sample bit for bit and run the whole pipeline from
 scratch at a small size, so a stale cache cannot make this file pass.
 """
-import sys
-from pathlib import Path
-
 import numpy as np
 import pytest
 from scipy.stats import spearmanr
@@ -26,12 +23,10 @@ from lyapunov.outer_totalistic import (
     MOORE, PARITY_MOORE_EXCLUSIVE, PARITY_MOORE_INCLUSIVE, conjugate_rule, ot_from_bs)
 from lyapunov.spectra import MOORE_2D
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(REPO_ROOT / "data"))
-from make_damage_mle import (  # noqa: E402
-    DEFAULTS, SEED, cache_path, compute, load, run_sample, sample_classes, summary_rows,
-    tangent_rng)
-from test_c11_damage_vs_mle import torus_parity_log_stretch  # noqa: E402
+from make_damage_mle import (  # data/ and verification/ are on sys.path via conftest.py
+    CONE_GROWS, DEFAULTS, SEED, cache_path, compute, load, run_sample, sample_classes,
+    summary_rows, tangent_rng)
+from test_c11_damage_vs_mle import torus_parity_log_stretch
 
 N_CLASSES = 131328
 LIFE = ot_from_bs("B3/S23", MOORE)
@@ -85,7 +80,7 @@ def spearman(data, key, grows_only=False):
     y = data[key].mean(axis=1)
     keep = np.isfinite(x)
     if grows_only:
-        keep &= data["v_front"].mean(axis=1) > 0.1
+        keep &= data["v_front"].mean(axis=1) > CONE_GROWS
     return float(spearmanr(x[keep], y[keep]).statistic)
 
 

@@ -17,5 +17,11 @@ input/
 .venv/
 venv/
 
+# Editors and Jupyter
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
 # OS
 .DS_Store
+Thumbs.db

@@ -19,8 +19,10 @@ from lyapunov.benettin import benettin_spectrum
 def test_exponent_sum_equals_log_det_eca(rule, N, T):
     J = eca_jacobian(rule, N)
     det = np.linalg.det(J.astype(float))
-    if abs(det) < 1e-9:
-        pytest.skip("singular Jacobian: ln|det J| = -inf")
+    # The sizes are chosen so that no circulant is singular (3 does not divide
+    # 25 or 20; 41 and 31 are odd and not multiples of 4); a silent skip would
+    # hide a change to that choice.
+    assert abs(det) > 1e-9, f"rule {rule}, N = {N}: singular Jacobian, the parametrisation is wrong"
     spec = benettin_spectrum(J, T)
     assert np.sum(spec) == pytest.approx(np.log(abs(det)), abs=1e-8)
 
@@ -30,7 +32,6 @@ def test_exponent_sum_equals_log_det_parity_graph(T):
     A = nx.to_numpy_array(nx.watts_strogatz_graph(40, 6, 0.2, seed=11), dtype=int)
     J = parity_jacobian(A, self_inclusive=True)  # +I keeps det away from zero
     det = np.linalg.det(J.astype(float))
-    if abs(det) < 1e-9:
-        pytest.skip("singular Jacobian")
+    assert abs(det) > 1e-9, "the seeded graph plus the identity must be non-singular"
     spec = benettin_spectrum(J, T)
     assert np.sum(spec) == pytest.approx(np.log(abs(det)), abs=1e-8)

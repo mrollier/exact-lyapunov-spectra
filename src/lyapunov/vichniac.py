@@ -44,7 +44,7 @@ from .quine_mccluskey import (
     minimise_to_implicants,
     implicants_to_truth_table,
 )
-from .vichniac_table1 import (
+from .vichniac_table1 import (  # noqa: F401 -- PROVENANCE is re-exported for the tests
     PUBLISHED,
     MISPRINTS,
     PROVENANCE,

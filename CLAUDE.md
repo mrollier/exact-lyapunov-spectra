@@ -2,15 +2,18 @@
 
 This repository is the reproducibility package for the article *"Exact Lyapunov
 spectra of affine cellular automata and the parity rule on networks"* (Rollier &
-Baetens, submitted to *Chaos, Solitons & Fractals*). Every figure and every
-quantitative claim in the paper is reproducible here with one command.
+Baetens, *Chaos, Solitons & Fractals*, revised version resubmitted 14 September
+2026: 6 figures, 4 tables, appendices A-C). Every figure and every quantitative
+claim in the paper is reproducible here with one command. Figure and table
+numbers in the repository are those of the revised manuscript.
 
 ## Layout
 - `src/lyapunov/` — the verified maths core. Figures and tests import from here;
   the maths is never duplicated across scripts.
 - `figures/` — one standalone script per manuscript figure, writing to `output/`.
-- `verification/` — pytest checks, one per paper claim (C1–C7) plus core unit
-  tests. `pytest` must exit zero.
+- `verification/` — pytest checks of the paper's claims (C1–C12; C8 is out of
+  scope, C9 lives in the two Benettin test files) plus core unit tests.
+  `pytest` must exit zero; `conftest.py` puts `data/` on the path.
 - `data/` — deterministic (seeded) regeneration of graphs and the CSV tables.
 - `docs/provenance.md` — figure/claim → script → command → expected → status.
 - `reproduce.py all` regenerates everything; `reproduce.py quick` is the CI subset.
@@ -39,9 +42,13 @@ Never reintroduce `np.linalg.matrix_power` on a matrix whose true power you need
   (e.g. MLE of rule 150 is exactly ln 3), written before the implementation.
 
 ## Scope note
-This package covers the submitted CSF paper (5 figures, 3 tables, claims
-C1–C7) plus the post-submission additions Fig. 6 (non-affine spectra, C10) and
-Fig. 7 (Boolean damage against the maximal exponent for all 88 ECAs, all 528
-outer-totalistic von Neumann rules and 2000 sampled outer-totalistic Moore
-rules, C11–C12). The separate network-automata-robustness project (LLNA training, FSSP,
-impact analysis) is deliberately not included.
+This package covers the revised CSF paper: Figs. 1-4 and Tabs. 2-4 of the
+original submission (claims C1-C7, C9), Fig. 5 (Boolean damage against the
+maximal exponent for all 88 ECAs, all 528 outer-totalistic von Neumann rules
+and 2000 sampled outer-totalistic Moore rules, App. B, C11-C12), Fig. 6
+(corrected non-affine spectra, App. C, C10) and the 88-rule spectra catalogue
+App. C cites. The defect-propagation-on-networks figure of the original
+submission is kept as supplementary figure S1 (`fig_defect_topologies.py`,
+eigenvector centrality in `parity.py`); the revised manuscript makes no claim
+about it. The separate network-automata-robustness project (LLNA training,
+FSSP, impact analysis) is deliberately not included.

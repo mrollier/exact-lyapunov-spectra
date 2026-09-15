@@ -26,7 +26,9 @@ which the vector died, and the per-rule table counts such samples in
 ``n_inf``. A rule's ``mle_mean`` is the mean over its finite samples.
 
 The Moore family is too large to enumerate at these parameters (about 580
-CPU-hours), so its catalogue is a sample: ``default_rng([seed, 2, 8])`` draws
+CPU-hours), so its catalogue is a sample: ``default_rng([seed, 2, 8])`` with the
+repository's seed 20240601 (``SEED``; every configuration and tangent vector is
+keyed on it, ``[seed, ..., rule, sample]`` and ``[..., 1]``) draws
 ``--sample-rules`` classes without replacement from the 131 328 representatives
 (``sample_classes``); the sample is stored in the cache and the table. Its
 seeds carry the neighbour count, ``[seed, 2, 8, rule, sample]``, so no Moore
@@ -47,7 +49,6 @@ from __future__ import annotations
 import argparse
 import csv
 import os
-import sys
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path

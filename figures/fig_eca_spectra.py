@@ -78,9 +78,10 @@ def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--N", type=int, default=N_DEFAULT)
     p.add_argument("--output", default=None)
-    p.add_argument("--no-tex", action="store_true")
+    p.add_argument("--tex", action="store_true",
+                   help="render text with LaTeX (needs a TeX installation; default: mathtext)")
     args = p.parse_args(argv)
-    fig = build_figure(args.N, use_tex=False)
+    fig = build_figure(args.N, use_tex=args.tex)
     path = _style.save(fig, "singular_values_and_lyapunov_spectra_of_constant_J_ECAs_NO_CLASSES", args.output)
     print(f"Wrote {path}")
     return 0

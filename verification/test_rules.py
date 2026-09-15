@@ -8,7 +8,6 @@ Conventions used throughout:
   (d/ds_{i-1}, d/ds_i, d/ds_{i+1}); each derivative is itself a function of the
   neighbourhood, represented as an 8-entry truth table over (l, c, r).
 """
-import numpy as np
 import pytest
 
 from lyapunov.rules import (

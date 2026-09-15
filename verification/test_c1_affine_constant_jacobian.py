@@ -1,12 +1,11 @@
 """Claim C1: the 16 affine ECAs are exactly the rules with a constant Boolean
-Jacobian, with the gradients tabulated in the manuscript (Table 1, Table 2).
+Jacobian, with the gradients tabulated in the manuscript (Tab. 3).
 
 The check recomputes the constant-Jacobian property from first principles (a rule
 has a constant Jacobian iff every Boolean derivative is independent of the
 neighbourhood), rather than trusting any hard-coded list.
 """
 import numpy as np
-import pytest
 
 from lyapunov.rules import (
     gradient_truth_tables,
@@ -16,8 +15,9 @@ from lyapunov.rules import (
 )
 from lyapunov.jacobian import eca_jacobian, eca_step
 
-# Table 1 of the manuscript: rule -> gradient (a_-, a_o, a_+), and the complement.
-TABLE1 = {
+# Tab. 3 of the manuscript: rule -> gradient (a_-, a_o, a_+); the complement
+# 255 - rule shares it. Same rows and order as data/make_tables.py.
+TAB3 = {
     0: (0, 0, 0), 15: (1, 0, 0), 85: (0, 0, 1), 51: (0, 1, 0),
     60: (1, 1, 0), 102: (0, 1, 1), 90: (1, 0, 1), 150: (1, 1, 1),
 }
@@ -37,8 +37,8 @@ def test_constant_jacobian_rules_are_exactly_the_sixteen_affine():
     assert from_principles == {r for r in range(256) if is_affine(r)}
 
 
-def test_gradients_match_table1_and_complements_share_them():
-    for rule, grad in TABLE1.items():
+def test_gradients_match_tab3_and_complements_share_them():
+    for rule, grad in TAB3.items():
         assert affine_gradient(rule) == grad
         assert affine_gradient(255 - rule) == grad  # a_0 does not enter J
 

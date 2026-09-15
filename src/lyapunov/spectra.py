@@ -97,17 +97,6 @@ def parity_2d_singular_values(
     return np.abs(total)
 
 
-def parity_2d_lyapunov_spectrum(
-    offsets: Sequence[Tuple[int, int]], N: int, drop_zeros: bool = True
-) -> NDArray[np.floating]:
-    """Flattened Lyapunov spectrum ``ln(sigma_{k,l})`` of the 2-D parity rule."""
-    sv = parity_2d_singular_values(offsets, N).ravel()
-    if drop_zeros:
-        sv = sv[sv > 0]
-    with np.errstate(divide="ignore"):
-        return np.log(sv)
-
-
 def parity_2d_mle(offsets: Sequence[Tuple[int, int]]) -> float:
     """MLE of the 2-D parity rule: ``ln(number of neighbours)`` (Eq. 13)."""
     return float(np.log(len(offsets)))

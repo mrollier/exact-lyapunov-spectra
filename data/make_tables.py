@@ -1,12 +1,13 @@
 #!/usr/bin/env python
-"""Generate the manuscript tables as CSV files.
+"""Generate two of the manuscript tables as CSV files.
 
-* Table 1 (T1): the 16 affine ECAs with their gradients and gradient weights.
-* Table 2 (T2): the structure factor K(k, l) and self-inclusive parity MLE for
-  the three 2-D neighbourhoods.
+* Tab. 3: the 16 affine ECAs with their gradients and gradient weights, in the
+  manuscript's row order (``TAB3_ORDER``).
+* Tab. 4: the structure factor K(k, l) and self-inclusive parity MLE for the
+  three 2-D neighbourhoods.
 
-(The 88-rule gradient table, its comparison with Vichniac (1990) and the
-manuscript's corrected-entries table are produced separately by
+(Tab. 1 lists abbreviations. Tab. 2, the corrected entries of Vichniac (1990),
+Table 1, and the full 88-rule gradient table are produced by
 ``verify_vichniac.py``.)
 
 All values are computed from the verified core, not transcribed.
@@ -15,8 +16,6 @@ from __future__ import annotations
 
 import csv
 from pathlib import Path
-
-import numpy as np
 
 from lyapunov.rules import affine_ecas, affine_gradient, gradient_weight
 from lyapunov.spectra import (
@@ -27,17 +26,20 @@ from lyapunov.spectra import (
 )
 
 TABLE_DIR = Path(__file__).resolve().parent / "tables"
+# The rows of Tab. 3 in the manuscript, by gradient weight; each rule stands for
+# the pair {rule, 255 - rule}, which share the gradient.
+TAB3_ORDER = (0, 15, 85, 51, 60, 102, 90, 150)
 
 
 def affine_eca_table() -> list[dict]:
-    """T1: one row per affine ECA (grouped naturally by gradient weight)."""
+    """Tab. 3: one row per affine pair, in the manuscript's order."""
+    if {r for pair in TAB3_ORDER for r in (pair, 255 - pair)} != set(affine_ecas()):
+        raise RuntimeError("TAB3_ORDER does not enumerate the 16 affine ECAs")
+    if list(TAB3_ORDER) != sorted(TAB3_ORDER, key=gradient_weight):
+        raise RuntimeError("TAB3_ORDER is not ordered by gradient weight")
     rows = []
-    seen = set()
-    for rule in sorted(affine_ecas(), key=lambda r: (gradient_weight(r), r)):
-        if rule in seen:
-            continue
+    for rule in TAB3_ORDER:
         complement = 255 - rule
-        seen.update({rule, complement})
         g = affine_gradient(rule)
         rows.append({
             "rule": rule,
@@ -51,7 +53,7 @@ def affine_eca_table() -> list[dict]:
 
 
 def structure_factor_table() -> list[dict]:
-    """T2: structure factor description and parity MLE per 2-D neighbourhood."""
+    """Tab. 4: structure factor and parity MLE per 2-D neighbourhood."""
     return [
         {
             "neighbourhood": "von Neumann",

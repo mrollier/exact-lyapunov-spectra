@@ -90,7 +90,8 @@ def precision_floor(lam_max, T, eps=2.2e-16):
     return np.log(lam_max) + np.log(eps) / (2*T)
 
 # ---------------------------------------------------------------- reference numbers
-if __name__ == "__main__":
+def print_summary():
+    """Print the headline numbers (the original script's main block)."""
     N = 101; J = jacobian(table(150), np.zeros(N, dtype=np.int8)); ex = exact_rule150(N)
     sv = np.exp(ex)
     print(f"exact: top {ex[0]:.5f} (ln3 = {np.log(3):.5f}), bottom {ex[-1]:.5f}, "
@@ -119,8 +120,12 @@ if __name__ == "__main__":
     print(f"\nfrom the eigenbasis: max |Lambda - exact| at T=1: {np.abs(res[1]-ex).max():.1e}, at T=5: {np.abs(res[5]-ex).max():.1e}")
 
 # ---------------------------------------------------------------- reference data file
-def reference_numbers(path="fig3_reference.json"):
-    """Recompute every number the notebook asserts against and write them to JSON.
+REFERENCE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir,
+                              "output", "fig3_reference.json")
+
+def reference_numbers(path=REFERENCE_PATH):
+    """Recompute every number the notebook asserts against and write them to JSON
+    (``output/fig3_reference.json`` by default, wherever the script is run from).
     Runs in well under a minute; this is the single source of truth."""
     import json
     N = 101; J = jacobian(table(150), np.zeros(N, dtype=np.int8)); ex = exact_rule150(N)
@@ -154,10 +159,13 @@ def reference_numbers(path="fig3_reference.json"):
         "predicted_floor_T500": {"rule150": float(precision_floor(3, 500)), "rules60_90": float(precision_floor(2, 500))},
         "eigenbasis_start_max_err": {"T1": float(np.abs(eig[1]-ex).max()), "T5": float(np.abs(eig[5]-ex).max())},
     }
-    json.dump(out, open(path, "w"), indent=1)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w") as fh:
+        json.dump(out, fh, indent=1)
     return out
 
 if __name__ == "__main__":
+    print_summary()
     import time; t0 = time.time()
     ref = reference_numbers()
-    print(f"\nwrote fig3_reference.json in {time.time()-t0:.0f}s")
+    print(f"\nwrote {os.path.normpath(REFERENCE_PATH)} in {time.time()-t0:.0f}s")

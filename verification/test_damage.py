@@ -173,8 +173,6 @@ def test_2d_moore_damage_stays_inside_the_square_and_uses_the_chebyshev_radius()
         assert np.all(r <= np.arange(T + 1))
     # A rule that copies the corner neighbour moves the damage diagonally: L1
     # radius 2t, Chebyshev radius t.
-    corner = np.zeros((L, L), dtype=int)
-    corner[L // 2, L // 2] = 1
     diag = lambda s: np.roll(np.roll(s, 1, 0), 1, 1)
     _, r_cheb = damage_series(diag, state, (L // 2, L // 2), T, moore=True)
     _, r_l1 = damage_series(diag, state, (L // 2, L // 2), T)

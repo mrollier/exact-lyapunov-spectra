@@ -67,9 +67,10 @@ def main(argv=None) -> int:
     p.add_argument("--T", type=int, default=T_DEFAULT)
     p.add_argument("--seed", type=int, default=SEED_DEFAULT)
     p.add_argument("--output", default=None, help="Output path (default output/<stem>.pdf)")
-    p.add_argument("--no-tex", action="store_true", help="Use mathtext, not LaTeX (default).")
+    p.add_argument("--tex", action="store_true",
+                   help="render text with LaTeX (needs a TeX installation; default: mathtext)")
     args = p.parse_args(argv)
-    fig = build_figure(args.N, args.T, args.seed, use_tex=False)
+    fig = build_figure(args.N, args.T, args.seed, use_tex=args.tex)
     path = _style.save(fig, "persistent_defect_eca_diff", args.output)
     print(f"Wrote {path}")
     return 0

@@ -29,7 +29,7 @@ from lyapunov.spectra import (
 )
 import _style
 
-N_DEFAULT = 201
+N_DEFAULT = 201        # cells per side; large enough for smooth fields, prime to 3, 4 and 5
 
 ROWS = [
     ("von Neumann", VON_NEUMANN_2D, 5),
@@ -68,7 +68,8 @@ def build_figure(N: int, use_tex: bool = False):
         ax_hist.set_ylabel("Relative frequency")
         ax_hist.yaxis.set_label_position("right")
 
-        assert abs(parity_2d_mle(offsets) - np.log(mle_n)) < 1e-9  # sanity
+        if abs(parity_2d_mle(offsets) - np.log(mle_n)) > 1e-9:  # sanity, not an assert
+            raise RuntimeError(f"{name}: MLE {parity_2d_mle(offsets)} is not ln({mle_n})")
     fig.tight_layout()
     return fig
 
@@ -77,9 +78,10 @@ def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--N", type=int, default=N_DEFAULT)
     p.add_argument("--output", default=None)
-    p.add_argument("--no-tex", action="store_true")
+    p.add_argument("--tex", action="store_true",
+                   help="render text with LaTeX (needs a TeX installation; default: mathtext)")
     args = p.parse_args(argv)
-    fig = build_figure(args.N, use_tex=False)
+    fig = build_figure(args.N, use_tex=args.tex)
     path = _style.save(fig, "singular_values_and_log_spectra_2d_parity", args.output)
     print(f"Wrote {path}")
     return 0

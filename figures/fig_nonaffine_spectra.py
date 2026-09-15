@@ -38,7 +38,7 @@ its result; this script only draws. Every layout number is a key of ``STYLE``.
 
 Usage:
     python figures/fig_nonaffine_spectra.py
-    python figures/fig_nonaffine_spectra.py --bins 60 --output /tmp/spectra.pdf
+    python figures/fig_nonaffine_spectra.py --bins 60 --output output/spectra_60bins.pdf
 """
 from __future__ import annotations
 
@@ -268,7 +268,8 @@ def main(argv=None) -> int:
     p.add_argument("--recompute", action="store_true",
                    help="redo the multi-hour computation before drawing")
     p.add_argument("--output", default=None)
-    p.add_argument("--no-tex", action="store_true")
+    p.add_argument("--tex", action="store_true",
+                   help="render text with LaTeX (needs a TeX installation; default: mathtext)")
     args = p.parse_args(argv)
 
     data = load_or_compute(Path(args.cache), args.recompute)
@@ -286,7 +287,7 @@ def main(argv=None) -> int:
               f"{entry['minus_inf_share']:5.2f} % at -inf, {values.size:6d} exponents, "
               f"range {values.min():7.3f} to {values.max():6.3f}, "
               f"{outside:5d} outside the axes ({share:.2f} %)")
-    fig, _ = build_figure(data, style={"bins": args.bins}, use_tex=False)
+    fig, _ = build_figure(data, style={"bins": args.bins}, use_tex=args.tex)
     path = _style.save(fig, "lyapunov_spectra_nonaffine_ecas", args.output)
     print(f"Wrote {path}")
     return 0

@@ -9,6 +9,14 @@ Vichniac printed*. It is a transcription of Table 1 of
 transcribed from the Physica D scan and verified against the scan by aligned
 rendering and by pixel-level overbar counting on 12 September 2026.
 
+Limitation: the scan is the publisher's copyrighted PDF and is not distributed
+with this repository, so the transcription cannot be re-checked from the
+repository alone; a reader who wants to verify it needs a copy of the article
+(doi:10.1016/0167-2789(90)90174-N). The misprint result does not rest on the
+transcription of the misprinted rows themselves: the corrected entries are
+computed from the definition of the Boolean derivative and cross-checked by
+additivity and symmetry from the correctly printed rows.
+
 The transcription DELIBERATELY contains the seven misprints found in the
 published table (five rules: 62, 110, 130, 146 and 172). Do not "fix" these
 entries: their purpose is to record what was printed, so that
