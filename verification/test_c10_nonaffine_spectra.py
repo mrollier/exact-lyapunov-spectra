@@ -82,7 +82,7 @@ AFFINE_REFERENCE = {
 
 def _load():
     if not CACHE.exists():
-        pytest.skip(f"{CACHE} is not present; run data/make_nonaffine_spectra.py")
+        pytest.skip(f"{CACHE} is not present; run scripts/make_nonaffine_spectra.py")
     with np.load(CACHE) as handle:
         return {key: handle[key] for key in handle.files}
 

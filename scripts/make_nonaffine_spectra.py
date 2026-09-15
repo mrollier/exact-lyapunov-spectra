@@ -41,8 +41,8 @@ stops with instructions rather than recomputing):
     data/tables/nonaffine_direct_multiplication.csv   what Vispoel's method does
 
 Usage:
-    python data/make_nonaffine_spectra.py --recompute            # the full run
-    python data/make_nonaffine_spectra.py --recompute --N 200 --samples 4
+    python scripts/make_nonaffine_spectra.py --recompute            # the full run
+    python scripts/make_nonaffine_spectra.py --recompute --N 200 --samples 4
 """
 from __future__ import annotations
 
@@ -89,7 +89,8 @@ AFFINE_RULES = (60, 90, 150)
 ALL_88_AFFINE = tuple(sorted(set(nonequivalent_ecas()) & set(affine_ecas())))
 ALL_88_RULES = tuple(r for r in nonequivalent_ecas() if r not in ALL_88_AFFINE)
 
-DATA_DIR = Path(__file__).resolve().parent
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DATA_DIR = REPO_ROOT / "data"
 CACHE = DATA_DIR / "nonaffine" / "spectra.npz"
 CACHE_88 = DATA_DIR / "nonaffine" / "spectra_all88.npz"
 TABLE_DIR = DATA_DIR / "tables"
@@ -364,7 +365,7 @@ def main(argv=None) -> int:
     p.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 2),
                    help="single-threaded workers; more is not always faster, "
                         "because concurrent QR factorisations saturate the "
-                        "memory bandwidth (see data/bench_workers.py)")
+                        "memory bandwidth (see scripts/bench_workers.py)")
     p.add_argument("--cache", default=None)
     p.add_argument("--all-88", dest="all_88", action="store_true",
                    help="every ECA up to reflection and conjugation: 79 by "

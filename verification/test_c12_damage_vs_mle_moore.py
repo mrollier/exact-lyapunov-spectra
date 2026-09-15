@@ -23,7 +23,7 @@ from lyapunov.outer_totalistic import (
     MOORE, PARITY_MOORE_EXCLUSIVE, PARITY_MOORE_INCLUSIVE, conjugate_rule, ot_from_bs)
 from lyapunov.spectra import MOORE_2D
 
-from make_damage_mle import (  # data/ and verification/ are on sys.path via conftest.py
+from make_damage_mle import (  # scripts/ and verification/ are on sys.path via conftest.py
     CONE_GROWS, DEFAULTS, SEED, cache_path, compute, load, run_sample, sample_classes,
     summary_rows, tangent_rng)
 from test_c11_damage_vs_mle import torus_parity_log_stretch

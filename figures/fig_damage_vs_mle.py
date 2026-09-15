@@ -20,7 +20,7 @@ family the script also prints a percentile bootstrap interval for rho over the
 sampled rules (``BOOTSTRAP`` resamples, ``default_rng(BOOTSTRAP_SEED)``).
 
 The numbers come from the committed caches written by
-``data/make_damage_mle.py`` (see its docstring for the parameters); the
+``scripts/make_damage_mle.py`` (see its docstring for the parameters); the
 script only draws. The caches also hold the front speed and the cone fill,
 which the tables report but this figure does not show.
 """
@@ -37,7 +37,7 @@ from scipy.stats import spearmanr
 import _style
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(REPO_ROOT / "data"))
+sys.path.insert(0, str(REPO_ROOT / "scripts"))
 from make_damage_mle import cache_path, load  # noqa: E402
 
 # A few ECAs named in the text; the 2-D rules are not annotated.
@@ -171,7 +171,7 @@ def main(argv=None) -> int:
     commands = {"1d": "--dim 1", "2d": "--dim 2", "moore": "--dim 2 --neighbourhood moore"}
     for panel, path in (("1d", args.cache_1d), ("2d", args.cache_2d), ("moore", args.cache_moore)):
         if not Path(path).exists():
-            print(f"missing {path}: run  python data/make_damage_mle.py {commands[panel]}",
+            print(f"missing {path}: run  python scripts/make_damage_mle.py {commands[panel]}",
                   file=sys.stderr)
             return 1
         caches[panel] = load(Path(path))

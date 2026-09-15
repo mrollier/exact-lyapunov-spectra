@@ -10,7 +10,7 @@ code, so it has to be measured on the machine that will do the run.
 The benchmark times a short Benettin run in each of several worker counts and
 reports the aggregate throughput in QR steps per second. Take the worker count
 at which throughput stops improving; that is the ``--workers`` to pass to
-``data/make_nonaffine_spectra.py``. The last column extrapolates the full
+``scripts/make_nonaffine_spectra.py``. The last column extrapolates the full
 88-rule run from the measurement.
 
 On the twelve-core laptop the package was developed on, throughput was 7.0
@@ -18,8 +18,8 @@ steps/s on one worker, 12.4 on four, 16.6 on eight and 16.1 on twelve: eight
 workers, and an effective speed-up of 2.4 rather than 12.
 
 Usage:
-    python data/bench_workers.py
-    python data/bench_workers.py --workers 1 8 16 32 64 --steps 40
+    python scripts/bench_workers.py
+    python scripts/bench_workers.py --workers 1 8 16 32 64 --steps 40
 """
 from __future__ import annotations
 

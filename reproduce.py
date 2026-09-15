@@ -32,13 +32,13 @@ ROOT = Path(__file__).resolve().parent
 
 # Each step: (label, argv). Run with the current interpreter from ROOT.
 TABLES_AND_CHECKS = [
-    ("tables (Tab. 3, Tab. 4)", [sys.executable, "data/make_tables.py"]),
-    ("gradient table + Vichniac comparison (C4, Tab. 2)", [sys.executable, "verify_vichniac.py"]),
+    ("tables (Tab. 3, Tab. 4)", [sys.executable, "scripts/make_tables.py"]),
+    ("gradient table + Vichniac comparison (C4, Tab. 2)", [sys.executable, "scripts/verify_vichniac.py"]),
     ("verification suite (pytest, C1-C7 and C9-C12)", [sys.executable, "-m", "pytest", "-q"]),
 ]
 
 FIGURES = [
-    ("graphs for the supplementary figure S1 (seeded)", [sys.executable, "data/make_graphs.py"]),
+    ("graphs for the supplementary figure S1 (seeded)", [sys.executable, "scripts/make_graphs.py"]),
     ("Fig 1 defect cones", [sys.executable, "figures/fig_defect_cones.py"]),
     ("Fig 2 affine ECA spectra", [sys.executable, "figures/fig_eca_spectra.py"]),
     ("Fig 3, panel A alone (original submission)", [sys.executable, "figures/make_benchmark_figure.py"]),
@@ -47,13 +47,13 @@ FIGURES = [
     # Draws from data/damage/damage_mle_{1d,2d,2d_moore}.npz, all committed.
     # Regenerating them takes ~1 min (1-D), ~10 min (vN) and ~37 min (2000
     # sampled Moore classes) on 10 cores:
-    #     python data/make_damage_mle.py --dim 1 --recompute
-    #     python data/make_damage_mle.py --dim 2 --recompute
-    #     python data/make_damage_mle.py --dim 2 --neighbourhood moore --recompute
+    #     python scripts/make_damage_mle.py --dim 1 --recompute
+    #     python scripts/make_damage_mle.py --dim 2 --recompute
+    #     python scripts/make_damage_mle.py --dim 2 --neighbourhood moore --recompute
     ("Fig 5 damage vs MLE", [sys.executable, "figures/fig_damage_vs_mle.py"]),
     # Draws from data/nonaffine/spectra.npz, which is committed. Regenerating it
     # takes hours (see that script) and is deliberately not part of `all`:
-    #     python data/make_nonaffine_spectra.py --recompute
+    #     python scripts/make_nonaffine_spectra.py --recompute
     ("Fig 6 non-affine ECA spectra", [sys.executable, "figures/fig_nonaffine_spectra.py"]),
     ("Supplementary Fig S1 defect topologies", [sys.executable, "figures/fig_defect_topologies.py"]),
     # The Fig 3 notebooks: the convergence study and the figure notebook. Executes

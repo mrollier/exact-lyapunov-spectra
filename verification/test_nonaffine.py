@@ -357,16 +357,16 @@ def test_bad_arguments_raise():
 
 
 # --------------------------------------------------------------------------
-# The checkpoint of data/make_nonaffine_spectra.py. A run over all 88 rules
+# The checkpoint of scripts/make_nonaffine_spectra.py. A run over all 88 rules
 # takes hours, so an interrupted one must resume without changing any number.
 # --------------------------------------------------------------------------
 
 def _runner():
     import sys
     from pathlib import Path
-    data_dir = Path(__file__).resolve().parent.parent / "data"
-    if str(data_dir) not in sys.path:
-        sys.path.insert(0, str(data_dir))
+    scripts_dir = Path(__file__).resolve().parent.parent / "scripts"
+    if str(scripts_dir) not in sys.path:
+        sys.path.insert(0, str(scripts_dir))
     import make_nonaffine_spectra
     return make_nonaffine_spectra
 

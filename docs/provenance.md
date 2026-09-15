@@ -16,7 +16,9 @@ python reproduce.py quick        # tables + checks only (CI subset)
 ```
 
 Figures are written to `output/`; tables to `data/tables/`; graphs to
-`data/graphs/`.
+`data/graphs/`. The generators live in `scripts/`; `verify_vichniac.py` at the
+root is a launcher for `scripts/verify_vichniac.py`, kept because App. A of
+the manuscript prints `python verify_vichniac.py`.
 
 ## Figures
 
@@ -37,19 +39,19 @@ Figures are written to `output/`; tables to `data/tables/`; graphs to
 | Tab | Content | Script | Output | Status |
 |-----|---------|--------|--------|--------|
 | 1 | Abbreviations | — | — | typeset in the manuscript only |
-| 2 | Corrected entries of Vichniac (1990), Table 1: five ECAs (62, 110, 130, 146, 172), seven entries; plus the full gradient table of the 88 non-equivalent ECAs and the comparison with the published table | `verify_vichniac.py` | `data/tables/gradient_corrections_table.tex` (Tab. 2), `eca_gradient_table.csv`, `vichniac_table1_computed.csv`, `vichniac_table1_diff.md` | ✅ 88 rows; 7 mismatching entries in 5 rules: 62, 110, 130, 146, 172; Tab. 2 checked by truth table against the printed values |
-| 3 | 16 affine ECAs: gradients & weights, in the manuscript's row order | `data/make_tables.py` | `data/tables/affine_ecas.csv` | ✅ computed from core |
-| 4 | Structure factor K(k,l) + parity MLE (3 neighbourhoods) | `data/make_tables.py` | `data/tables/structure_factors.csv` | ✅ computed from core |
+| 2 | Corrected entries of Vichniac (1990), Table 1: five ECAs (62, 110, 130, 146, 172), seven entries; plus the full gradient table of the 88 non-equivalent ECAs and the comparison with the published table | `scripts/verify_vichniac.py` (`python verify_vichniac.py`) | `data/tables/gradient_corrections_table.tex` (Tab. 2), `eca_gradient_table.csv`, `vichniac_table1_computed.csv`, `vichniac_table1_diff.md` | ✅ 88 rows; 7 mismatching entries in 5 rules: 62, 110, 130, 146, 172; Tab. 2 checked by truth table against the printed values |
+| 3 | 16 affine ECAs: gradients & weights, in the manuscript's row order | `scripts/make_tables.py` | `data/tables/affine_ecas.csv` | ✅ computed from core |
+| 4 | Structure factor K(k,l) + parity MLE (3 neighbourhoods) | `scripts/make_tables.py` | `data/tables/structure_factors.csv` | ✅ computed from core |
 
 ### Repository tables (not typeset in the manuscript)
 
 | Table | Content | Script | Output | Status |
 |-------|---------|--------|--------|--------|
-| Non-affine spectra (Fig. 6) | Twelve ECAs (nine non-affine sampled, three affine exact): MLE, sample spread (standard deviation and 16th/84th percentiles), share of -inf exponents | `data/make_nonaffine_spectra.py` | `data/tables/nonaffine_spectra.csv`, `data/nonaffine/spectra.npz` | ✅ 40 samples per rule; MLE 0.413 (rule 26) to 0.915 (rule 73) |
-| Direct method (Fig. 6, App. C) | What the unscaled direct method returns at the same settings | `data/make_nonaffine_spectra.py` | `data/tables/nonaffine_direct_multiplication.csv` | ✅ 4 rules overflow float64; the other 5 report 276-364 exponents above a floor only 10-25 of them reach |
-| Damage, 1-D (Fig. 5) | 88 ECAs: Λ_max (mean, sd, number of −∞ samples), v_front, D_norm, fill (means and sds), final damage and radius, whether the cone grows. Parameters (ring N = 607, T = 300, burn-in 100, window 75, 24 samples, seed 20240601) are in the `.npz` and in `data/make_damage_mle.py` | `data/make_damage_mle.py --dim 1` | `data/tables/damage_vs_mle_1d.csv`, `data/damage/damage_mle_1d.npz` | ✅ 24 samples per rule; 8 rules at −∞ (0, 8, 32, 40, 128, 136, 160, 168); Λ_max up to 1.097 (rules 150, 105) |
-| Damage, von Neumann (Fig. 5) | 528 outer-totalistic von Neumann rules: the same columns, labelled in B/S notation (torus L = 149, T = 70, burn-in 20, window 17, 16 samples) | `data/make_damage_mle.py --dim 2` | `data/tables/damage_vs_mle_2d.csv`, `data/damage/damage_mle_2d.npz` | ✅ 16 samples per rule; 16 rules at −∞; Λ_max up to 1.597 (the parity rule B13/S024, exact ln 5 = 1.609 less the finite-horizon transient) |
-| Damage, Moore (Fig. 5) | 2000 sampled outer-totalistic Moore rules (of 131 328 classes): the same columns, B/S notation with counts 0–8 (same torus and horizon, 10 samples) | `data/make_damage_mle.py --dim 2 --neighbourhood moore` | `data/tables/damage_vs_mle_2d_moore.csv`, `data/damage/damage_mle_2d_moore.npz` | ✅ 10 samples per rule; 15 rules at −∞ and 8 partly annihilated; Λ_max up to 2.147 (B0246/S0135); the most damage 0.498 (B246/S01246) |
+| Non-affine spectra (Fig. 6) | Twelve ECAs (nine non-affine sampled, three affine exact): MLE, sample spread (standard deviation and 16th/84th percentiles), share of -inf exponents | `scripts/make_nonaffine_spectra.py` | `data/tables/nonaffine_spectra.csv`, `data/nonaffine/spectra.npz` | ✅ 40 samples per rule; MLE 0.413 (rule 26) to 0.915 (rule 73) |
+| Direct method (Fig. 6, App. C) | What the unscaled direct method returns at the same settings | `scripts/make_nonaffine_spectra.py` | `data/tables/nonaffine_direct_multiplication.csv` | ✅ 4 rules overflow float64; the other 5 report 276-364 exponents above a floor only 10-25 of them reach |
+| Damage, 1-D (Fig. 5) | 88 ECAs: Λ_max (mean, sd, number of −∞ samples), v_front, D_norm, fill (means and sds), final damage and radius, whether the cone grows. Parameters (ring N = 607, T = 300, burn-in 100, window 75, 24 samples, seed 20240601) are in the `.npz` and in `scripts/make_damage_mle.py` | `scripts/make_damage_mle.py --dim 1` | `data/tables/damage_vs_mle_1d.csv`, `data/damage/damage_mle_1d.npz` | ✅ 24 samples per rule; 8 rules at −∞ (0, 8, 32, 40, 128, 136, 160, 168); Λ_max up to 1.097 (rules 150, 105) |
+| Damage, von Neumann (Fig. 5) | 528 outer-totalistic von Neumann rules: the same columns, labelled in B/S notation (torus L = 149, T = 70, burn-in 20, window 17, 16 samples) | `scripts/make_damage_mle.py --dim 2` | `data/tables/damage_vs_mle_2d.csv`, `data/damage/damage_mle_2d.npz` | ✅ 16 samples per rule; 16 rules at −∞; Λ_max up to 1.597 (the parity rule B13/S024, exact ln 5 = 1.609 less the finite-horizon transient) |
+| Damage, Moore (Fig. 5) | 2000 sampled outer-totalistic Moore rules (of 131 328 classes): the same columns, B/S notation with counts 0–8 (same torus and horizon, 10 samples) | `scripts/make_damage_mle.py --dim 2 --neighbourhood moore` | `data/tables/damage_vs_mle_2d_moore.csv`, `data/damage/damage_mle_2d_moore.npz` | ✅ 10 samples per rule; 15 rules at −∞ and 8 partly annihilated; Λ_max up to 2.147 (B0246/S0135); the most damage 0.498 (B246/S01246) |
 
 Column definitions for the damage tables: `v_front` is the damage radius over
 the elapsed time (front speed), `D_norm` the damaged cells over the maximal
@@ -67,7 +69,7 @@ other 79 are sampled. Produced once, on the workstation, and not regenerated
 by `reproduce.py`; the revised manuscript's App. C points readers here.
 | What | Script | Command | Output | Status |
 |------|--------|---------|--------|--------|
-| Spectra, exact ranks and the direct-method comparison for all 88 rules | `data/make_nonaffine_spectra.py` | `python data/make_nonaffine_spectra.py --all-88 --recompute --workers 8` | `data/nonaffine/spectra_all88.npz` (14.5 MB, committed), `data/nonaffine/all88_spectra.csv` (88 rows), `data/nonaffine/all88_direct_multiplication.csv` (79 rows) | ✅ 3160/3160 samples, 696.6 min wall clock (11 h 37 min) on 2026-09-14/15; seven non-affine rules (8, 32, 40, 128, 136, 160, 168) plus affine rule 0 annihilate the tangent space, every exponent -inf; finite MLEs run from 0 (rules 4, 15, 51, 170, 204) to ln 3 (105, 150); the share of the spectrum at -inf reaches 90.1 % (rule 104); the direct method overflows float64 on all 40 samples for 22, 41, 45, 54, 73, 106, 126 and on some for 108 |
+| Spectra, exact ranks and the direct-method comparison for all 88 rules | `scripts/make_nonaffine_spectra.py` | `python scripts/make_nonaffine_spectra.py --all-88 --recompute --workers 8` | `data/nonaffine/spectra_all88.npz` (14.5 MB, committed), `data/nonaffine/all88_spectra.csv` (88 rows), `data/nonaffine/all88_direct_multiplication.csv` (79 rows) | ✅ 3160/3160 samples, 696.6 min wall clock (11 h 37 min) on 2026-09-14/15; seven non-affine rules (8, 32, 40, 128, 136, 160, 168) plus affine rule 0 annihilate the tangent space, every exponent -inf; finite MLEs run from 0 (rules 4, 15, 51, 170, 204) to ln 3 (105, 150); the share of the spectrum at -inf reaches 90.1 % (rule 104); the direct method overflows float64 on all 40 samples for 22, 41, 45, 54, 73, 106, 126 and on some for 108 |
 
 ## Claims (verification suite)
 
@@ -117,7 +119,7 @@ Each claim has a dedicated pytest file (plus lower-level unit tests). Run
   initial configuration; the original figure's seed was not published, so the
   exact defect pattern differs while the rules, layout and qualitative structure
   match. The supplementary figure S1's WS/BA graphs use fresh fixed seeds
-  (documented in `data/make_graphs.py`); the ring length (225) and grid side
+  (documented in `scripts/make_graphs.py`); the ring length (225) and grid side
   (15) are choices. Fig. 5's bootstrap interval uses `default_rng(0)`.
 - **App. C and the three affine rules of Vispoel et al.** The statement that
   their printed MLEs for rules 60, 90 and 150 and the missing low-Λ tail result
@@ -200,7 +202,7 @@ Each claim has a dedicated pytest file (plus lower-level unit tests). Run
   threads, 32 GB, two of four DDR4 channels populated), CPython 3.12.3 with the
   pinned numpy 1.26.4 / scipy 1.13.1 (OpenBLAS 0.3.27), eight single-threaded
   workers: 3160 samples in 696.6 min, 13.2 s per sample effective. The worker
-  count was measured with `data/bench_workers.py` (1 worker 13.0 QR steps/s,
+  count was measured with `scripts/bench_workers.py` (1 worker 13.0 QR steps/s,
   4: 42.6, 6: 49.8, 8: 49.4, 12: 44.9, 18: 38.7, 36: 33.6), an effective
   speed-up of 3.8 rather than 18: the memory bandwidth, not the cores, is the
   limit, as on the laptop. The nine Fig. 6 rules are part of the catalogue

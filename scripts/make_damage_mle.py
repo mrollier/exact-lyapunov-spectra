@@ -39,10 +39,10 @@ Outputs (per dimension ``d``; the Moore run has the suffix ``2d_moore``):
     data/tables/damage_vs_mle_{d}d.csv     one row per rule
 
 Usage:
-    python data/make_damage_mle.py --dim 1 --recompute
-    python data/make_damage_mle.py --dim 2 --recompute --workers 8
-    python data/make_damage_mle.py --dim 2 --neighbourhood moore --recompute   # ~30 min on 10 cores
-    python data/make_damage_mle.py --dim 1 --N 41 --T 19 --samples 2 --cache /tmp/smoke.npz
+    python scripts/make_damage_mle.py --dim 1 --recompute
+    python scripts/make_damage_mle.py --dim 2 --recompute --workers 8
+    python scripts/make_damage_mle.py --dim 2 --neighbourhood moore --recompute   # ~30 min on 10 cores
+    python scripts/make_damage_mle.py --dim 1 --N 41 --T 19 --samples 2 --cache /tmp/smoke.npz
 """
 from __future__ import annotations
 
@@ -72,7 +72,8 @@ DEFAULTS = {
 }
 CONE_GROWS = 0.1                          # v_front above which the cone is said to grow
 
-DATA_DIR = Path(__file__).resolve().parent
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DATA_DIR = REPO_ROOT / "data"
 TABLE_DIR = DATA_DIR / "tables"
 
 

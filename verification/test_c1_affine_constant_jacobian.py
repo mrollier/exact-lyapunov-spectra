@@ -16,7 +16,7 @@ from lyapunov.rules import (
 from lyapunov.jacobian import eca_jacobian, eca_step
 
 # Tab. 3 of the manuscript: rule -> gradient (a_-, a_o, a_+); the complement
-# 255 - rule shares it. Same rows and order as data/make_tables.py.
+# 255 - rule shares it. Same rows and order as scripts/make_tables.py.
 TAB3 = {
     0: (0, 0, 0), 15: (1, 0, 0), 85: (0, 0, 1), 51: (0, 1, 0),
     60: (1, 1, 0), 102: (0, 1, 1), 90: (1, 0, 1), 150: (1, 1, 1),

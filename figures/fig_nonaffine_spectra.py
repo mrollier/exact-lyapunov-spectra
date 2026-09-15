@@ -33,7 +33,7 @@ reaches -5.62 against -2.80 for the worst non-affine rule. The shared range is
 cut at -2.7 so the bulk of every panel is legible; ``main`` prints how much of
 each spectrum falls outside it, and the caption records it.
 
-The heavy computation lives in ``data/make_nonaffine_spectra.py``, which caches
+The heavy computation lives in ``scripts/make_nonaffine_spectra.py``, which caches
 its result; this script only draws. Every layout number is a key of ``STYLE``.
 
 Usage:
@@ -59,7 +59,7 @@ from matplotlib.ticker import NullLocator
 import _style
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(REPO_ROOT / "data"))
+sys.path.insert(0, str(REPO_ROOT / "scripts"))
 import make_nonaffine_spectra as run          # noqa: E402  (needs the path above)
 
 STYLE = {
@@ -246,9 +246,9 @@ def load_or_compute(cache: Path, recompute: bool = False) -> dict:
     silent rerun.
     """
     if recompute:
-        print("running data/make_nonaffine_spectra.py (hours, see its docstring)",
+        print("running scripts/make_nonaffine_spectra.py (hours, see its docstring)",
               flush=True)
-        proc = subprocess.run([sys.executable, "data/make_nonaffine_spectra.py",
+        proc = subprocess.run([sys.executable, "scripts/make_nonaffine_spectra.py",
                                "--recompute"], cwd=REPO_ROOT)
         if proc.returncode != 0:
             raise SystemExit("the computation failed; see the output above")
@@ -256,7 +256,7 @@ def load_or_compute(cache: Path, recompute: bool = False) -> dict:
         raise SystemExit(
             f"{cache} is missing. It is committed with the repository; if it "
             "has been removed, regenerate it with\n"
-            "    python data/make_nonaffine_spectra.py --recompute\n"
+            "    python scripts/make_nonaffine_spectra.py --recompute\n"
             "which takes a few hours, or pass --recompute to this script.")
     return run.load(cache)
 

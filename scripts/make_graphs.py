@@ -28,7 +28,8 @@ from pathlib import Path
 import numpy as np
 import networkx as nx
 
-GRAPH_DIR = Path(__file__).resolve().parent / "graphs"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+GRAPH_DIR = REPO_ROOT / "data" / "graphs"
 
 # Fixed generation parameters and seeds (change nothing here to reproduce).
 # All four topologies use 225 nodes (grid = 15 x 15) so the figure panels are

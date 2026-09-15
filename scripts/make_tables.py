@@ -8,7 +8,7 @@
 
 (Tab. 1 lists abbreviations. Tab. 2, the corrected entries of Vichniac (1990),
 Table 1, and the full 88-rule gradient table are produced by
-``verify_vichniac.py``.)
+``scripts/verify_vichniac.py``.)
 
 All values are computed from the verified core, not transcribed.
 """
@@ -25,7 +25,8 @@ from lyapunov.spectra import (
     VON_NEUMANN_R2_2D,
 )
 
-TABLE_DIR = Path(__file__).resolve().parent / "tables"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+TABLE_DIR = REPO_ROOT / "data" / "tables"
 # The rows of Tab. 3 in the manuscript, by gradient weight; each rule stands for
 # the pair {rule, 255 - rule}, which share the gradient.
 TAB3_ORDER = (0, 15, 85, 51, 60, 102, 90, 150)

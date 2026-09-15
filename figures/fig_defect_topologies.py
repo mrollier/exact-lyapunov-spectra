@@ -18,7 +18,7 @@ The ring gives the Sierpinski triangle (binomial coefficients modulo two); the
 grid a periodic wavefront; the small-world and scale-free graphs lose that
 regularity because rewired edges and hubs carry the defect to distant nodes.
 
-Graphs are the seeded topologies of data/make_graphs.py (deterministic).
+Graphs are the seeded topologies of scripts/make_graphs.py (deterministic).
 """
 from __future__ import annotations
 
@@ -32,8 +32,8 @@ import matplotlib.pyplot as plt
 from lyapunov.parity import defect_pattern, eigenvector_centrality
 import _style
 
-# Make data/make_graphs.py importable when run as a standalone script.
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "data"))
+# Make scripts/make_graphs.py importable when run as a standalone script.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 from make_graphs import load_graph  # noqa: E402
 
 PANELS = [("ring", "Ring"), ("grid", "Grid"), ("ws", "WS"), ("ba", "BA")]

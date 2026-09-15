@@ -13,8 +13,13 @@ numbers in the repository are those of the revised manuscript.
 - `figures/` — one standalone script per manuscript figure, writing to `output/`.
 - `verification/` — pytest checks of the paper's claims (C1–C12; C8 is out of
   scope, C9 lives in the two Benettin test files) plus core unit tests.
-  `pytest` must exit zero; `conftest.py` puts `data/` on the path.
-- `data/` — deterministic (seeded) regeneration of graphs and the CSV tables.
+  `pytest` must exit zero; `conftest.py` puts `scripts/` on the path.
+- `scripts/` — the generators: `verify_vichniac.py` (Tab. 2, App. A),
+  `make_tables.py`, `make_graphs.py`, the two cache builders and
+  `bench_workers.py`; deterministic (seeded), all writing into `data/`. The
+  root `verify_vichniac.py` is only a launcher, kept because App. A prints
+  that command.
+- `data/` — data only: the CSV tables and the committed caches.
 - `docs/provenance.md` — figure/claim → script → command → expected → status.
 - `reproduce.py all` regenerates everything; `reproduce.py quick` is the CI subset.
 
@@ -37,7 +42,7 @@ Never reintroduce `np.linalg.matrix_power` on a matrix whose true power you need
 ## Conventions
 - UK English in prose and comments (behaviour, artefact, organise, neighbour).
 - Determinism: every RNG seed is fixed and documented in the calling script and
-  in `data/make_graphs.py`. Two runs give identical numbers.
+  in `scripts/make_graphs.py`. Two runs give identical numbers.
 - Development is test-driven: tests encode the paper's exact analytical values
   (e.g. MLE of rule 150 is exactly ln 3), written before the implementation.
 

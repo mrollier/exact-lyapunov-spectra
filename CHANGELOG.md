@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.6.1 (2026-09-15)
+
+### Layout
+
+- The generator scripts move out of `data/` and the repository root into
+  `scripts/`: `verify_vichniac.py`, `make_tables.py`, `make_graphs.py`,
+  `make_damage_mle.py`, `make_nonaffine_spectra.py` and `bench_workers.py`.
+  `data/` now holds data only (the tables and the committed caches) and the
+  scripts write into it as before; the commands in the README and in
+  `docs/provenance.md` use the new paths. A launcher `verify_vichniac.py`
+  stays at the root because App. A of the manuscript prints
+  `python verify_vichniac.py`; it hands over to `scripts/verify_vichniac.py`
+  with the same arguments.
+- The README opens with a table that takes each pointer in the manuscript
+  (the data-availability statement, Secs. 3 and 4.2, Figs. 2 to 6 and
+  appendices A, B and C) to the script, notebook, table or test it lands on.
+- No number, figure or test changes.
+
 ## 1.6.0 (2026-09-15)
 
 ### Alignment with the revised manuscript (resubmitted 14 September 2026)

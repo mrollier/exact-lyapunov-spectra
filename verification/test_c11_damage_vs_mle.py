@@ -36,7 +36,7 @@ from lyapunov.outer_totalistic import (
 from lyapunov.rules import affine_ecas, nonequivalent_ecas
 from lyapunov.spectra import VON_NEUMANN_2D, eca_mle
 
-from make_damage_mle import (  # data/ is on sys.path via conftest.py
+from make_damage_mle import (  # scripts/ is on sys.path via conftest.py
     CONE_GROWS, DEFAULTS, SEED, cache_path, compute, load, run_sample, summary_rows,
     tangent_rng)
 

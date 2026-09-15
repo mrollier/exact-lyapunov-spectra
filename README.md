@@ -12,6 +12,28 @@ repository with a single command, and the central claims are independently
 verified by a test suite. Figure and table numbers below are those of the
 revised manuscript (6 figures, 4 tables, appendices A to C).
 
+## Coming from the manuscript? Start here
+
+The manuscript points to this repository in its data-availability statement
+and in appendices A to C. The table takes each pointer to the script,
+notebook, table or test it lands on. Every command is run from the repository
+root after the installation described below; `docs/provenance.md` gives the
+exact command, the expected output and the observed status for every figure,
+table and claim.
+
+| Where the manuscript points | What to run or open |
+|---|---|
+| Data availability: "the Python code used to compute the Lyapunov spectra and to reproduce the figures" | `python reproduce.py all` regenerates every figure and table and runs every check. The layout and the figure-by-figure map are in the two sections after "Reproduce everything". |
+| Sec. 3, the closed form (Fig. 2; Tab. 3 and Tab. 4; Fig. 4 for the 2-D neighbourhoods) | `src/lyapunov/spectra.py` (DFT of the gradient stencil, structure factor), drawn by `figures/fig_eca_spectra.py` and `figures/fig_2d_parity.py`; the tables come from `scripts/make_tables.py`. |
+| Sec. 4.2, the parity rule on a graph (spectrum from the adjacency matrix, MLE = ln ρ(A + a_o I), the mean-degree bound) | `src/lyapunov/parity.py`; checked in `verification/test_c5_parity_centrality.py`. |
+| Fig. 3, Benettin's algorithm and direct multiplication against the exact spectrum of rule 150 | `figures/make_convergence_figure.py`; the study behind it is `notebooks/03_benettin_convergence.ipynb`, described in the section "The convergence notebook". |
+| App. A: "running `python verify_vichniac.py` recomputes all 88 gradients from the definition and lists the seven entries that differ from the published table" | `python verify_vichniac.py` (a launcher for `scripts/verify_vichniac.py`) prints the seven entries and writes the report `data/tables/vichniac_table1_diff.md`, the 88-rule table `eca_gradient_table.csv` and Tab. 2 as `gradient_corrections_table.tex`. Vichniac's table as printed is `src/lyapunov/vichniac_table1.py`; the derivative is computed in `src/lyapunov/rules.py`. The section "Corrections to Vichniac (1990), Table 1" lists the seven entries and how they were established. |
+| App. A: "the test suite (`pytest`) reproduces the additivity and symmetry cross-checks" | `python -m pytest verification/test_c4_vichniac_gradients.py`, or `python -m pytest` for the whole suite. |
+| App. B, Fig. 5: damage against the maximal exponent; "please refer to our GitHub repository for further details" | `figures/fig_damage_vs_mle.py` draws from the committed caches, which `scripts/make_damage_mle.py` computes; per-rule numbers are `data/tables/damage_vs_mle_1d.csv`, `damage_vs_mle_2d.csv` and `damage_vs_mle_2d_moore.csv`. The section "Damage against the maximal exponent" defines the quantities; the checks are `verification/test_c11_damage_vs_mle.py` and `test_c12_damage_vs_mle_moore.py`. |
+| App. C: "we show in our associated GitHub repository that this results from direct multiplication and floating-point error" | `notebooks/03_benettin_convergence.ipynb`, cells 12 and 13: the float64 precision floor at T = 500 against the ranges Vispoel et al. print for rules 60, 90 and 150, pinned in `verification/test_benettin_convergence.py`. What the unscaled method returns for the nine non-affine rules is `data/tables/nonaffine_direct_multiplication.csv`. |
+| App. C, Fig. 6: the corrected spectra of rules 6, 26, 73, 154, 41, 122, 126, 54 and 110 | `figures/fig_nonaffine_spectra.py` draws from the committed cache, which `scripts/make_nonaffine_spectra.py` computes with `src/lyapunov/nonaffine.py`; the numbers are `data/tables/nonaffine_spectra.csv` and the section "The nine non-affine rules". |
+| App. C: "spectra for all 88 non-equivalent ECAs can be found and re-calculated in the repository" | `data/nonaffine/all88_spectra.csv` (one row per rule) and `spectra_all88.npz` (every sample); recalculate with `python scripts/make_nonaffine_spectra.py --all-88 --recompute` (about 12 hours; see `docs/provenance.md`). |
+
 ## What the paper shows
 
 Affine Boolean rules — those whose update is an `XOR` of a subset of the inputs
@@ -60,18 +82,18 @@ Individual pieces:
 ```bash
 python figures/make_benchmark_figure.py --rule 150 --N 101 --T 200 --zoom-k 35
 python figures/make_convergence_figure.py --rule 150 --N 101 --T 200 --burn 100 --zoom-k 35
-python verify_vichniac.py --output data/tables/eca_gradient_table.csv
+python verify_vichniac.py          # App. A; launcher for scripts/verify_vichniac.py
 python -m pytest -q
 python notebooks/execute.py        # both Fig. 3 notebooks (needs '.[notebook]'; rewrites them in place)
 python notebooks/execute.py 04_convergence_figure    # just the figure notebook
 python figures/fig_nonaffine_spectra.py              # Fig. 6, from the committed cache
-python data/make_nonaffine_spectra.py --recompute    # regenerate that cache (9.2 core-hours)
-python data/bench_workers.py                         # how many workers this machine can feed
-python data/make_nonaffine_spectra.py --all-88 --recompute --workers 8   # all 88 ECAs (App. C; ~12 h, see docs/provenance.md)
+python scripts/make_nonaffine_spectra.py --recompute    # regenerate that cache (9.2 core-hours)
+python scripts/bench_workers.py                         # how many workers this machine can feed
+python scripts/make_nonaffine_spectra.py --all-88 --recompute --workers 8   # all 88 ECAs (App. C; ~12 h, see docs/provenance.md)
 python figures/fig_damage_vs_mle.py                  # Fig. 5, from the committed caches
-python data/make_damage_mle.py --dim 1 --recompute   # 88 ECAs (~1 min)
-python data/make_damage_mle.py --dim 2 --recompute   # 528 outer-totalistic vN rules (~10 min on 10 cores)
-python data/make_damage_mle.py --dim 2 --neighbourhood moore --recompute   # 2000 sampled Moore classes (~37 min on 10 cores)
+python scripts/make_damage_mle.py --dim 1 --recompute   # 88 ECAs (~1 min)
+python scripts/make_damage_mle.py --dim 2 --recompute   # 528 outer-totalistic vN rules (~10 min on 10 cores)
+python scripts/make_damage_mle.py --dim 2 --neighbourhood moore --recompute   # 2000 sampled Moore classes (~37 min on 10 cores)
 python figures/fig_defect_topologies.py              # supplementary figure S1 (not in the manuscript)
 ```
 
@@ -99,10 +121,15 @@ notebooks/           03_benettin_convergence.ipynb: the Fig. 3 convergence study
                      Fig. 3 built interactively; execute.py runs both headlessly
 verification/        pytest checks of the claims C1-C12 (C8 is out of scope; C9 lives in
                      test_benettin_convergence.py and test_benettin_windowed.py) + unit tests
-data/                make_tables.py (Tab. 3, 4), make_nonaffine_spectra.py (Fig. 6, App. C),
-                     make_damage_mle.py (Fig. 5), make_graphs.py (S1), bench_workers.py;
-                     the generated tables/ and the committed caches nonaffine/, damage/, graphs/
-verify_vichniac.py   CLI: gradient table, Vichniac comparison, diff report, Tab. 2 as LaTeX
+scripts/             the generators, all writing into data/:
+                     verify_vichniac.py (Tab. 2, App. A: the 88-rule gradient table, the
+                     comparison with Vichniac's Table 1, the diff report, Tab. 2 as LaTeX),
+                     make_tables.py (Tab. 3, 4), make_damage_mle.py (Fig. 5, App. B),
+                     make_nonaffine_spectra.py (Fig. 6 and the 88-rule catalogue, App. C),
+                     make_graphs.py (S1), bench_workers.py (worker count for the long runs)
+data/                data only: the generated tables/ (CSV and one LaTeX table) and the
+                     committed caches nonaffine/, damage/, graphs/
+verify_vichniac.py   launcher for scripts/verify_vichniac.py (App. A prints this command)
 reproduce.py         single entry point (all | quick)
 docs/provenance.md   figure/claim -> script -> command -> expected -> status
 ```
@@ -117,17 +144,17 @@ docs/provenance.md   figure/claim -> script -> command -> expected -> status
 | Fig. 3 supporting convergence study (`convergence_benettin_rule150`, `convergence_horizon_vs_N`, `convergence_direct_multiplication`) | `notebooks/03_benettin_convergence.ipynb` |
 | Fig. 3, panel A alone (`benchmark_rule150`, the figure of the original submission) | `figures/make_benchmark_figure.py` (superseded) |
 | Fig. 4 2-D parity (`..._2d_parity`) | `figures/fig_2d_parity.py` |
-| Fig. 5 damage vs maximal exponent, 88 ECAs, 528 outer-totalistic vN rules, 2000 sampled Moore rules (`damage_vs_mle`) | `figures/fig_damage_vs_mle.py`, computed by `data/make_damage_mle.py` |
-| Fig. 6 corrected spectra of nine non-affine ECAs (`lyapunov_spectra_nonaffine_ecas`) | `figures/fig_nonaffine_spectra.py`, computed by `data/make_nonaffine_spectra.py` |
-| Tab. 2 corrected entries of Vichniac (1990), Table 1 (`tab:gradient-table`, 5 ECAs) + the 88-rule gradient table | `verify_vichniac.py` |
-| Tab. 3 (affine ECAs) / Tab. 4 (structure factors) | `data/make_tables.py` |
-| App. C: spectra of all 88 ECAs | `data/nonaffine/all88_spectra.csv`, `spectra_all88.npz`; `data/make_nonaffine_spectra.py --all-88` |
+| Fig. 5 damage vs maximal exponent, 88 ECAs, 528 outer-totalistic vN rules, 2000 sampled Moore rules (`damage_vs_mle`) | `figures/fig_damage_vs_mle.py`, computed by `scripts/make_damage_mle.py` |
+| Fig. 6 corrected spectra of nine non-affine ECAs (`lyapunov_spectra_nonaffine_ecas`) | `figures/fig_nonaffine_spectra.py`, computed by `scripts/make_nonaffine_spectra.py` |
+| Tab. 2 corrected entries of Vichniac (1990), Table 1 (`tab:gradient-table`, 5 ECAs) + the 88-rule gradient table | `scripts/verify_vichniac.py`, run as `python verify_vichniac.py` |
+| Tab. 3 (affine ECAs) / Tab. 4 (structure factors) | `scripts/make_tables.py` |
+| App. C: spectra of all 88 ECAs | `data/nonaffine/all88_spectra.csv`, `spectra_all88.npz`; `scripts/make_nonaffine_spectra.py --all-88` |
 | Claims C1–C7 | `verification/test_c1..c7_*.py` |
 | Claim C9 (convergence calibration, Fig. 3) | `verification/test_benettin_convergence.py`, `verification/test_benettin_windowed.py` |
 | Claim C10 (non-affine spectra, Fig. 6) | `verification/test_c10_nonaffine_spectra.py`, `verification/test_nonaffine.py` |
 | Claim C11 (damage vs maximal exponent, Fig. 5) | `verification/test_c11_damage_vs_mle.py`, `verification/test_damage.py`, `verification/test_outer_totalistic.py` |
 | Claim C12 (the sampled Moore family, Fig. 5) | `verification/test_c12_damage_vs_mle_moore.py` |
-| Supplementary figure S1, defect propagation on ring / grid / WS / BA graphs (`defect_propagation_networks_parity`; in the original submission, not in the revised manuscript) | `figures/fig_defect_topologies.py`, graphs from `data/make_graphs.py`, checks in `verification/test_c5_parity_centrality.py` |
+| Supplementary figure S1, defect propagation on ring / grid / WS / BA graphs (`defect_propagation_networks_parity`; in the original submission, not in the revised manuscript) | `figures/fig_defect_topologies.py`, graphs from `scripts/make_graphs.py`, checks in `verification/test_c5_parity_centrality.py` |
 
 See [docs/provenance.md](docs/provenance.md) for exact commands, expected
 results, observed status and honest caveats.
@@ -222,7 +249,7 @@ reflection and conjugation at the same settings (N = 1000, T = 500, burn-in
 200, 40 samples), 79 of them sampled and the 9 affine ones from the closed form.
 They are committed as `data/nonaffine/all88_spectra.csv` (one row per rule),
 `all88_direct_multiplication.csv` and the per-sample cache `spectra_all88.npz`
-(14.5 MB), produced once with `python data/make_nonaffine_spectra.py --all-88
+(14.5 MB), produced once with `python scripts/make_nonaffine_spectra.py --all-88
 --recompute --workers 8` (11 h 37 min on an 18-core workstation; machine and
 cross-build comparison in `docs/provenance.md`). `reproduce.py` does not
 regenerate them.
@@ -315,7 +342,7 @@ counted from the left). The implementation is `gradient_truth_tables` in
    compared by truth table with the published table
    (`src/lyapunov/vichniac_table1.py`, transcribed from the Physica D scan and
    verified against it by aligned rendering and pixel-level overbar counting).
-   Exactly the seven entries above differ (`verify_vichniac.py`).
+   Exactly the seven entries above differ (`scripts/verify_vichniac.py`).
 2. *Additivity cross-check from the paper's own rows* (Vichniac's property
    (iii), his Method 4). If `n = n1 XOR n2` as rule numbers, each gradient
    component of `n` is the XOR of the corresponding components of `n1` and
@@ -352,7 +379,7 @@ in that module and demonstrated in `verification/test_c7_numerical_artefact.py`.
 
 ## Determinism
 
-All RNG seeds are fixed and documented (`data/make_graphs.py`, the data and
+All RNG seeds are fixed and documented (`scripts/make_graphs.py`, the data and
 figure scripts; the repository's seed is 20240601). Graphs, tables and figure
 numerics are byte-identical across runs on one machine. Across machines the
 exact integer results (defect patterns, ranks, the count of -inf exponents)
@@ -364,5 +391,5 @@ depend on the thread count. The notebooks pin the BLAS thread count to one.
 
 ## Licence & citation
 
-MIT (see `LICENSE`). Please cite the article and this software (version 1.6.0,
-tag `v1.6.0`, accompanies the revised manuscript); see `CITATION.cff`.
+MIT (see `LICENSE`). Please cite the article and this software (version 1.6.1,
+tag `v1.6.1`, accompanies the revised manuscript); see `CITATION.cff`.
