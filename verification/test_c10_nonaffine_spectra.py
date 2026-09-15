@@ -150,7 +150,11 @@ def test_the_affine_rules_are_the_exact_closed_form():
     assert data["affine_spectra"].shape == (3, N)
     for i, rule in enumerate(data["affine_rules"]):
         exact = np.sort(np.log(eca_singular_values(int(rule), N)))[::-1]
-        assert np.array_equal(data["affine_spectra"][i], exact)
+        # Equal to within a few ulp of the complex exponential (libm differs
+        # between machines by ~1e-14 here); the -inf entries must coincide.
+        cached = data["affine_spectra"][i]
+        assert np.array_equal(np.isneginf(cached), np.isneginf(exact))
+        assert np.allclose(cached, exact, rtol=0, atol=1e-12)
 
 
 def test_every_exponent_is_below_the_eca_maximum():
