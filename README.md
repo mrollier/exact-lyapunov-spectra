@@ -138,7 +138,7 @@ docs/provenance.md   figure/claim -> script -> command -> expected -> status
 
 | Manuscript object | Script / test |
 |---|---|
-| Fig. 1 defect cones (`persistent_defect_eca_diff`) | `figures/fig_defect_cones.py` |
+| Fig. 1 defect cones (`single_defect_eca_diff`) | `figures/fig_defect_cones.py` |
 | Fig. 2 affine ECA spectra (`..._NO_CLASSES`) | `figures/fig_eca_spectra.py` |
 | Fig. 3 benchmark + Benettin error per k (`convergence_rule150`) | `figures/make_convergence_figure.py`, or `notebooks/04_convergence_figure.ipynb` to retune it (writes `convergence_rule150_notebook`) |
 | Fig. 3 supporting convergence study (`convergence_benettin_rule150`, `convergence_horizon_vs_N`, `convergence_direct_multiplication`) | `notebooks/03_benettin_convergence.ipynb` |

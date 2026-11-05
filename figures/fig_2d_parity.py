@@ -29,7 +29,7 @@ from lyapunov.spectra import (
 )
 import _style
 
-N_DEFAULT = 201        # cells per side; large enough for smooth fields, prime to 3, 4 and 5
+N_DEFAULT = 201        # cells per side; large enough for smooth fields. 201 = 3 * 67, so the Moore panel has exact zeros
 
 ROWS = [
     ("von Neumann", VON_NEUMANN_2D, 5),
@@ -58,7 +58,7 @@ def build_figure(N: int, use_tex: bool = False):
         cbar.set_label(r"$\sigma_{k,l}$")
 
         # Right: histogram of the Lyapunov exponents (log relative frequency).
-        lam = np.log(sigma[sigma > 0].ravel())
+        lam = np.log(sigma[sigma > 1e-9].ravel())  # exact zeros reach us as round-off, e.g. Moore with 3 | N
         ax_hist.hist(lam, bins=50, weights=np.ones_like(lam) / lam.size,
                      color=_style.LINE_BLUE, edgecolor="white", linewidth=0.2)
         ax_hist.set_yscale("log")
