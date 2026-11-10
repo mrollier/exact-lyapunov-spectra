@@ -25,13 +25,13 @@ the manuscript prints `python verify_vichniac.py`.
 | Fig | Manuscript stem | Script | Command | Expected | Status |
 |-----|-----------------|--------|---------|----------|--------|
 | 1 | `single_defect_eca_diff` | `figures/fig_defect_cones.py` | `python figures/fig_defect_cones.py --tex` (the manuscript's file; without `--tex` the same panels with fallback fonts) | 2×4 difference patterns from a single flip at t = 0, class IV (54,110,147,124) / class III (30,101,90,150), N=101, T=150, seed 3; rules 90 and 150 follow J^t e_j (mod 2) exactly | ✅ reproduces; checked in `verification/test_fig1_single_defect.py` |
-| 2 | `singular_values_and_lyapunov_spectra_of_constant_J_ECAs_NO_CLASSES` | `figures/fig_eca_spectra.py` | `python figures/fig_eca_spectra.py` | 4 rows by gradient weight; σ_k vs k/N (left), log-frequency of Λ_k (right); N=3001 | ✅ reproduces (matches PDF) |
+| 2 | `singular_values_and_lyapunov_spectra_affine_ECAs` | `figures/fig_eca_spectra.py` | `python figures/fig_eca_spectra.py` | 4 rows by gradient weight; σ_k vs k/N (left), log-frequency of Λ_k (right); N=3001 | ✅ reproduces the content of the printed figure (same curves, spectra and MLEs); fonts, colour scale and histogram bins differ from the manuscript's file, which was drawn outside this repository |
 | 3 | `convergence_rule150` | `figures/make_convergence_figure.py` | `python figures/make_convergence_figure.py --rule 150 --N 101 --T 200 --burn 100 --zoom-k 35` (or `notebooks/04_convergence_figure.ipynb`, which writes `convergence_rule150_notebook`) | (A) rule 150 spectrum by 4 methods + k≤35 inset; (B) Benettin error per k with the same 200-step budget: no burn-in vs burn-in 100 + 100-step window; prints and asserts the W = 1000 reference table (fractions to 0.02, max errors to a factor of 2), including the 6.5e-5 the text quotes for B = 1000, T = 1000 | ✅ reproduces (matches PDF); ~4 s |
 | 3 (supporting study) | `convergence_benettin_rule150`, `convergence_horizon_vs_N`, `convergence_direct_multiplication` | `notebooks/03_benettin_convergence.ipynb` (reference: `notebooks/fig3_convergence_study.py`) | `python notebooks/execute.py` | Benettin error vs T with/without burn-in (k = 1, 10, 51, 101; 1/T line); fraction of spectrum within 1e-2 vs T for N = 31, 61, 101, 201; unscaled float64 direct multiplication at T = 50, 100, 200, 300 with predicted floors; the comparison with Vispoel et al.'s printed histogram ranges for rules 60, 90 and 150 that App. C refers to (cells 12–13) | ✅ 73/73 in-notebook checks pass; ~35 s |
 | 3, panel A alone | `benchmark_rule150` | `figures/make_benchmark_figure.py` | `python figures/make_benchmark_figure.py --rule 150 --N 101 --T 200 --zoom-k 35` | The figure of the original submission (4 methods + inset) | ✅ reproduces; superseded by the row for Fig. 3 |
-| 4 | `singular_values_and_log_spectra_2d_parity` | `figures/fig_2d_parity.py` | `python figures/fig_2d_parity.py` | 3 rows (vN, Moore, r2-vN); σ_{k,l} heatmap + Λ histogram; MLE ln5/ln9/ln13; N = 201 per side | ✅ reproduces (matches PDF) |
+| 4 | `singular_values_and_log_spectra_2d_parity` | `figures/fig_2d_parity.py` | `python figures/fig_2d_parity.py` | 3 rows (vN, Moore, r2-vN); σ_{k,l} heatmap + Λ histogram; MLE ln5/ln9/ln13; N = 201 per side; in the Moore case 800 of the 40 401 singular values vanish, since 3 divides N, and their exponents of -inf are not drawn | ✅ reproduces the content of the printed figure (same curves, spectra and MLEs); fonts, colour scale and histogram bins differ from the manuscript's file, which was drawn outside this repository |
 | 5 | `damage_vs_mle` | `figures/fig_damage_vs_mle.py` | `python figures/fig_damage_vs_mle.py` | Three stacked scatter plots (shared x axis, serif) of the mean relative damage D_norm from one flipped cell (damaged cells / cells in the maximal light cone, averaged over the final steps and the initial configurations) against the maximal exponent Λ_max (single renormalised tangent vector) on the same trajectories. Top: all 88 ECAs up to symmetry (ring N=607, T=300, final 75 steps, exponent burn-in 100, 24 configurations), rules 30, 90, 110, 150 labelled; middle: all 528 outer-totalistic von Neumann rules up to conjugation (torus L=149, T=70, final 17 steps, burn-in 20, 16 configurations); bottom: 2000 of the 131 328 outer-totalistic Moore rules up to conjugation, drawn uniformly from the classes with `default_rng([20240601, 2, 8])` (same torus, T, window and burn-in, 10 configurations). Spearman ρ per panel (0.61, 0.52, 0.82; bootstrap 95 % interval [0.80, 0.84] for the sample, 2000 resamples, `default_rng(0)`); rules with Λ_max = −∞ in a marked column; dashed lines at ln 2, ln 3; ln 4, ln 5; ln 8, ln 9 | ✅ reproduces from the committed caches (matches PDF); ~5 s (the caches take ~1 min, ~10 min and ~37 min on 10 cores) |
-| 6 | `lyapunov_spectra_nonaffine_ecas` | `figures/fig_nonaffine_spectra.py` | `python figures/fig_nonaffine_spectra.py` | 2x6 densities of the Lyapunov exponents: rules 6, 26, 73, 154, 41, 122, 126, 54, 110 at Vispoel's settings (N=1000, T=500, burn-in 200, 40 samples), then the affine rules 60, 90, 150 from the closed form; 50 bins shared over [-2.7, 1.2], log frequency from 1e-5, the top decade left clear for the annotation, dashed line at the maximal exponent, and per panel the share of -inf exponents plus either the MLE (the sample mean) with its 16th/84th-percentile spread or, for the three affine rules, the exact ln 2 or ln 3 | ✅ reproduces from the committed cache; ~4 s (the cache itself is 9.2 core-hours). One annotation differs from the printed manuscript: rule 110's MLE is 0.654456 in the cache, drawn as 0.654, where the manuscript prints 0.655 |
+| 6 | `lyapunov_spectra_nonaffine_ecas` | `figures/fig_nonaffine_spectra.py` | `python figures/fig_nonaffine_spectra.py` | 2x6 densities of the Lyapunov exponents: rules 6, 26, 73, 154, 41, 122, 126, 54, 110 at Vispoel's N = 1000, T = 500 and 40 samples, with a burn-in of 200 that theirs does not have, then the affine rules 60, 90, 150 from the closed form; 50 bins shared over [-2.7, 1.2], log frequency from 1e-5, the top decade left clear for the annotation, dashed line at the maximal exponent, and per panel the share of -inf exponents plus either the MLE (the sample mean) with its 16th/84th-percentile spread or, for the three affine rules, the exact ln 2 or ln 3 | ✅ reproduces from the committed cache; ~4 s (the cache itself is 9.2 core-hours). One annotation differs from the printed manuscript: rule 110's MLE is 0.654456 in the cache, drawn as 0.654, where the manuscript prints 0.655 |
 | S1 (supplementary; in the original submission, not in the revised manuscript) | `defect_propagation_networks_parity` | `figures/fig_defect_topologies.py` | `python figures/fig_defect_topologies.py` | 2×2 Ring/Grid/WS/BA defect patterns, A^t e_j (mod 2), nodes by eigenvector centrality | ✅ reproduces (seeded graphs; ring→Sierpinski, WS/BA irregular) |
 
 ## Tables
@@ -48,7 +48,7 @@ the manuscript prints `python verify_vichniac.py`.
 | Table | Content | Script | Output | Status |
 |-------|---------|--------|--------|--------|
 | Non-affine spectra (Fig. 6) | Twelve ECAs (nine non-affine sampled, three affine exact): MLE, sample spread (standard deviation and 16th/84th percentiles), share of -inf exponents | `scripts/make_nonaffine_spectra.py` | `data/tables/nonaffine_spectra.csv`, `data/nonaffine/spectra.npz` | ✅ 40 samples per rule; MLE 0.413 (rule 26) to 0.915 (rule 73) |
-| Direct method (Fig. 6, App. C) | What the unscaled direct method returns at the same settings | `scripts/make_nonaffine_spectra.py` | `data/tables/nonaffine_direct_multiplication.csv` | ✅ 4 rules overflow float64; the other 5 report 276-364 exponents above a floor only 10-25 of them reach |
+| Direct method (beside Fig. 6) | What the unscaled direct method returns at the same settings | `scripts/make_nonaffine_spectra.py` | `data/tables/nonaffine_direct_multiplication.csv` | ✅ 4 rules overflow float64; the other 5 report 276-364 exponents above a floor only 10-25 of them reach |
 | Damage, 1-D (Fig. 5) | 88 ECAs: Λ_max (mean, sd, number of −∞ samples), v_front, D_norm, fill (means and sds), final damage and radius, whether the cone grows. Parameters (ring N = 607, T = 300, burn-in 100, window 75, 24 samples, seed 20240601) are in the `.npz` and in `scripts/make_damage_mle.py` | `scripts/make_damage_mle.py --dim 1` | `data/tables/damage_vs_mle_1d.csv`, `data/damage/damage_mle_1d.npz` | ✅ 24 samples per rule; 8 rules at −∞ (0, 8, 32, 40, 128, 136, 160, 168); Λ_max up to 1.097 (rules 150, 105) |
 | Damage, von Neumann (Fig. 5) | 528 outer-totalistic von Neumann rules: the same columns, labelled in B/S notation (torus L = 149, T = 70, burn-in 20, window 17, 16 samples) | `scripts/make_damage_mle.py --dim 2` | `data/tables/damage_vs_mle_2d.csv`, `data/damage/damage_mle_2d.npz` | ✅ 16 samples per rule; 16 rules at −∞; Λ_max up to 1.597 (the parity rule B13/S024, exact ln 5 = 1.609 less the finite-horizon transient) |
 | Damage, Moore (Fig. 5) | 2000 sampled outer-totalistic Moore rules (of 131 328 classes): the same columns, B/S notation with counts 0–8 (same torus and horizon, 10 samples) | `scripts/make_damage_mle.py --dim 2 --neighbourhood moore` | `data/tables/damage_vs_mle_2d_moore.csv`, `data/damage/damage_mle_2d_moore.npz` | ✅ 10 samples per rule; 15 rules at −∞ and 8 partly annihilated; Λ_max up to 2.147 (B0246/S0135); the most damage 0.498 (B246/S01246) |
@@ -78,25 +78,25 @@ Each claim has a dedicated pytest file (plus lower-level unit tests). Run
 
 | Claim | Statement | Test | Status |
 |-------|-----------|------|--------|
-| C1 | 16 affine ECAs = exactly the constant-Jacobian rules, with the tabulated gradients (recomputed from first principles) | `verification/test_c1_affine_constant_jacobian.py` | ✅ pass |
+| C1 | 16 affine ECAs = exactly the constant-Jacobian rules, with the tabulated gradients (recomputed from first principles); an affine rule is reversible iff det J is odd, and rule 150 with N coprime to three is reversible with \|det J\| = 3 (Subsec. 3.1; every configuration enumerated for N = 3 to 10) | `verification/test_c1_affine_constant_jacobian.py` | ✅ pass |
 | C2 | Closed form matches a stable numerical routine across N, T (direct-mult float64 exact at the top; Benettin converges) | `verification/test_c2_benchmark.py`, `test_benettin.py` | ✅ pass |
 | C3 | MLEs: rules 150/105 → ln3, rule 90 → ln2; 2-D parity ln5/ln9/ln13; Moore = 2 ln3; rule 150 has a zero singular value iff 3 divides N, so N = 3001 and N = 101 (Figs. 2, 3) give finite spectra | `verification/test_c3_mle_values.py`, `test_spectra.py` | ✅ pass |
-| C4 | Recompute all 88 gradients from definition (5); compare by truth table with Vichniac's Table 1; exactly 7 misprinted entries in 5 rows (62, 110, 130, 146, 172), cross-checked by additivity and symmetry from the paper's own rows | `verification/test_c4_vichniac_gradients.py` | ✅ pass (see note) |
-| C5 | Parity spectrum = ln\|λ_k(A) + a_o\| and MLE = ln ρ(A + a_o I) for both a_o (Eq. 15); ρ(A) ≥ mean degree on a connected graph, so the MLE is positive (Sec. 4.2); supplementary: single-site amplitude ∝ eigenvector centrality (WS, BA) | `verification/test_c5_parity_centrality.py` | ✅ pass |
-| C6 | Benettin sanity: Σ exponents = ln|det J| at every T | `verification/test_c6_benettin_det_sum.py` | ✅ pass |
+| C4 | Recompute all 88 gradients from the definition (Eq. 1); compare by truth table with Vichniac's Table 1; exactly 7 misprinted entries in 5 rows (62, 110, 130, 146, 172), cross-checked by additivity and symmetry from the paper's own rows | `verification/test_c4_vichniac_gradients.py` | ✅ pass (see note) |
+| C5 | Parity spectrum = ln\|λ_k(A) + a_o\| and MLE = ln ρ(A + a_o I) for both a_o (Eq. 15); ρ(A) ≥ mean degree on any graph (Collatz and Sinogowitz 1957), so the MLE is positive when the mean degree exceeds one (Subsec. 4.2; the bound tested on WS, BA and their disjoint union); supplementary: single-site amplitude ∝ eigenvector centrality (WS, BA) | `verification/test_c5_parity_centrality.py` | ✅ pass |
+| C6 | Benettin sanity: Σ exponents = ln|det J| at every T; rule 150, N = 101, T = 200: Benettin gives ln 3, direct multiplication about 95 (Subsec. 3.2) | `verification/test_c6_benettin_det_sum.py` | ✅ pass |
 | C7 | Numerical artefacts reproduced beside the correct result (overflow; float16 plateau) | `verification/test_c7_numerical_artefact.py` | ✅ pass (see note) |
 | C9 | Convergence calibration (Fig. 3): Benettin 1/T transient, burn-in, N-dependent horizon; unscaled direct method exact at the top, resolves 31/21/15/11 exponents at T = 50/100/200/300, overflows beyond T = 323; floor formula; eigenbasis start exact at T = 1 | `verification/test_benettin_convergence.py` + the notebook's final cell; windowed estimator (W = 1000 reference table, two slow bands, same-budget burn-in) in `verification/test_benettin_windowed.py` | ✅ pass |
 | C10 | Spectra of the nine non-affine rules Vispoel et al. report, recomputed with Benettin on the configuration-dependent Jacobian; the number of -inf exponents is a rank deficiency, computed exactly over GF(p), not a threshold on the QR diagonal; the unscaled direct method cannot produce these spectra at these settings (band 0.036 wide for every rule; 4 of 9 overflow) | `verification/test_c10_nonaffine_spectra.py`, `verification/test_nonaffine.py` | ✅ pass (see note) |
 | C11 | Boolean damage against Λ_max for every rule (Fig. 5, App. B): the single-vector exponent equals the DFT closed form on constant Jacobians to 1e-9 and lies within 0.01 of ln 3 / ln 2 on the affine ECAs and within 0.02 of the full-QR cache on the nine rules of Fig. 6; the damage never wraps and reproduces the exact mod-2 defect patterns (rule 90: 2^popcount(t)); −∞ rules are exactly 0, 8, 32, 40, 128, 136, 160, 168 on the ring and 16 rules on the torus, never a mixture; Spearman ρ(Λ_max, D_norm) = 0.61 (1-D) and 0.52 (2-D), ρ(Λ_max, v_front) = 0.14 (1-D): at ln 2 exactly the front speed runs from 0 (rule 232) to 1 (rule 90); one sample per dimension recomputes bit for bit, and a small from-scratch run reproduces the qualitative claims | `verification/test_c11_damage_vs_mle.py`, `test_damage.py`, `test_outer_totalistic.py` | ✅ pass (see note) |
 | C12 | The sampled Moore family (Fig. 5, bottom panel): the 2000 rules are exactly the seeded uniform draw of distinct minimal representatives from the 131 328 classes; the single-vector exponent of the Moore parity rules equals the DFT closed form to 1e-9 and falls short of ln 9 / ln 8 by 0.013 / 0.015 (finite horizon, bounded by 0.02); Life's sample 0 is pinned (1.341872); 15 rules have every sample at −∞ and 8 have only some (a mixture never seen on the ring or the von Neumann torus); Spearman ρ(Λ_max, D_norm) = 0.82; one sample recomputes bit for bit and a from-scratch small run exercises the pipeline | `verification/test_c12_damage_vs_mle_moore.py`, `test_outer_totalistic.py`, `test_damage.py` | ✅ pass (see note) |
-| C8 | (nilpotency) | — | ⛔ out of scope: not in the submission (only an open-question comment atop the .tex) |
+| C8 | (nilpotency) | — | ⛔ out of scope: not in the submission |
 
 ### Notes / honest caveats
 
 - **C4 scope.** Vichniac's original Table 1 is transcribed in
   `src/lyapunov/vichniac_table1.py` (verified against the Physica D scan on
   12 September 2026; misprints deliberately kept). All 3 x 88 entries are
-  compared by truth table with the derivative computed from definition (5);
+  compared by truth table with the derivative computed from the definition (Eq. 1);
   seven entries in five rows differ. The corrections are cross-checked using
   only correctly printed rows of the same table (additivity, Method 4) and
   their probable origin is reproduced (symmetry, Method 3, with the variable
@@ -121,13 +121,16 @@ Each claim has a dedicated pytest file (plus lower-level unit tests). Run
   match. The supplementary figure S1's WS/BA graphs use fresh fixed seeds
   (documented in `scripts/make_graphs.py`); the ring length (225) and grid side
   (15) are choices. Fig. 5's bootstrap interval uses `default_rng(0)`.
-- **App. C and the three affine rules of Vispoel et al.** The statement that
-  their printed MLEs for rules 60, 90 and 150 and the missing low-Λ tail result
-  from direct multiplication in floating point is demonstrated in
-  `notebooks/03_benettin_convergence.ipynb` (cells 12–13: the predicted float64
-  floors at T = 500, 1.063 for rule 150 and 0.657 for rules 60/90, against the
-  ranges of their Fig. 18; overflow beyond T = 323) and pinned in
-  `verification/test_benettin_convergence.py`; it is not in a CSV table.
+- **App. C and the three affine rules of Vispoel et al.** App. C reports their
+  spectra of rules 60, 90 and 150 as incorrect and gives the exact ones in Fig.
+  6; it does not attribute a cause. `notebooks/03_benettin_convergence.ipynb`
+  (cells 12–13: the predicted float64 floors at T = 500, 1.063 for rule 150 and
+  0.657 for rules 60/90, against the ranges of their Fig. 18; overflow beyond
+  T = 323), pinned in `verification/test_benettin_convergence.py`, demonstrates
+  one mechanism and is not a reconstruction of their computation. It can account
+  for a missing low-Λ tail at most, since direct multiplication gets the top
+  exponent right, and their ranges do not all match the floors. It is not in a
+  CSV table.
 - **C10: counting the -infinite exponents.** For eight of the nine rules the
   Boolean Jacobian is singular at almost every step, so part of the tangent
   space is annihilated and those exponents are exactly -infinity. How many is a
@@ -197,6 +200,16 @@ Each claim has a dedicated pytest file (plus lower-level unit tests). Run
   single-threaded BLAS, so the result does not depend on the worker count. The
   cache is committed; `reproduce.py all` only redraws from it, in about three
   seconds, and never triggers the computation.
+- **88-rule catalogue: unreliable low tails.** For 27 of the 79 sampled rules
+  (2, 3, 7, 9, 10, 11, 14, 18, 24, 27, 34, 35, 43, 46, 56, 57, 58, 62, 74, 130,
+  138, 142, 146, 152, 162, 164, 184) the kept exponents, the rank-many largest,
+  sum to a negative number in at least two samples, and to -inf in some. True
+  exponents cannot do that: the window product is an integer matrix, so the
+  product of its nonzero singular values is at least 1 and that sum is at least 0.
+  The lowest exponents of these rules are therefore unreliable, most likely
+  because QR columns collapse beyond the kernel dimension. The ranks, and so the
+  counts of -inf exponents, are exact and unaffected, and none of the nine rules
+  of Fig. 6 violates the bound.
 - **88-rule catalogue: machine, cost and cross-machine agreement.** Run on
   2026-09-14 16:55 to 2026-09-15 04:33 on a Xeon W-2295 (18 cores / 36
   threads, 32 GB, two of four DDR4 channels populated), CPython 3.12.3 with the

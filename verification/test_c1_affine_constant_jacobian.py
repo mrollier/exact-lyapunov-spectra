@@ -1,5 +1,6 @@
 """Claim C1: the 16 affine ECAs are exactly the rules with a constant Boolean
-Jacobian, with the gradients tabulated in the manuscript (Tab. 3).
+Jacobian, with the gradients tabulated in the manuscript (Tab. 3), and such a
+rule is reversible exactly when det J is odd (Subsec. 3.1).
 
 The check recomputes the constant-Jacobian property from first principles (a rule
 has a constant Jacobian iff every Boolean derivative is independent of the
@@ -8,6 +9,7 @@ neighbourhood), rather than trusting any hard-coded list.
 import numpy as np
 
 from lyapunov.rules import (
+    truth_table,
     gradient_truth_tables,
     is_affine,
     affine_ecas,
@@ -18,8 +20,8 @@ from lyapunov.jacobian import eca_jacobian, eca_step
 # Tab. 3 of the manuscript: rule -> gradient (a_-, a_o, a_+); the complement
 # 255 - rule shares it. Same rows and order as scripts/make_tables.py.
 TAB3 = {
-    0: (0, 0, 0), 15: (1, 0, 0), 85: (0, 0, 1), 51: (0, 1, 0),
-    60: (1, 1, 0), 102: (0, 1, 1), 90: (1, 0, 1), 150: (1, 1, 1),
+    0: (0, 0, 0), 170: (0, 0, 1), 204: (0, 1, 0), 240: (1, 0, 0),
+    60: (1, 1, 0), 90: (1, 0, 1), 102: (0, 1, 1), 150: (1, 1, 1),
 }
 
 
@@ -59,3 +61,20 @@ def test_jacobian_is_genuinely_configuration_independent():
                 sp[j] ^= 1
                 J[:, j] = (base ^ eca_step(rule, sp))
             assert np.array_equal(J, J_ref)
+
+
+def test_affine_rule_is_reversible_iff_det_j_is_odd():
+    # Subsec. 3.1: Phi is a bijection iff J is invertible mod 2, i.e. det J odd.
+    # Checked by enumerating every configuration on rings of 3 to 10 cells.
+    for N in range(3, 11):
+        codes = np.arange(2**N)
+        s = (codes[:, None] >> np.arange(N)) & 1
+        code = 4 * np.roll(s, 1, axis=1) + 2 * s + np.roll(s, -1, axis=1)
+        for rule in affine_ecas():
+            image = truth_table(rule)[code] @ (1 << np.arange(N))
+            bijective = len(np.unique(image)) == 2**N
+            det = round(np.linalg.det(eca_jacobian(rule, N).astype(float)))
+            assert bijective == (det % 2 == 1), (rule, N, det)
+            if rule == 150 and N % 3:
+                # Subsec. 3.1: reversible, yet tangent-space volume triples per step.
+                assert bijective and abs(det) == 3

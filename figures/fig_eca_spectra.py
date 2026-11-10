@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Manuscript Figure 2 -- singular values and Lyapunov spectra of the affine ECAs.
 
-Stem: singular_values_and_lyapunov_spectra_of_constant_J_ECAs_NO_CLASSES
+Stem: singular_values_and_lyapunov_spectra_affine_ECAs
 
 The 16 affine ECAs are organised by gradient weight |grad phi| into four rows.
 Left column: the singular values of the constant Jacobian, sigma_k, against the
@@ -82,7 +82,7 @@ def main(argv=None) -> int:
                    help="render text with LaTeX (needs a TeX installation; default: mathtext)")
     args = p.parse_args(argv)
     fig = build_figure(args.N, use_tex=args.tex)
-    path = _style.save(fig, "singular_values_and_lyapunov_spectra_of_constant_J_ECAs_NO_CLASSES", args.output)
+    path = _style.save(fig, "singular_values_and_lyapunov_spectra_affine_ECAs", args.output)
     print(f"Wrote {path}")
     return 0
 

@@ -1,11 +1,11 @@
-"""Claim C5 (Sec. 4.2): for the parity rule on a graph the Lyapunov spectrum is
+"""Claim C5 (Subsec. 4.2): for the parity rule on a graph the Lyapunov spectrum is
 ``ln|lambda_k(A) + a_o|`` and the MLE is ``ln rho(A + a_o I)``, for both the
 self-exclusive (``a_o = 0``) and the self-inclusive (``a_o = 1``) rule, and the
-spectral radius of a connected graph is bounded below by its mean degree, so
-the parity MLE is positive on every connected graph with mean degree above one.
+spectral radius of any graph is at least its mean degree, so the parity MLE is
+positive on every graph with mean degree above one.
 
 Checked numerically on Watts-Strogatz and Barabasi-Albert networks (N = 200,
-mean degree 6 / m = 3). The last test, on eigenvector centrality, is
+mean degree 6 / m = 3), and for the bound also on their disjoint union. The last test, on eigenvector centrality, is
 supplementary material: it backs the network figure of the original submission,
 which the resubmitted manuscript no longer contains.
 """
@@ -38,12 +38,11 @@ def test_mle_equals_log_spectral_radius_of_shifted_adjacency(A, self_inclusive):
     assert np.max(spectrum) == pytest.approx(parity_mle(A, self_inclusive), abs=1e-9)
 
 
-@pytest.mark.parametrize("A", [WS, BA])
+@pytest.mark.parametrize("A", [WS, BA, np.block([[WS, np.zeros_like(BA)], [np.zeros_like(WS), BA]])])
 def test_spectral_radius_is_at_least_the_mean_degree(A):
-    # Sec. 4.2, citing Hong (1993): rho(A) >= 2|E| / |V| for a connected graph,
-    # the Rayleigh quotient of the all-ones vector; hence MLE >= ln(mean degree).
-    G = nx.from_numpy_array(A)
-    assert nx.is_connected(G)
+    # Subsec. 4.2, citing Collatz and Sinogowitz (1957): rho(A) >= 2|E| / |V|, the
+    # Rayleigh quotient of the all-ones vector, so connectedness is not needed;
+    # hence MLE >= ln(mean degree).
     mean_degree = A.sum() / A.shape[0]
     rho = np.max(np.abs(np.linalg.eigvalsh(A.astype(float))))
     assert rho >= mean_degree - 1e-12

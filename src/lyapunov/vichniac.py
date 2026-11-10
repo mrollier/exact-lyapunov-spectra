@@ -132,7 +132,7 @@ def rule_table_string(rule: int) -> str:
 
 
 def computed_patterns(rule: int) -> Tuple[str, str, str]:
-    """4-bit patterns of the three derivatives computed from definition (5)."""
+    """4-bit patterns of the three derivatives computed from the definition, Eq. (1)."""
     gtt = gradient_truth_tables(rule)
     return tuple(pattern4(list(gtt[k]), k) for k in range(3))  # type: ignore[return-value]
 

@@ -2,7 +2,7 @@
 
 For an affine ECA on a periodic ring the Boolean Jacobian is a circulant matrix
 whose every row carries the gradient ``(a_-, a_o, a_+)`` shifted by one cell
-(Eq. 7 of the paper). For the parity rule on a lattice the Jacobian is the
+(Eq. 8 of the paper). For the parity rule on a lattice the Jacobian is the
 lattice adjacency matrix (optionally plus the identity for the self-inclusive
 case). Both are built here explicitly so the closed-form spectra can be
 cross-checked against a direct singular-value decomposition.

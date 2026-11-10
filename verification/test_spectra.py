@@ -106,7 +106,7 @@ def test_eca_jacobian_rejects_nonaffine():
 
 @pytest.mark.parametrize("N, zeros", [(3001, 0), (101, 0), (3000, 2), (102, 2)])
 def test_rule150_zero_singular_values_iff_three_divides_N(N, zeros):
-    # Sec. 3.2: sigma_k = |1 + 2 cos(2 pi k / N)| vanishes at k = N/3 and 2N/3,
+    # Subsec. 3.2: sigma_k = |1 + 2 cos(2 pi k / N)| vanishes at k = N/3 and 2N/3,
     # so the sizes the manuscript uses (N = 3001 for Fig. 2, N = 101 for Fig. 3)
     # are chosen coprime to three and every plotted exponent is finite.
     assert (N % 3 == 0) == (zeros > 0)

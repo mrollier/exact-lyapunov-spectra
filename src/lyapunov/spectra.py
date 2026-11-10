@@ -5,9 +5,9 @@ by the discrete Fourier transform and its singular values are the modulus of the
 DFT of the gradient stencil. No trajectory is simulated and no limit is taken:
 the Lyapunov spectrum is exactly the logarithm of these singular values.
 
-* 1-D (ECAs):        Eq. (8)-(9) of the paper.
+* 1-D (ECAs):        Eqs. (9)-(10) of the paper.
 * D-dimensional:     Eq. (12): sigma_k = |sum_delta a_delta exp(2 pi i k.delta / N)|.
-* Neighbourhood      Eq. (14): the structure factor K(k, l), the DFT of the
+* Neighbourhood      Subsec. 3.4: the structure factor K(k, l), the DFT of the
   structure factor:  neighbourhood's indicator function.
 
 The maximal Lyapunov exponent is always ``ln(number of sensitive inputs)``,
@@ -41,7 +41,7 @@ VON_NEUMANN_R2_2D: Tuple[Tuple[int, int], ...] = tuple(
 # 1-D affine ECAs
 # ---------------------------------------------------------------------------
 def eca_eigenvalues(rule: int, N: int) -> NDArray[np.complexfloating]:
-    """Complex eigenvalues of the affine ECA's circulant Jacobian (Eq. 7)."""
+    """Complex eigenvalues of the affine ECA's circulant Jacobian (Eq. 9)."""
     a_minus, a_centre, a_plus = affine_gradient(rule)
     k = np.arange(N)
     phase = 2j * np.pi * k / N
@@ -49,14 +49,14 @@ def eca_eigenvalues(rule: int, N: int) -> NDArray[np.complexfloating]:
 
 
 def eca_singular_values(rule: int, N: int) -> NDArray[np.floating]:
-    """Singular values of the affine ECA's constant Jacobian (Eq. 9)."""
+    """Singular values of the affine ECA's constant Jacobian (Eq. 10)."""
     return np.abs(eca_eigenvalues(rule, N))
 
 
 def eca_lyapunov_spectrum(
     rule: int, N: int, drop_zeros: bool = True
 ) -> NDArray[np.floating]:
-    """Lyapunov spectrum ``ln(sigma_k)`` of an affine ECA (Eq. 10).
+    """Lyapunov spectrum ``ln(sigma_k)`` of an affine ECA (Eq. 7).
 
     With ``drop_zeros`` (default) the ``-inf`` entries from zero singular values
     are removed, matching how the spectrum is plotted.
@@ -105,7 +105,7 @@ def parity_2d_mle(offsets: Sequence[Tuple[int, int]]) -> float:
 def structure_factor(
     offsets: Sequence[Tuple[int, int]], k: int, l: int, N: int
 ) -> float:
-    """Neighbourhood structure factor ``K(k, l)`` (Eq. 14).
+    """Neighbourhood structure factor ``K(k, l)`` (Subsec. 3.4).
 
     The DFT of the neighbourhood's indicator function, summed over the non-centre
     offsets. Because the neighbourhoods are symmetric under ``delta -> -delta``

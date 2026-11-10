@@ -1,5 +1,49 @@
 # Changelog
 
+## 1.7.0 (2026-11-10)
+
+Accompanies the second revision of the manuscript.
+
+### Corrections
+
+- App. C no longer attributes the incorrect spectra of Vispoel et al. to direct
+  multiplication and floating-point error, so `README.md`, `docs/provenance.md`
+  and the closing cell of `notebooks/03_benettin_convergence.ipynb` no longer do
+  either. The notebook demonstrates the float64 floor; it does not establish how
+  those spectra were computed.
+- `README.md`: the eigenvalues of a circulant Jacobian are the DFT of the
+  gradient stencil, and the spectrum is the logarithm of their moduli.
+- The mean-degree bound on the spectral radius is cited from Collatz and
+  Sinogowitz (1957), not Hong (1993), and holds on any graph.
+  `verification/test_c5_parity_centrality.py` now also checks a disconnected
+  graph.
+- `data/tables/affine_ecas.csv` follows the new row order of Tab. 3, in which the
+  linear rule of each pair comes first: 0, 170, 204, 240, 60, 90, 102, 150.
+
+### Added
+
+- `docs/provenance.md`: caveat on the 88-rule catalogue. For 27 of the 79
+  sampled rules the lowest exponents are unreliable, because the kept exponents
+  sum to a negative number. The nine rules of Fig. 6 are not affected.
+- `verification/test_c6_benettin_det_sum.py`: the sum of the exponents of rule
+  150 at N = 101, T = 200 is ln 3 for Benettin's algorithm and about 95 for
+  direct multiplication.
+- `verification/test_c1_affine_constant_jacobian.py`: an affine ECA is reversible
+  if and only if det J is odd, checked by enumerating every configuration on
+  rings of 3 to 10 cells; rule 150 with N coprime to three is reversible with
+  |det J| = 3 (Subsec. 3.1).
+
+### Alignment with the second revision
+
+- Equation numbers in docstrings and the convergence notebook follow the
+  revised manuscript; the structure factor is referred to by Subsec. 3.4, as its
+  equation is unnumbered.
+- Fig. 2 is written as `singular_values_and_lyapunov_spectra_affine_ECAs`, the
+  name the manuscript uses.
+- The test and documentation rows of Tab. 3 use the revised row order.
+- The convergence notebook and `README.md` describe the study behind Fig. 3
+  without reference to the review.
+
 ## 1.6.1 (2026-09-15)
 
 ### Layout

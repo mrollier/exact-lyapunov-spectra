@@ -3,7 +3,7 @@
 Reproducibility package for the article *"Exact Lyapunov spectra of affine
 cellular automata and the parity rule on networks"* by Michiel Rollier and
 Jan M. Baetens (BionamiX, Ghent University), submitted to *Chaos, Solitons &
-Fractals* (revised version of 14 September 2026). This is the repository the
+Fractals* (second revision, 10 November 2026). This is the repository the
 article's data-availability statement refers to:
 <https://github.com/mrollier/exact-lyapunov-spectra>.
 
@@ -25,12 +25,13 @@ table and claim.
 |---|---|
 | Data availability: "the Python code used to compute the Lyapunov spectra and to reproduce the figures" | `python reproduce.py all` regenerates every figure and table and runs every check. The layout and the figure-by-figure map are in the two sections after "Reproduce everything". |
 | Sec. 3, the closed form (Fig. 2; Tab. 3 and Tab. 4; Fig. 4 for the 2-D neighbourhoods) | `src/lyapunov/spectra.py` (DFT of the gradient stencil, structure factor), drawn by `figures/fig_eca_spectra.py` and `figures/fig_2d_parity.py`; the tables come from `scripts/make_tables.py`. |
-| Sec. 4.2, the parity rule on a graph (spectrum from the adjacency matrix, MLE = ln ρ(A + a_o I), the mean-degree bound) | `src/lyapunov/parity.py`; checked in `verification/test_c5_parity_centrality.py`. |
+| Subsecs. 3.1 and 3.2, the sum of the exponents (ln\|det J\|, reversible exactly when det J is odd; for rule 150 at N = 101, ln 3 for Benettin's algorithm and about 95 for direct multiplication) | `verification/test_c1_affine_constant_jacobian.py` and `verification/test_c6_benettin_det_sum.py`. |
+| Subsec. 4.2, the parity rule on a graph (spectrum from the adjacency matrix, MLE = ln ρ(A + a_o I), the mean-degree bound) | `src/lyapunov/parity.py`; checked in `verification/test_c5_parity_centrality.py`. |
 | Fig. 3, Benettin's algorithm and direct multiplication against the exact spectrum of rule 150 | `figures/make_convergence_figure.py`; the study behind it is `notebooks/03_benettin_convergence.ipynb`, described in the section "The convergence notebook". |
 | App. A: "running `python verify_vichniac.py` recomputes all 88 gradients from the definition and lists the seven entries that differ from the published table" | `python verify_vichniac.py` (a launcher for `scripts/verify_vichniac.py`) prints the seven entries and writes the report `data/tables/vichniac_table1_diff.md`, the 88-rule table `eca_gradient_table.csv` and Tab. 2 as `gradient_corrections_table.tex`. Vichniac's table as printed is `src/lyapunov/vichniac_table1.py`; the derivative is computed in `src/lyapunov/rules.py`. The section "Corrections to Vichniac (1990), Table 1" lists the seven entries and how they were established. |
 | App. A: "the test suite (`pytest`) reproduces the additivity and symmetry cross-checks" | `python -m pytest verification/test_c4_vichniac_gradients.py`, or `python -m pytest` for the whole suite. |
 | App. B, Fig. 5: damage against the maximal exponent; "please refer to our GitHub repository for further details" | `figures/fig_damage_vs_mle.py` draws from the committed caches, which `scripts/make_damage_mle.py` computes; per-rule numbers are `data/tables/damage_vs_mle_1d.csv`, `damage_vs_mle_2d.csv` and `damage_vs_mle_2d_moore.csv`. The section "Damage against the maximal exponent" defines the quantities; the checks are `verification/test_c11_damage_vs_mle.py` and `test_c12_damage_vs_mle_moore.py`. |
-| App. C: "we show in our associated GitHub repository that this results from direct multiplication and floating-point error" | `notebooks/03_benettin_convergence.ipynb`, cells 12 and 13: the float64 precision floor at T = 500 against the ranges Vispoel et al. print for rules 60, 90 and 150, pinned in `verification/test_benettin_convergence.py`. What the unscaled method returns for the nine non-affine rules is `data/tables/nonaffine_direct_multiplication.csv`. |
+| App. C: "a number of incorrectly calculated spectra of the affine rules 60, 90 and 150" | The exact spectra come from the closed form in `src/lyapunov/spectra.py` and are the last three panels of Fig. 6. Separately, `notebooks/03_benettin_convergence.ipynb`, cells 12 and 13, compares the float64 precision floor at T = 500 with the ranges Vispoel et al. print, pinned in `verification/test_benettin_convergence.py`; this shows the mechanism of the floor, not how those spectra were computed. What the unscaled method returns for the nine non-affine rules is `data/tables/nonaffine_direct_multiplication.csv`. |
 | App. C, Fig. 6: the corrected spectra of rules 6, 26, 73, 154, 41, 122, 126, 54 and 110 | `figures/fig_nonaffine_spectra.py` draws from the committed cache, which `scripts/make_nonaffine_spectra.py` computes with `src/lyapunov/nonaffine.py`; the numbers are `data/tables/nonaffine_spectra.csv` and the section "The nine non-affine rules". |
 | App. C: "spectra for all 88 non-equivalent ECAs can be found and re-calculated in the repository" | `data/nonaffine/all88_spectra.csv` (one row per rule) and `spectra_all88.npz` (every sample); recalculate with `python scripts/make_nonaffine_spectra.py --all-88 --recompute` (about 12 hours; see `docs/provenance.md`). |
 
@@ -38,15 +39,15 @@ table and claim.
 
 Affine Boolean rules — those whose update is an `XOR` of a subset of the inputs
 plus a constant — have a **configuration-independent Boolean Jacobian**. Their
-Lyapunov spectrum is therefore *exact*: the logarithms of the singular values of
+Lyapunov spectrum is therefore *exact*: the logarithms of the eigenvalue moduli of
 one constant matrix, with no simulation and no limit. On a periodic lattice that
-matrix is (multilevel) circulant, so the spectrum is the discrete Fourier
+matrix is (multilevel) circulant, so its eigenvalues are the discrete Fourier
 transform of the gradient stencil; for the parity rule on any graph it is the
 adjacency matrix (plus the identity for the self-inclusive rule), so the
-spectrum is the logarithm of the absolute graph spectrum and the maximal
+spectrum is the logarithm of the absolute spectrum of that matrix and the maximal
 exponent the logarithm of its spectral radius. The exact spectra serve as
 benchmarks: they calibrate Benettin's algorithm and expose the precision floor
-of direct multiplication (Fig. 3, App. C), correct seven misprints in the
+of direct multiplication (Fig. 3), correct seven misprints in the
 gradient table of Vichniac (1990) (Tab. 2, App. A), and are set against the
 Boolean damage of a single flipped cell for all 88 ECAs, all 528
 outer-totalistic von Neumann rules and 2000 sampled outer-totalistic Moore
@@ -162,8 +163,8 @@ results, observed status and honest caveats.
 ## The convergence notebook (behind Fig. 3)
 
 `notebooks/03_benettin_convergence.ipynb` uses the exact affine spectrum of rule
-150 (N = 101) to calibrate the two numerical routes to a Lyapunov spectrum, in
-answer to referee 2, paragraph 3. Benettin's algorithm from the identity has a
+150 (N = 101) to calibrate the two numerical routes to a Lyapunov spectrum.
+Benettin's algorithm from the identity has a
 1/T frame-alignment transient that a burn-in removes at the ends of the
 spectrum, and an N-dependent horizon in the interior (the fraction of the
 spectrum recovered to 1e-2 at T = 200 falls from 1.00 at N = 31 to 0.81 at
@@ -252,7 +253,8 @@ They are committed as `data/nonaffine/all88_spectra.csv` (one row per rule),
 (14.5 MB), produced once with `python scripts/make_nonaffine_spectra.py --all-88
 --recompute --workers 8` (11 h 37 min on an 18-core workstation; machine and
 cross-build comparison in `docs/provenance.md`). `reproduce.py` does not
-regenerate them.
+regenerate them. For 27 of the 79 sampled rules the lowest exponents are
+unreliable; `docs/provenance.md` lists them and gives the reason.
 
 ## Damage against the maximal exponent, every rule (Fig. 5, App. B)
 
@@ -391,5 +393,5 @@ depend on the thread count. The notebooks pin the BLAS thread count to one.
 
 ## Licence & citation
 
-MIT (see `LICENSE`). Please cite the article and this software (version 1.6.1,
-tag `v1.6.1`, accompanies the revised manuscript); see `CITATION.cff`.
+MIT (see `LICENSE`). Please cite the article and this software (version 1.7.0,
+tag `v1.7.0`, accompanies the second revision); see `CITATION.cff`.

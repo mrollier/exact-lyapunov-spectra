@@ -2,7 +2,7 @@
 
 This repository is the reproducibility package for the article *"Exact Lyapunov
 spectra of affine cellular automata and the parity rule on networks"* (Rollier &
-Baetens, *Chaos, Solitons & Fractals*, revised version resubmitted 14 September
+Baetens, *Chaos, Solitons & Fractals*, second revision resubmitted 10 November
 2026: 6 figures, 4 tables, appendices A-C). Every figure and every quantitative
 claim in the paper is reproducible here with one command. Figure and table
 numbers in the repository are those of the revised manuscript.

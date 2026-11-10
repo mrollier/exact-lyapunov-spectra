@@ -11,7 +11,7 @@ import pytest
 
 from lyapunov.jacobian import eca_jacobian
 from lyapunov.parity import parity_jacobian
-from lyapunov.benettin import benettin_spectrum
+from lyapunov.benettin import benettin_spectrum, direct_multiplication_spectrum
 
 
 @pytest.mark.parametrize("rule, N", [(150, 25), (90, 41), (60, 31), (105, 20)])
@@ -25,6 +25,15 @@ def test_exponent_sum_equals_log_det_eca(rule, N, T):
     assert abs(det) > 1e-9, f"rule {rule}, N = {N}: singular Jacobian, the parametrisation is wrong"
     spec = benettin_spectrum(J, T)
     assert np.sum(spec) == pytest.approx(np.log(abs(det)), abs=1e-8)
+
+
+def test_exponent_sum_separates_benettin_from_direct_multiplication():
+    # Subsec. 3.2: rule 150, N = 101, T = 200. The exponents must sum to ln 3;
+    # Benettin preserves that, direct multiplication in float64 gives about 95.
+    # The direct value depends on rounding (94.4 to 95.0), hence the wide margin.
+    J = eca_jacobian(150, 101)
+    assert np.sum(benettin_spectrum(J, 200)) == pytest.approx(np.log(3), abs=1e-8)
+    assert 90 < np.sum(direct_multiplication_spectrum(J, 200)) < 100
 
 
 @pytest.mark.parametrize("T", [1, 10, 50])

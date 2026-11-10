@@ -29,7 +29,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 TABLE_DIR = REPO_ROOT / "data" / "tables"
 # The rows of Tab. 3 in the manuscript, by gradient weight; each rule stands for
 # the pair {rule, 255 - rule}, which share the gradient.
-TAB3_ORDER = (0, 15, 85, 51, 60, 102, 90, 150)
+TAB3_ORDER = (0, 170, 204, 240, 60, 90, 102, 150)
 
 
 def affine_eca_table() -> list[dict]:

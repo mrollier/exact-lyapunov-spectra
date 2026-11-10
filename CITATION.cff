@@ -13,8 +13,8 @@ authors:
     orcid: "https://orcid.org/0000-0003-4084-9992"
     affiliation: "BionamiX, Ghent University"
 license: MIT
-version: "1.6.1"
-date-released: "2026-09-15"
+version: "1.7.0"
+date-released: "2026-11-10"
 repository-code: "https://github.com/mrollier/exact-lyapunov-spectra"
 url: "https://github.com/mrollier/exact-lyapunov-spectra"
 keywords:
@@ -37,4 +37,4 @@ preferred-citation:
   journal: "Chaos, Solitons & Fractals"
   year: 2026
   status: submitted
-  notes: "Revised version submitted 14 September 2026."
+  notes: "Second revision submitted 10 November 2026."
